@@ -16,6 +16,7 @@ class ExpressClosureState extends Equatable {
     this.status = ExpressClosureStatus.initial,
     this.prefilledSalesAmount = 0,
     this.totalSalesAmount = 0,
+    this.totalCashDebtInflow = 0,
     this.totalExpensesAmount = 0,
     this.cashCounted = 0,
     this.currentStep = 1,
@@ -38,6 +39,7 @@ class ExpressClosureState extends Equatable {
   final ExpressClosureStatus status;
   final int prefilledSalesAmount;
   final int totalSalesAmount;
+  final int totalCashDebtInflow;
   final int totalExpensesAmount;
   final int cashCounted;
   final int currentStep;
@@ -49,7 +51,8 @@ class ExpressClosureState extends Equatable {
   /// Passive GPS integrity status from the sealed closure.
   bool? get isLocationFlagged => createdClosure?.isFlaggedLocation;
 
-  int get theoreticalCash => totalSalesAmount - totalExpensesAmount;
+  int get theoreticalCash =>
+      totalSalesAmount + totalCashDebtInflow - totalExpensesAmount;
 
   int get difference => cashCounted - theoreticalCash;
 
@@ -57,6 +60,7 @@ class ExpressClosureState extends Equatable {
       status == ExpressClosureStatus.ready &&
       errorMessage == null &&
       totalSalesAmount >= 0 &&
+      totalCashDebtInflow >= 0 &&
       totalExpensesAmount >= 0 &&
       cashCounted >= 0;
 
@@ -65,6 +69,7 @@ class ExpressClosureState extends Equatable {
     ExpressClosureStatus? status,
     int? prefilledSalesAmount,
     int? totalSalesAmount,
+    int? totalCashDebtInflow,
     int? totalExpensesAmount,
     int? cashCounted,
     int? currentStep,
@@ -79,6 +84,7 @@ class ExpressClosureState extends Equatable {
       status: status ?? this.status,
       prefilledSalesAmount: prefilledSalesAmount ?? this.prefilledSalesAmount,
       totalSalesAmount: totalSalesAmount ?? this.totalSalesAmount,
+      totalCashDebtInflow: totalCashDebtInflow ?? this.totalCashDebtInflow,
       totalExpensesAmount: totalExpensesAmount ?? this.totalExpensesAmount,
       cashCounted: cashCounted ?? this.cashCounted,
       currentStep: currentStep ?? this.currentStep,
@@ -97,6 +103,7 @@ class ExpressClosureState extends Equatable {
     status,
     prefilledSalesAmount,
     totalSalesAmount,
+    totalCashDebtInflow,
     totalExpensesAmount,
     cashCounted,
     currentStep,

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
+import 'package:tekki/features/karne_bor/domain/entities/recovery_velocity_entity.dart';
 
 sealed class KarneBorState extends Equatable {
   const KarneBorState();
@@ -17,15 +18,31 @@ final class KarneBorLoading extends KarneBorState {
 }
 
 final class KarneBorLoaded extends KarneBorState {
-  const KarneBorLoaded({required this.debts, required this.totalDebt});
+  const KarneBorLoaded({
+    required this.debts,
+    required this.totalDebt,
+    this.overdueCount = 0,
+    this.recoveryVelocity,
+    this.recoveryRate = 100,
+  });
 
   final List<DebtEntity> debts;
   final int totalDebt;
+  final int overdueCount;
+  final RecoveryVelocityEntity? recoveryVelocity;
+  final int recoveryRate;
 
   bool get isEmpty => debts.isEmpty;
+  bool get hasOverdue => overdueCount > 0;
 
   @override
-  List<Object?> get props => [debts, totalDebt];
+  List<Object?> get props => [
+    debts,
+    totalDebt,
+    overdueCount,
+    recoveryVelocity,
+    recoveryRate,
+  ];
 }
 
 final class KarneBorError extends KarneBorState {

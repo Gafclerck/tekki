@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:tekki/core/theme/app_colors.dart';
 import 'package:tekki/core/utils/currency_formatter.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
+import 'package:tekki/features/karne_bor/domain/usecases/calculate_recovery_velocity_use_case.dart';
 import 'package:tekki/features/karne_bor/presentation/cubit/karne_bor_cubit.dart';
 import 'package:tekki/features/karne_bor/presentation/cubit/karne_bor_state.dart';
 import 'package:tekki/features/karne_bor/presentation/cubit/record_debt_cubit.dart';
+import 'package:tekki/features/karne_bor/presentation/widgets/collect_debt_payment_dialog.dart';
+import 'package:tekki/features/karne_bor/presentation/widgets/debt_card.dart';
 import 'package:tekki/features/karne_bor/presentation/widgets/record_debt_bottom_sheet.dart';
+import 'package:tekki/features/karne_bor/presentation/widgets/recovery_velocity_gauge.dart';
+import 'package:tekki/features/karne_bor/presentation/widgets/whatsapp_reminder_bottom_sheet.dart';
 import 'package:tekki/injection_container.dart';
 
 class KarneBorScreen extends StatefulWidget {
@@ -30,7 +34,13 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
         widget.karneBorCubit ??
         (sl.isRegistered<KarneBorCubit>()
             ? sl<KarneBorCubit>()
-            : KarneBorCubit(watchActiveDebtsUseCase: sl()));
+            : KarneBorCubit(
+                watchActiveDebtsUseCase: sl(),
+                calculateRecoveryVelocityUseCase:
+                    sl.isRegistered<CalculateRecoveryVelocityUseCase>()
+                    ? sl<CalculateRecoveryVelocityUseCase>()
+                    : null,
+              ));
     _cubit.startWatching();
   }
 
@@ -76,6 +86,14 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
     if (widget.recordDebtCubit == null) {
       await debtCubit.close();
     }
+  }
+
+  Future<void> _openCollectPaymentDialog(DebtEntity debt) async {
+    await CollectDebtPaymentDialog.show(context: context, debt: debt);
+  }
+
+  Future<void> _openReminderSheet(DebtEntity debt) async {
+    await WhatsAppReminderBottomSheet.show(context, debt: debt);
   }
 
   @override
@@ -128,10 +146,39 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
                 return Center(
                   child: Padding(
                     padding: const EdgeInsets.all(24),
-                    child: Text(
-                      state.message,
-                      style: const TextStyle(color: AppColors.primary),
-                      textAlign: TextAlign.center,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.error_outline_rounded,
+                          size: 48,
+                          color: AppColors.accent,
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          state.message,
+                          style: const TextStyle(
+                            color: AppColors.primary,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton.icon(
+                          key: const ValueKey('karne_bor_retry_button'),
+                          onPressed: () => _cubit.startWatching(),
+                          icon: const Icon(Icons.refresh, size: 18),
+                          label: const Text('Réessayer'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.secondary,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 );
@@ -148,9 +195,23 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
                       horizontal: 16,
                       vertical: 8,
                     ),
-                    child: _buildSummaryCard(
-                      loaded.totalDebt,
-                      loaded.debts.length,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _buildSummaryCard(
+                          totalDebt: loaded.totalDebt,
+                          debtsCount: loaded.debts.length,
+                          overdueCount: loaded.overdueCount,
+                          recoveryRate: loaded.recoveryRate,
+                        ),
+                        if (loaded.recoveryVelocity != null) ...[
+                          const SizedBox(height: 10),
+                          RecoveryVelocityGauge(
+                            key: const ValueKey('karne_bor_recovery_gauge'),
+                            velocity: loaded.recoveryVelocity!,
+                          ),
+                        ],
+                      ],
                     ),
                   ),
 
@@ -203,7 +264,12 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
     );
   }
 
-  Widget _buildSummaryCard(int totalDebt, int debtsCount) {
+  Widget _buildSummaryCard({
+    required int totalDebt,
+    required int debtsCount,
+    required int overdueCount,
+    required int recoveryRate,
+  }) {
     return Container(
       key: const ValueKey('karne_bor_summary_card'),
       padding: const EdgeInsets.all(16),
@@ -215,43 +281,107 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'ARGENT DEHORS',
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.secondary,
-                  letterSpacing: 0.5,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'ARGENT DEHORS',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.secondary,
+                    letterSpacing: 0.5,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                CurrencyFormatter.format(totalDebt),
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.primary,
+                const SizedBox(height: 4),
+                Text(
+                  CurrencyFormatter.format(totalDebt),
+                  style: const TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.primary,
+                    height: 1.2,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: AppColors.secondary.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Text(
-              '$debtsCount créance${debtsCount > 1 ? 's' : ''}',
-              style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-                color: AppColors.secondary,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Container(
+                key: const ValueKey('karne_bor_recovery_badge'),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.secondary.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  'Recouvrement $recoveryRate%',
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.secondary,
+                  ),
+                ),
               ),
-            ),
+              const SizedBox(height: 6),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.secondary.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  '$debtsCount créance${debtsCount > 1 ? 's' : ''}',
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.secondary,
+                  ),
+                ),
+              ),
+              if (overdueCount > 0) ...[
+                const SizedBox(height: 6),
+                Container(
+                  key: const ValueKey('karne_bor_overdue_badge'),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.accentSoft,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.warning_amber_rounded,
+                        size: 13,
+                        color: AppColors.primary,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        '$overdueCount en retard',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ],
           ),
         ],
       ),
@@ -285,7 +415,7 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
             ),
             const SizedBox(height: 16),
             const Text(
-              'Aucun argent dehors !',
+              'Tout est en règle !',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
@@ -310,100 +440,18 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
   }
 
   Widget _buildDebtsList(List<DebtEntity> debts) {
-    final dateFormat = DateFormat('dd/MM/yyyy');
-
     return ListView.separated(
       key: const ValueKey('karne_bor_debts_list'),
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
       itemCount: debts.length,
       separatorBuilder: (_, _) => const SizedBox(height: 10),
       itemBuilder: (context, index) {
         final debt = debts[index];
-        final isLate = debt.isOverdue;
-
-        return Container(
+        return DebtCard(
           key: ValueKey('debt_card_${debt.id}'),
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(
-              color: isLate
-                  ? AppColors.accent
-                  : AppColors.tertiary.withValues(alpha: 0.4),
-              width: isLate ? 1.5 : 1,
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      debt.debtor?.name ?? 'Client',
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.primary,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    CurrencyFormatter.format(debt.remainingAmount),
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.primary,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 6),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Échéance : ${dateFormat.format(debt.dueDate)}',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: isLate ? AppColors.accent : AppColors.secondary,
-                    ),
-                  ),
-                  if (isLate)
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 2,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.accentSoft,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: const Text(
-                        '⚠️ Retard',
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.primary,
-                        ),
-                      ),
-                    )
-                  else
-                    const Text(
-                      'À jour',
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.secondary,
-                      ),
-                    ),
-                ],
-              ),
-            ],
-          ),
+          debt: debt,
+          onCollect: () => _openCollectPaymentDialog(debt),
+          onReminder: () => _openReminderSheet(debt),
         );
       },
     );

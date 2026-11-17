@@ -111,16 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div style="font-size: 28px; font-weight: 900; color: var(--primary); margin: 2px 0;">88 <span style="font-size: 13px; color: var(--secondary);">/100</span></div>
         <div style="display: inline-block; font-size: 10px; background: #DEF7EC; color: #03543F; padding: 3px 10px; border-radius: 999px; font-weight: 700; margin-bottom: 10px;">Éligible Facilité Réassort</div>
         <div style="width: 120px; height: 120px; background: #F8FAFC; border: 1.5px dashed var(--secondary); border-radius: 8px; margin: 0 auto 8px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#133E59" stroke-width="1.8">
-            <rect x="3" y="3" width="7" height="7" rx="1"/>
-            <rect x="14" y="3" width="7" height="7" rx="1"/>
-            <rect x="14" y="14" width="7" height="7" rx="1"/>
-            <rect x="3" y="14" width="7" height="7" rx="1"/>
-            <circle cx="6.5" cy="6.5" r="1.5" fill="#133E59"/>
-            <circle cx="17.5" cy="6.5" r="1.5" fill="#133E59"/>
-            <circle cx="6.5" cy="17.5" r="1.5" fill="#133E59"/>
-            <circle cx="17.5" cy="17.5" r="1.5" fill="#133E59"/>
-          </svg>
+          <img src="assets/branding/qr_code.png" alt="QR Code" width="86" height="86" style="border-radius: 4px; display: block;">
           <span style="font-size: 8px; font-weight: 700; color: var(--secondary); margin-top: 4px;">SCANNER POUR AUDIT</span>
         </div>
         <div style="font-size: 10px; color: var(--secondary); font-weight: 600;">Code PIN Temporaire : <strong style="color: var(--accent);">5821</strong></div>

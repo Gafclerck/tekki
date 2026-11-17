@@ -5,6 +5,8 @@ import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tekki/core/database/app_database.dart';
 import 'package:tekki/core/errors/exceptions.dart';
+import 'package:tekki/features/karne_bor/domain/usecases/record_debt_payment_use_case.dart';
+import 'package:tekki/features/karne_bor/presentation/cubit/collect_debt_payment_cubit.dart';
 import 'package:tekki/features/sales_and_cash/data/datasources/closure_local_data_source.dart';
 import 'package:tekki/features/sales_and_cash/data/datasources/sales_local_data_source.dart';
 import 'package:tekki/features/sales_and_cash/data/models/sale_model.dart';
@@ -581,6 +583,8 @@ void main() {
         expect(di.sl.isRegistered<GetClosurePrefillUseCase>(), isTrue);
         expect(di.sl.isRegistered<ExecuteDailyClosureUseCase>(), isTrue);
         expect(di.sl.isRegistered<ExpressClosureCubit>(), isTrue);
+        expect(di.sl.isRegistered<RecordDebtPaymentUseCase>(), isTrue);
+        expect(di.sl.isRegistered<CollectDebtPaymentCubit>(), isTrue);
 
         final resolvedDb = di.sl<AppDatabase>();
         expect(resolvedDb, isA<AppDatabase>());

@@ -8,6 +8,7 @@ import 'package:tekki/features/sales_and_cash/domain/entities/shop_entity.dart';
 
 abstract class ClosureLocalDataSource {
   Future<int> getPrefillSalesAmount(DateTime cutoffTimestamp);
+  Future<int> getPrefillDebtCashInflow(DateTime cutoffTimestamp);
   Future<DailyClosureEntity> executeDailyClosure(DailyClosureEntity closure);
   Future<DailyClosureEntity?> getClosureById(String id);
   Future<List<DailyClosureEntity>> getAllClosures({
@@ -44,13 +45,39 @@ class ClosureLocalDataSourceImpl implements ClosureLocalDataSource {
   }
 
   @override
+  Future<int> getPrefillDebtCashInflow(DateTime cutoffTimestamp) async {
+    try {
+      final cutoffIso = cutoffTimestamp.toUtc().toIso8601String();
+      final sumColumn = database.debtPayments.paymentAmount.sum();
+      final query = database.selectOnly(database.debtPayments)
+        ..addColumns([sumColumn])
+        ..where(
+          database.debtPayments.closureId.isNull() &
+              database.debtPayments.paymentMethod.equals('ESPECES') &
+              database.debtPayments.paidAt.isSmallerOrEqualValue(cutoffIso),
+        );
+      final result = await query.getSingle();
+      return result.read(sumColumn) ?? 0;
+    } catch (e) {
+      throw DatabaseException(
+        'Failed to calculate prefill debt cash inflow: $e',
+      );
+    }
+  }
+
+  @override
   Future<DailyClosureEntity> executeDailyClosure(
     DailyClosureEntity closure,
   ) async {
     try {
       final cutoffIso = closure.cutoffTimestamp.toUtc().toIso8601String();
       await database.transaction(() async {
-        // 1. Seal orphan sales created at or before cutoffTimestamp
+        // 1. Insert daily_closure row first (so foreign keys on closure_id are valid)
+        await database
+            .into(database.dailyClosures)
+            .insert(closure.toCompanion());
+
+        // 2. Seal orphan sales created at or before cutoffTimestamp
         await (database.update(database.sales)..where(
               (tbl) =>
                   tbl.closureId.isNull() &
@@ -58,10 +85,13 @@ class ClosureLocalDataSourceImpl implements ClosureLocalDataSource {
             ))
             .write(SalesCompanion(closureId: Value(closure.id)));
 
-        // 2. Insert daily_closure row
-        await database
-            .into(database.dailyClosures)
-            .insert(closure.toCompanion());
+        // 3. Seal orphan cash debt payments created at or before cutoffTimestamp
+        await (database.update(database.debtPayments)..where(
+              (tbl) =>
+                  tbl.closureId.isNull() &
+                  tbl.paidAt.isSmallerOrEqualValue(cutoffIso),
+            ))
+            .write(DebtPaymentsCompanion(closureId: Value(closure.id)));
       });
       return closure;
     } catch (e) {

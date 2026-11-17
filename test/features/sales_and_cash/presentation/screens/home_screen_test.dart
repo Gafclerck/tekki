@@ -32,6 +32,9 @@ void main() {
 
   setUp(() {
     mockBloc = MockCashDashboardBloc();
+    addTearDown(() async {
+      await sl.reset();
+    });
   });
 
   Widget buildSubject({VoidCallback? onCloseCashier}) {

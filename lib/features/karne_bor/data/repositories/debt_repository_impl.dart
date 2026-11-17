@@ -3,7 +3,9 @@ import 'package:tekki/core/errors/failures.dart';
 import 'package:tekki/core/utils/result.dart';
 import 'package:tekki/features/karne_bor/data/datasources/debt_local_data_source.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
+import 'package:tekki/features/karne_bor/domain/entities/debt_payment_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debtor_entity.dart';
+import 'package:tekki/features/karne_bor/domain/entities/recovery_velocity_entity.dart';
 import 'package:tekki/features/karne_bor/domain/repositories/debt_repository.dart';
 
 class DebtRepositoryImpl implements DebtRepository {
@@ -17,6 +19,20 @@ class DebtRepositoryImpl implements DebtRepository {
   ) async {
     try {
       await localDataSource.insertDebtor(debtor);
+      return Success(debtor);
+    } on DatabaseException catch (e) {
+      return Error(DatabaseFailure(message: e.message));
+    } catch (e) {
+      return Error(DatabaseFailure(message: 'Unexpected error: $e'));
+    }
+  }
+
+  @override
+  Future<Result<DebtorEntity, Failure>> updateDebtor(
+    DebtorEntity debtor,
+  ) async {
+    try {
+      await localDataSource.updateDebtor(debtor);
       return Success(debtor);
     } on DatabaseException catch (e) {
       return Error(DatabaseFailure(message: e.message));
@@ -105,6 +121,38 @@ class DebtRepositoryImpl implements DebtRepository {
   }
 
   @override
+  Future<Result<DebtPaymentEntity, Failure>> recordDebtPayment({
+    required DebtPaymentEntity payment,
+    required DebtEntity updatedDebt,
+  }) async {
+    try {
+      await localDataSource.recordDebtPayment(
+        payment: payment,
+        updatedDebt: updatedDebt,
+      );
+      return Success(payment);
+    } on DatabaseException catch (e) {
+      return Error(DatabaseFailure(message: e.message));
+    } catch (e) {
+      return Error(DatabaseFailure(message: 'Unexpected error: $e'));
+    }
+  }
+
+  @override
+  Future<Result<List<DebtPaymentEntity>, Failure>> getPaymentsByDebt(
+    String debtId,
+  ) async {
+    try {
+      final payments = await localDataSource.getPaymentsByDebt(debtId);
+      return Success(payments);
+    } on DatabaseException catch (e) {
+      return Error(DatabaseFailure(message: e.message));
+    } catch (e) {
+      return Error(DatabaseFailure(message: 'Unexpected error: $e'));
+    }
+  }
+
+  @override
   Future<Result<DebtEntity?, Failure>> getDebtById(String id) async {
     try {
       final debt = await localDataSource.getDebtById(id);
@@ -156,5 +204,23 @@ class DebtRepositoryImpl implements DebtRepository {
   @override
   Stream<List<DebtEntity>> watchAllDebtsWithDebtor({int limit = 50}) {
     return localDataSource.watchAllDebtsWithDebtor(limit: limit);
+  }
+
+  @override
+  Future<Result<RecoveryVelocityEntity, Failure>> getRecoveryVelocity({
+    DateTime? asOf,
+    int windowDays = 30,
+  }) async {
+    try {
+      final velocity = await localDataSource.getRecoveryVelocity(
+        asOf: asOf,
+        windowDays: windowDays,
+      );
+      return Success(velocity);
+    } on DatabaseException catch (e) {
+      return Error(DatabaseFailure(message: e.message));
+    } catch (e) {
+      return Error(DatabaseFailure(message: 'Unexpected error: $e'));
+    }
   }
 }

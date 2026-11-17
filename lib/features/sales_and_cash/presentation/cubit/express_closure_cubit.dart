@@ -52,8 +52,13 @@ class ExpressClosureCubit extends Cubit<ExpressClosureState> {
     final prefillAmount = (result as Success<int, Failure>).data;
     int streak = state.activeStreak;
     int monthlyCount = state.monthlyClosuresCount;
+    int debtInflow = 0;
 
     if (closureRepository != null) {
+      final debtInflowResult = await closureRepository!
+          .getPrefillDebtCashInflow(state.cutoffTimestamp);
+      debtInflowResult.fold(onSuccess: (d) => debtInflow = d, onError: (_) {});
+
       final streakResult = await closureRepository!.getActiveStreak(
         referenceDate: state.cutoffTimestamp,
         shopId: shopId,
@@ -73,6 +78,7 @@ class ExpressClosureCubit extends Cubit<ExpressClosureState> {
         status: ExpressClosureStatus.ready,
         prefilledSalesAmount: prefillAmount,
         totalSalesAmount: prefillAmount,
+        totalCashDebtInflow: debtInflow,
         activeStreak: streak,
         monthlyClosuresCount: monthlyCount,
         clearErrorMessage: true,
@@ -144,6 +150,7 @@ class ExpressClosureCubit extends Cubit<ExpressClosureState> {
       totalSalesAmount: state.totalSalesAmount,
       totalExpensesAmount: state.totalExpensesAmount,
       cashCounted: state.cashCounted,
+      totalCashDebtInflow: state.totalCashDebtInflow,
       shopId: shopId,
     );
     if (isClosed) return;
