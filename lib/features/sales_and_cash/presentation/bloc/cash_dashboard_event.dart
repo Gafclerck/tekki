@@ -14,3 +14,7 @@ final class WatchCashDashboardStarted extends CashDashboardEvent {
 final class CloseCashierTapped extends CashDashboardEvent {
   const CloseCashierTapped();
 }
+
+final class ResetClosureLock extends CashDashboardEvent {
+  const ResetClosureLock();
+}

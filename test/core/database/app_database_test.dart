@@ -4,12 +4,17 @@ import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tekki/core/database/app_database.dart';
 import 'package:tekki/core/errors/exceptions.dart';
+import 'package:tekki/features/sales_and_cash/data/datasources/closure_local_data_source.dart';
 import 'package:tekki/features/sales_and_cash/data/datasources/sales_local_data_source.dart';
 import 'package:tekki/features/sales_and_cash/data/models/sale_model.dart';
 import 'package:tekki/features/sales_and_cash/data/models/shop_model.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/payment_method.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/sale_entity.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/shop_entity.dart';
+import 'package:tekki/features/sales_and_cash/domain/repositories/closure_repository.dart';
+import 'package:tekki/features/sales_and_cash/domain/usecases/execute_daily_closure_use_case.dart';
+import 'package:tekki/features/sales_and_cash/domain/usecases/get_closure_prefill_use_case.dart';
+import 'package:tekki/features/sales_and_cash/presentation/cubit/express_closure_cubit.dart';
 import 'package:tekki/injection_container.dart' as di;
 
 void main() {
@@ -555,12 +560,24 @@ void main() {
 
       expect(di.sl.isRegistered<AppDatabase>(), isTrue);
       expect(di.sl.isRegistered<SalesLocalDataSource>(), isTrue);
+      expect(di.sl.isRegistered<ClosureLocalDataSource>(), isTrue);
+      expect(di.sl.isRegistered<ClosureRepository>(), isTrue);
+      expect(di.sl.isRegistered<GetClosurePrefillUseCase>(), isTrue);
+      expect(di.sl.isRegistered<ExecuteDailyClosureUseCase>(), isTrue);
+      expect(di.sl.isRegistered<ExpressClosureCubit>(), isTrue);
 
       final resolvedDb = di.sl<AppDatabase>();
       expect(resolvedDb, isA<AppDatabase>());
 
       final resolvedDs = di.sl<SalesLocalDataSource>();
       expect(resolvedDs, isA<SalesLocalDataSource>());
+
+      final resolvedClosureDs = di.sl<ClosureLocalDataSource>();
+      expect(resolvedClosureDs, isA<ClosureLocalDataSource>());
+
+      final resolvedClosureCubit = di.sl<ExpressClosureCubit>();
+      expect(resolvedClosureCubit, isA<ExpressClosureCubit>());
+
       await di.sl.reset();
     });
   });

@@ -1,11 +1,12 @@
 import 'package:drift/drift.dart';
 import 'package:tekki/core/database/connection/open_connection.dart';
+import 'package:tekki/core/database/tables/daily_closures_table.dart';
 import 'package:tekki/core/database/tables/sales_table.dart';
 import 'package:tekki/core/database/tables/shops_table.dart';
 
 part 'app_database.g.dart';
 
-@DriftDatabase(tables: [Shops, Sales])
+@DriftDatabase(tables: [Shops, Sales, DailyClosures])
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor])
       : super(executor ?? openConnection());

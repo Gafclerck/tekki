@@ -11,6 +11,7 @@ import 'package:tekki/features/sales_and_cash/domain/entities/sale_entity.dart';
 import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_bloc.dart';
 import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_event.dart';
 import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_state.dart';
+import 'package:tekki/features/sales_and_cash/presentation/screens/express_closure_screen.dart';
 import 'package:tekki/features/sales_and_cash/presentation/screens/home_screen.dart';
 import 'package:tekki/features/sales_and_cash/presentation/widgets/cash_card.dart';
 import 'package:tekki/features/sales_and_cash/presentation/widgets/primary_cta_button.dart';
@@ -204,6 +205,41 @@ void main() {
 
       final elevatedButton = tester.widget<ElevatedButton>(find.byType(ElevatedButton).last);
       expect(elevatedButton.onPressed, isNull);
+    });
+
+    testWidgets(
+        'navigates to ExpressClosureScreen when onCloseCashier is null and dispatches ResetClosureLock on cancel',
+        (tester) async {
+      whenListen(
+        mockBloc,
+        Stream.fromIterable([
+          const CashDashboardLoaded(
+            summary: CashSummaryEntity.empty(),
+            isClosureLocked: false,
+          ),
+          const CashDashboardLoaded(
+            summary: CashSummaryEntity.empty(),
+            isClosureLocked: true,
+          ),
+        ]),
+        initialState: const CashDashboardLoaded(
+          summary: CashSummaryEntity.empty(),
+          isClosureLocked: false,
+        ),
+      );
+
+      await tester.pumpWidget(buildSubject(onCloseCashier: null));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ExpressClosureScreen), findsOneWidget);
+
+      // Pop back without completing closure
+      final backButton = find.byKey(const ValueKey('back_button'));
+      expect(backButton, findsOneWidget);
+      await tester.tap(backButton);
+      await tester.pumpAndSettle();
+
+      verify(() => mockBloc.add(const ResetClosureLock())).called(1);
     });
 
     testWidgets('onSaleRecorded triggers floating SnackBar', (tester) async {

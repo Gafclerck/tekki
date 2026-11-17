@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tekki/core/constants/app_constants.dart';
 import 'package:tekki/core/theme/app_colors.dart';
+import 'package:tekki/features/sales_and_cash/domain/entities/daily_closure_entity.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/sale_entity.dart';
 import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_bloc.dart';
 import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_event.dart';
 import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_state.dart';
+import 'package:tekki/features/sales_and_cash/presentation/screens/express_closure_screen.dart';
 import 'package:tekki/features/sales_and_cash/presentation/widgets/cash_card.dart';
 import 'package:tekki/features/sales_and_cash/presentation/widgets/primary_cta_button.dart';
 
@@ -39,8 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
         final isLocked = current is CashDashboardLoaded && current.isClosureLocked;
         return !wasLocked && isLocked;
       },
-      listener: (context, state) {
-        widget.onCloseCashier?.call();
+      listener: (context, state) async {
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -49,6 +50,18 @@ class _HomeScreenState extends State<HomeScreen> {
             behavior: SnackBarBehavior.floating,
           ),
         );
+        if (widget.onCloseCashier != null) {
+          widget.onCloseCashier!();
+        } else {
+          final result = await Navigator.of(context).push<DailyClosureEntity?>(
+            MaterialPageRoute<DailyClosureEntity?>(
+              builder: (_) => const ExpressClosureScreen(),
+            ),
+          );
+          if (result == null && context.mounted) {
+            context.read<CashDashboardBloc>().add(const ResetClosureLock());
+          }
+        }
       },
       builder: (context, state) {
         final isLoaded = state is CashDashboardLoaded;

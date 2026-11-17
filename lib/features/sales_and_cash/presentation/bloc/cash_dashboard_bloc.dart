@@ -10,6 +10,7 @@ class CashDashboardBloc extends Bloc<CashDashboardEvent, CashDashboardState> {
   }) : super(const CashDashboardInitial()) {
     on<WatchCashDashboardStarted>(_onWatchCashDashboardStarted);
     on<CloseCashierTapped>(_onCloseCashierTapped);
+    on<ResetClosureLock>(_onResetClosureLock);
   }
 
   final WatchTodaySalesUseCase watchTodaySalesUseCase;
@@ -46,6 +47,19 @@ class CashDashboardBloc extends Bloc<CashDashboardEvent, CashDashboardState> {
         return;
       }
       emit(current.copyWith(isClosureLocked: true));
+    }
+  }
+
+  void _onResetClosureLock(
+    ResetClosureLock event,
+    Emitter<CashDashboardState> emit,
+  ) {
+    if (state is CashDashboardLoaded) {
+      final current = state as CashDashboardLoaded;
+      if (!current.isClosureLocked) {
+        return;
+      }
+      emit(current.copyWith(isClosureLocked: false));
     }
   }
 }

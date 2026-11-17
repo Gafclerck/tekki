@@ -949,11 +949,975 @@ class SalesCompanion extends UpdateCompanion<Sale> {
   }
 }
 
+class $DailyClosuresTable extends DailyClosures
+    with TableInfo<$DailyClosuresTable, DailyClosure> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DailyClosuresTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _shopIdMeta = const VerificationMeta('shopId');
+  @override
+  late final GeneratedColumn<String> shopId = GeneratedColumn<String>(
+    'shop_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _closureDateMeta = const VerificationMeta(
+    'closureDate',
+  );
+  @override
+  late final GeneratedColumn<String> closureDate = GeneratedColumn<String>(
+    'closure_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _cutoffTimestampMeta = const VerificationMeta(
+    'cutoffTimestamp',
+  );
+  @override
+  late final GeneratedColumn<String> cutoffTimestamp = GeneratedColumn<String>(
+    'cutoff_timestamp',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _totalSalesAmountMeta = const VerificationMeta(
+    'totalSalesAmount',
+  );
+  @override
+  late final GeneratedColumn<int> totalSalesAmount = GeneratedColumn<int>(
+    'total_sales_amount',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _totalCashDebtInflowMeta =
+      const VerificationMeta('totalCashDebtInflow');
+  @override
+  late final GeneratedColumn<int> totalCashDebtInflow = GeneratedColumn<int>(
+    'total_cash_debt_inflow',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _totalCreditSalesAmountMeta =
+      const VerificationMeta('totalCreditSalesAmount');
+  @override
+  late final GeneratedColumn<int> totalCreditSalesAmount = GeneratedColumn<int>(
+    'total_credit_sales_amount',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _totalExpensesAmountMeta =
+      const VerificationMeta('totalExpensesAmount');
+  @override
+  late final GeneratedColumn<int> totalExpensesAmount = GeneratedColumn<int>(
+    'total_expenses_amount',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _cashCountedMeta = const VerificationMeta(
+    'cashCounted',
+  );
+  @override
+  late final GeneratedColumn<int> cashCounted = GeneratedColumn<int>(
+    'cash_counted',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _gpsLatitudeMeta = const VerificationMeta(
+    'gpsLatitude',
+  );
+  @override
+  late final GeneratedColumn<double> gpsLatitude = GeneratedColumn<double>(
+    'gps_latitude',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _gpsLongitudeMeta = const VerificationMeta(
+    'gpsLongitude',
+  );
+  @override
+  late final GeneratedColumn<double> gpsLongitude = GeneratedColumn<double>(
+    'gps_longitude',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _distanceMetersMeta = const VerificationMeta(
+    'distanceMeters',
+  );
+  @override
+  late final GeneratedColumn<double> distanceMeters = GeneratedColumn<double>(
+    'distance_meters',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isFlaggedLocationMeta = const VerificationMeta(
+    'isFlaggedLocation',
+  );
+  @override
+  late final GeneratedColumn<bool> isFlaggedLocation = GeneratedColumn<bool>(
+    'is_flagged_location',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_flagged_location" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('pending'),
+  );
+  static const VerificationMeta _lastSyncedAtMeta = const VerificationMeta(
+    'lastSyncedAt',
+  );
+  @override
+  late final GeneratedColumn<String> lastSyncedAt = GeneratedColumn<String>(
+    'last_synced_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<String> createdAt = GeneratedColumn<String>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    shopId,
+    closureDate,
+    cutoffTimestamp,
+    totalSalesAmount,
+    totalCashDebtInflow,
+    totalCreditSalesAmount,
+    totalExpensesAmount,
+    cashCounted,
+    gpsLatitude,
+    gpsLongitude,
+    distanceMeters,
+    isFlaggedLocation,
+    syncStatus,
+    lastSyncedAt,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'daily_closures';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DailyClosure> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('shop_id')) {
+      context.handle(
+        _shopIdMeta,
+        shopId.isAcceptableOrUnknown(data['shop_id']!, _shopIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shopIdMeta);
+    }
+    if (data.containsKey('closure_date')) {
+      context.handle(
+        _closureDateMeta,
+        closureDate.isAcceptableOrUnknown(
+          data['closure_date']!,
+          _closureDateMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_closureDateMeta);
+    }
+    if (data.containsKey('cutoff_timestamp')) {
+      context.handle(
+        _cutoffTimestampMeta,
+        cutoffTimestamp.isAcceptableOrUnknown(
+          data['cutoff_timestamp']!,
+          _cutoffTimestampMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_cutoffTimestampMeta);
+    }
+    if (data.containsKey('total_sales_amount')) {
+      context.handle(
+        _totalSalesAmountMeta,
+        totalSalesAmount.isAcceptableOrUnknown(
+          data['total_sales_amount']!,
+          _totalSalesAmountMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_totalSalesAmountMeta);
+    }
+    if (data.containsKey('total_cash_debt_inflow')) {
+      context.handle(
+        _totalCashDebtInflowMeta,
+        totalCashDebtInflow.isAcceptableOrUnknown(
+          data['total_cash_debt_inflow']!,
+          _totalCashDebtInflowMeta,
+        ),
+      );
+    }
+    if (data.containsKey('total_credit_sales_amount')) {
+      context.handle(
+        _totalCreditSalesAmountMeta,
+        totalCreditSalesAmount.isAcceptableOrUnknown(
+          data['total_credit_sales_amount']!,
+          _totalCreditSalesAmountMeta,
+        ),
+      );
+    }
+    if (data.containsKey('total_expenses_amount')) {
+      context.handle(
+        _totalExpensesAmountMeta,
+        totalExpensesAmount.isAcceptableOrUnknown(
+          data['total_expenses_amount']!,
+          _totalExpensesAmountMeta,
+        ),
+      );
+    }
+    if (data.containsKey('cash_counted')) {
+      context.handle(
+        _cashCountedMeta,
+        cashCounted.isAcceptableOrUnknown(
+          data['cash_counted']!,
+          _cashCountedMeta,
+        ),
+      );
+    }
+    if (data.containsKey('gps_latitude')) {
+      context.handle(
+        _gpsLatitudeMeta,
+        gpsLatitude.isAcceptableOrUnknown(
+          data['gps_latitude']!,
+          _gpsLatitudeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('gps_longitude')) {
+      context.handle(
+        _gpsLongitudeMeta,
+        gpsLongitude.isAcceptableOrUnknown(
+          data['gps_longitude']!,
+          _gpsLongitudeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('distance_meters')) {
+      context.handle(
+        _distanceMetersMeta,
+        distanceMeters.isAcceptableOrUnknown(
+          data['distance_meters']!,
+          _distanceMetersMeta,
+        ),
+      );
+    }
+    if (data.containsKey('is_flagged_location')) {
+      context.handle(
+        _isFlaggedLocationMeta,
+        isFlaggedLocation.isAcceptableOrUnknown(
+          data['is_flagged_location']!,
+          _isFlaggedLocationMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    }
+    if (data.containsKey('last_synced_at')) {
+      context.handle(
+        _lastSyncedAtMeta,
+        lastSyncedAt.isAcceptableOrUnknown(
+          data['last_synced_at']!,
+          _lastSyncedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DailyClosure map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DailyClosure(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      shopId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shop_id'],
+      )!,
+      closureDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}closure_date'],
+      )!,
+      cutoffTimestamp: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}cutoff_timestamp'],
+      )!,
+      totalSalesAmount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}total_sales_amount'],
+      )!,
+      totalCashDebtInflow: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}total_cash_debt_inflow'],
+      )!,
+      totalCreditSalesAmount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}total_credit_sales_amount'],
+      )!,
+      totalExpensesAmount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}total_expenses_amount'],
+      )!,
+      cashCounted: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}cash_counted'],
+      )!,
+      gpsLatitude: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}gps_latitude'],
+      ),
+      gpsLongitude: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}gps_longitude'],
+      ),
+      distanceMeters: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}distance_meters'],
+      ),
+      isFlaggedLocation: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_flagged_location'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      lastSyncedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_synced_at'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $DailyClosuresTable createAlias(String alias) {
+    return $DailyClosuresTable(attachedDatabase, alias);
+  }
+}
+
+class DailyClosure extends DataClass implements Insertable<DailyClosure> {
+  final String id;
+  final String shopId;
+  final String closureDate;
+  final String cutoffTimestamp;
+  final int totalSalesAmount;
+  final int totalCashDebtInflow;
+  final int totalCreditSalesAmount;
+  final int totalExpensesAmount;
+  final int cashCounted;
+  final double? gpsLatitude;
+  final double? gpsLongitude;
+  final double? distanceMeters;
+  final bool isFlaggedLocation;
+  final String syncStatus;
+  final String? lastSyncedAt;
+  final String createdAt;
+  const DailyClosure({
+    required this.id,
+    required this.shopId,
+    required this.closureDate,
+    required this.cutoffTimestamp,
+    required this.totalSalesAmount,
+    required this.totalCashDebtInflow,
+    required this.totalCreditSalesAmount,
+    required this.totalExpensesAmount,
+    required this.cashCounted,
+    this.gpsLatitude,
+    this.gpsLongitude,
+    this.distanceMeters,
+    required this.isFlaggedLocation,
+    required this.syncStatus,
+    this.lastSyncedAt,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['shop_id'] = Variable<String>(shopId);
+    map['closure_date'] = Variable<String>(closureDate);
+    map['cutoff_timestamp'] = Variable<String>(cutoffTimestamp);
+    map['total_sales_amount'] = Variable<int>(totalSalesAmount);
+    map['total_cash_debt_inflow'] = Variable<int>(totalCashDebtInflow);
+    map['total_credit_sales_amount'] = Variable<int>(totalCreditSalesAmount);
+    map['total_expenses_amount'] = Variable<int>(totalExpensesAmount);
+    map['cash_counted'] = Variable<int>(cashCounted);
+    if (!nullToAbsent || gpsLatitude != null) {
+      map['gps_latitude'] = Variable<double>(gpsLatitude);
+    }
+    if (!nullToAbsent || gpsLongitude != null) {
+      map['gps_longitude'] = Variable<double>(gpsLongitude);
+    }
+    if (!nullToAbsent || distanceMeters != null) {
+      map['distance_meters'] = Variable<double>(distanceMeters);
+    }
+    map['is_flagged_location'] = Variable<bool>(isFlaggedLocation);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || lastSyncedAt != null) {
+      map['last_synced_at'] = Variable<String>(lastSyncedAt);
+    }
+    map['created_at'] = Variable<String>(createdAt);
+    return map;
+  }
+
+  DailyClosuresCompanion toCompanion(bool nullToAbsent) {
+    return DailyClosuresCompanion(
+      id: Value(id),
+      shopId: Value(shopId),
+      closureDate: Value(closureDate),
+      cutoffTimestamp: Value(cutoffTimestamp),
+      totalSalesAmount: Value(totalSalesAmount),
+      totalCashDebtInflow: Value(totalCashDebtInflow),
+      totalCreditSalesAmount: Value(totalCreditSalesAmount),
+      totalExpensesAmount: Value(totalExpensesAmount),
+      cashCounted: Value(cashCounted),
+      gpsLatitude: gpsLatitude == null && nullToAbsent
+          ? const Value.absent()
+          : Value(gpsLatitude),
+      gpsLongitude: gpsLongitude == null && nullToAbsent
+          ? const Value.absent()
+          : Value(gpsLongitude),
+      distanceMeters: distanceMeters == null && nullToAbsent
+          ? const Value.absent()
+          : Value(distanceMeters),
+      isFlaggedLocation: Value(isFlaggedLocation),
+      syncStatus: Value(syncStatus),
+      lastSyncedAt: lastSyncedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncedAt),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory DailyClosure.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DailyClosure(
+      id: serializer.fromJson<String>(json['id']),
+      shopId: serializer.fromJson<String>(json['shopId']),
+      closureDate: serializer.fromJson<String>(json['closureDate']),
+      cutoffTimestamp: serializer.fromJson<String>(json['cutoffTimestamp']),
+      totalSalesAmount: serializer.fromJson<int>(json['totalSalesAmount']),
+      totalCashDebtInflow: serializer.fromJson<int>(
+        json['totalCashDebtInflow'],
+      ),
+      totalCreditSalesAmount: serializer.fromJson<int>(
+        json['totalCreditSalesAmount'],
+      ),
+      totalExpensesAmount: serializer.fromJson<int>(
+        json['totalExpensesAmount'],
+      ),
+      cashCounted: serializer.fromJson<int>(json['cashCounted']),
+      gpsLatitude: serializer.fromJson<double?>(json['gpsLatitude']),
+      gpsLongitude: serializer.fromJson<double?>(json['gpsLongitude']),
+      distanceMeters: serializer.fromJson<double?>(json['distanceMeters']),
+      isFlaggedLocation: serializer.fromJson<bool>(json['isFlaggedLocation']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      lastSyncedAt: serializer.fromJson<String?>(json['lastSyncedAt']),
+      createdAt: serializer.fromJson<String>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'shopId': serializer.toJson<String>(shopId),
+      'closureDate': serializer.toJson<String>(closureDate),
+      'cutoffTimestamp': serializer.toJson<String>(cutoffTimestamp),
+      'totalSalesAmount': serializer.toJson<int>(totalSalesAmount),
+      'totalCashDebtInflow': serializer.toJson<int>(totalCashDebtInflow),
+      'totalCreditSalesAmount': serializer.toJson<int>(totalCreditSalesAmount),
+      'totalExpensesAmount': serializer.toJson<int>(totalExpensesAmount),
+      'cashCounted': serializer.toJson<int>(cashCounted),
+      'gpsLatitude': serializer.toJson<double?>(gpsLatitude),
+      'gpsLongitude': serializer.toJson<double?>(gpsLongitude),
+      'distanceMeters': serializer.toJson<double?>(distanceMeters),
+      'isFlaggedLocation': serializer.toJson<bool>(isFlaggedLocation),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'lastSyncedAt': serializer.toJson<String?>(lastSyncedAt),
+      'createdAt': serializer.toJson<String>(createdAt),
+    };
+  }
+
+  DailyClosure copyWith({
+    String? id,
+    String? shopId,
+    String? closureDate,
+    String? cutoffTimestamp,
+    int? totalSalesAmount,
+    int? totalCashDebtInflow,
+    int? totalCreditSalesAmount,
+    int? totalExpensesAmount,
+    int? cashCounted,
+    Value<double?> gpsLatitude = const Value.absent(),
+    Value<double?> gpsLongitude = const Value.absent(),
+    Value<double?> distanceMeters = const Value.absent(),
+    bool? isFlaggedLocation,
+    String? syncStatus,
+    Value<String?> lastSyncedAt = const Value.absent(),
+    String? createdAt,
+  }) => DailyClosure(
+    id: id ?? this.id,
+    shopId: shopId ?? this.shopId,
+    closureDate: closureDate ?? this.closureDate,
+    cutoffTimestamp: cutoffTimestamp ?? this.cutoffTimestamp,
+    totalSalesAmount: totalSalesAmount ?? this.totalSalesAmount,
+    totalCashDebtInflow: totalCashDebtInflow ?? this.totalCashDebtInflow,
+    totalCreditSalesAmount:
+        totalCreditSalesAmount ?? this.totalCreditSalesAmount,
+    totalExpensesAmount: totalExpensesAmount ?? this.totalExpensesAmount,
+    cashCounted: cashCounted ?? this.cashCounted,
+    gpsLatitude: gpsLatitude.present ? gpsLatitude.value : this.gpsLatitude,
+    gpsLongitude: gpsLongitude.present ? gpsLongitude.value : this.gpsLongitude,
+    distanceMeters: distanceMeters.present
+        ? distanceMeters.value
+        : this.distanceMeters,
+    isFlaggedLocation: isFlaggedLocation ?? this.isFlaggedLocation,
+    syncStatus: syncStatus ?? this.syncStatus,
+    lastSyncedAt: lastSyncedAt.present ? lastSyncedAt.value : this.lastSyncedAt,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  DailyClosure copyWithCompanion(DailyClosuresCompanion data) {
+    return DailyClosure(
+      id: data.id.present ? data.id.value : this.id,
+      shopId: data.shopId.present ? data.shopId.value : this.shopId,
+      closureDate: data.closureDate.present
+          ? data.closureDate.value
+          : this.closureDate,
+      cutoffTimestamp: data.cutoffTimestamp.present
+          ? data.cutoffTimestamp.value
+          : this.cutoffTimestamp,
+      totalSalesAmount: data.totalSalesAmount.present
+          ? data.totalSalesAmount.value
+          : this.totalSalesAmount,
+      totalCashDebtInflow: data.totalCashDebtInflow.present
+          ? data.totalCashDebtInflow.value
+          : this.totalCashDebtInflow,
+      totalCreditSalesAmount: data.totalCreditSalesAmount.present
+          ? data.totalCreditSalesAmount.value
+          : this.totalCreditSalesAmount,
+      totalExpensesAmount: data.totalExpensesAmount.present
+          ? data.totalExpensesAmount.value
+          : this.totalExpensesAmount,
+      cashCounted: data.cashCounted.present
+          ? data.cashCounted.value
+          : this.cashCounted,
+      gpsLatitude: data.gpsLatitude.present
+          ? data.gpsLatitude.value
+          : this.gpsLatitude,
+      gpsLongitude: data.gpsLongitude.present
+          ? data.gpsLongitude.value
+          : this.gpsLongitude,
+      distanceMeters: data.distanceMeters.present
+          ? data.distanceMeters.value
+          : this.distanceMeters,
+      isFlaggedLocation: data.isFlaggedLocation.present
+          ? data.isFlaggedLocation.value
+          : this.isFlaggedLocation,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      lastSyncedAt: data.lastSyncedAt.present
+          ? data.lastSyncedAt.value
+          : this.lastSyncedAt,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DailyClosure(')
+          ..write('id: $id, ')
+          ..write('shopId: $shopId, ')
+          ..write('closureDate: $closureDate, ')
+          ..write('cutoffTimestamp: $cutoffTimestamp, ')
+          ..write('totalSalesAmount: $totalSalesAmount, ')
+          ..write('totalCashDebtInflow: $totalCashDebtInflow, ')
+          ..write('totalCreditSalesAmount: $totalCreditSalesAmount, ')
+          ..write('totalExpensesAmount: $totalExpensesAmount, ')
+          ..write('cashCounted: $cashCounted, ')
+          ..write('gpsLatitude: $gpsLatitude, ')
+          ..write('gpsLongitude: $gpsLongitude, ')
+          ..write('distanceMeters: $distanceMeters, ')
+          ..write('isFlaggedLocation: $isFlaggedLocation, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('lastSyncedAt: $lastSyncedAt, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    shopId,
+    closureDate,
+    cutoffTimestamp,
+    totalSalesAmount,
+    totalCashDebtInflow,
+    totalCreditSalesAmount,
+    totalExpensesAmount,
+    cashCounted,
+    gpsLatitude,
+    gpsLongitude,
+    distanceMeters,
+    isFlaggedLocation,
+    syncStatus,
+    lastSyncedAt,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DailyClosure &&
+          other.id == this.id &&
+          other.shopId == this.shopId &&
+          other.closureDate == this.closureDate &&
+          other.cutoffTimestamp == this.cutoffTimestamp &&
+          other.totalSalesAmount == this.totalSalesAmount &&
+          other.totalCashDebtInflow == this.totalCashDebtInflow &&
+          other.totalCreditSalesAmount == this.totalCreditSalesAmount &&
+          other.totalExpensesAmount == this.totalExpensesAmount &&
+          other.cashCounted == this.cashCounted &&
+          other.gpsLatitude == this.gpsLatitude &&
+          other.gpsLongitude == this.gpsLongitude &&
+          other.distanceMeters == this.distanceMeters &&
+          other.isFlaggedLocation == this.isFlaggedLocation &&
+          other.syncStatus == this.syncStatus &&
+          other.lastSyncedAt == this.lastSyncedAt &&
+          other.createdAt == this.createdAt);
+}
+
+class DailyClosuresCompanion extends UpdateCompanion<DailyClosure> {
+  final Value<String> id;
+  final Value<String> shopId;
+  final Value<String> closureDate;
+  final Value<String> cutoffTimestamp;
+  final Value<int> totalSalesAmount;
+  final Value<int> totalCashDebtInflow;
+  final Value<int> totalCreditSalesAmount;
+  final Value<int> totalExpensesAmount;
+  final Value<int> cashCounted;
+  final Value<double?> gpsLatitude;
+  final Value<double?> gpsLongitude;
+  final Value<double?> distanceMeters;
+  final Value<bool> isFlaggedLocation;
+  final Value<String> syncStatus;
+  final Value<String?> lastSyncedAt;
+  final Value<String> createdAt;
+  final Value<int> rowid;
+  const DailyClosuresCompanion({
+    this.id = const Value.absent(),
+    this.shopId = const Value.absent(),
+    this.closureDate = const Value.absent(),
+    this.cutoffTimestamp = const Value.absent(),
+    this.totalSalesAmount = const Value.absent(),
+    this.totalCashDebtInflow = const Value.absent(),
+    this.totalCreditSalesAmount = const Value.absent(),
+    this.totalExpensesAmount = const Value.absent(),
+    this.cashCounted = const Value.absent(),
+    this.gpsLatitude = const Value.absent(),
+    this.gpsLongitude = const Value.absent(),
+    this.distanceMeters = const Value.absent(),
+    this.isFlaggedLocation = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.lastSyncedAt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DailyClosuresCompanion.insert({
+    required String id,
+    required String shopId,
+    required String closureDate,
+    required String cutoffTimestamp,
+    required int totalSalesAmount,
+    this.totalCashDebtInflow = const Value.absent(),
+    this.totalCreditSalesAmount = const Value.absent(),
+    this.totalExpensesAmount = const Value.absent(),
+    this.cashCounted = const Value.absent(),
+    this.gpsLatitude = const Value.absent(),
+    this.gpsLongitude = const Value.absent(),
+    this.distanceMeters = const Value.absent(),
+    this.isFlaggedLocation = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.lastSyncedAt = const Value.absent(),
+    required String createdAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       shopId = Value(shopId),
+       closureDate = Value(closureDate),
+       cutoffTimestamp = Value(cutoffTimestamp),
+       totalSalesAmount = Value(totalSalesAmount),
+       createdAt = Value(createdAt);
+  static Insertable<DailyClosure> custom({
+    Expression<String>? id,
+    Expression<String>? shopId,
+    Expression<String>? closureDate,
+    Expression<String>? cutoffTimestamp,
+    Expression<int>? totalSalesAmount,
+    Expression<int>? totalCashDebtInflow,
+    Expression<int>? totalCreditSalesAmount,
+    Expression<int>? totalExpensesAmount,
+    Expression<int>? cashCounted,
+    Expression<double>? gpsLatitude,
+    Expression<double>? gpsLongitude,
+    Expression<double>? distanceMeters,
+    Expression<bool>? isFlaggedLocation,
+    Expression<String>? syncStatus,
+    Expression<String>? lastSyncedAt,
+    Expression<String>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (shopId != null) 'shop_id': shopId,
+      if (closureDate != null) 'closure_date': closureDate,
+      if (cutoffTimestamp != null) 'cutoff_timestamp': cutoffTimestamp,
+      if (totalSalesAmount != null) 'total_sales_amount': totalSalesAmount,
+      if (totalCashDebtInflow != null)
+        'total_cash_debt_inflow': totalCashDebtInflow,
+      if (totalCreditSalesAmount != null)
+        'total_credit_sales_amount': totalCreditSalesAmount,
+      if (totalExpensesAmount != null)
+        'total_expenses_amount': totalExpensesAmount,
+      if (cashCounted != null) 'cash_counted': cashCounted,
+      if (gpsLatitude != null) 'gps_latitude': gpsLatitude,
+      if (gpsLongitude != null) 'gps_longitude': gpsLongitude,
+      if (distanceMeters != null) 'distance_meters': distanceMeters,
+      if (isFlaggedLocation != null) 'is_flagged_location': isFlaggedLocation,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (lastSyncedAt != null) 'last_synced_at': lastSyncedAt,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DailyClosuresCompanion copyWith({
+    Value<String>? id,
+    Value<String>? shopId,
+    Value<String>? closureDate,
+    Value<String>? cutoffTimestamp,
+    Value<int>? totalSalesAmount,
+    Value<int>? totalCashDebtInflow,
+    Value<int>? totalCreditSalesAmount,
+    Value<int>? totalExpensesAmount,
+    Value<int>? cashCounted,
+    Value<double?>? gpsLatitude,
+    Value<double?>? gpsLongitude,
+    Value<double?>? distanceMeters,
+    Value<bool>? isFlaggedLocation,
+    Value<String>? syncStatus,
+    Value<String?>? lastSyncedAt,
+    Value<String>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return DailyClosuresCompanion(
+      id: id ?? this.id,
+      shopId: shopId ?? this.shopId,
+      closureDate: closureDate ?? this.closureDate,
+      cutoffTimestamp: cutoffTimestamp ?? this.cutoffTimestamp,
+      totalSalesAmount: totalSalesAmount ?? this.totalSalesAmount,
+      totalCashDebtInflow: totalCashDebtInflow ?? this.totalCashDebtInflow,
+      totalCreditSalesAmount:
+          totalCreditSalesAmount ?? this.totalCreditSalesAmount,
+      totalExpensesAmount: totalExpensesAmount ?? this.totalExpensesAmount,
+      cashCounted: cashCounted ?? this.cashCounted,
+      gpsLatitude: gpsLatitude ?? this.gpsLatitude,
+      gpsLongitude: gpsLongitude ?? this.gpsLongitude,
+      distanceMeters: distanceMeters ?? this.distanceMeters,
+      isFlaggedLocation: isFlaggedLocation ?? this.isFlaggedLocation,
+      syncStatus: syncStatus ?? this.syncStatus,
+      lastSyncedAt: lastSyncedAt ?? this.lastSyncedAt,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (shopId.present) {
+      map['shop_id'] = Variable<String>(shopId.value);
+    }
+    if (closureDate.present) {
+      map['closure_date'] = Variable<String>(closureDate.value);
+    }
+    if (cutoffTimestamp.present) {
+      map['cutoff_timestamp'] = Variable<String>(cutoffTimestamp.value);
+    }
+    if (totalSalesAmount.present) {
+      map['total_sales_amount'] = Variable<int>(totalSalesAmount.value);
+    }
+    if (totalCashDebtInflow.present) {
+      map['total_cash_debt_inflow'] = Variable<int>(totalCashDebtInflow.value);
+    }
+    if (totalCreditSalesAmount.present) {
+      map['total_credit_sales_amount'] = Variable<int>(
+        totalCreditSalesAmount.value,
+      );
+    }
+    if (totalExpensesAmount.present) {
+      map['total_expenses_amount'] = Variable<int>(totalExpensesAmount.value);
+    }
+    if (cashCounted.present) {
+      map['cash_counted'] = Variable<int>(cashCounted.value);
+    }
+    if (gpsLatitude.present) {
+      map['gps_latitude'] = Variable<double>(gpsLatitude.value);
+    }
+    if (gpsLongitude.present) {
+      map['gps_longitude'] = Variable<double>(gpsLongitude.value);
+    }
+    if (distanceMeters.present) {
+      map['distance_meters'] = Variable<double>(distanceMeters.value);
+    }
+    if (isFlaggedLocation.present) {
+      map['is_flagged_location'] = Variable<bool>(isFlaggedLocation.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (lastSyncedAt.present) {
+      map['last_synced_at'] = Variable<String>(lastSyncedAt.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<String>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DailyClosuresCompanion(')
+          ..write('id: $id, ')
+          ..write('shopId: $shopId, ')
+          ..write('closureDate: $closureDate, ')
+          ..write('cutoffTimestamp: $cutoffTimestamp, ')
+          ..write('totalSalesAmount: $totalSalesAmount, ')
+          ..write('totalCashDebtInflow: $totalCashDebtInflow, ')
+          ..write('totalCreditSalesAmount: $totalCreditSalesAmount, ')
+          ..write('totalExpensesAmount: $totalExpensesAmount, ')
+          ..write('cashCounted: $cashCounted, ')
+          ..write('gpsLatitude: $gpsLatitude, ')
+          ..write('gpsLongitude: $gpsLongitude, ')
+          ..write('distanceMeters: $distanceMeters, ')
+          ..write('isFlaggedLocation: $isFlaggedLocation, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('lastSyncedAt: $lastSyncedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $ShopsTable shops = $ShopsTable(this);
   late final $SalesTable sales = $SalesTable(this);
+  late final $DailyClosuresTable dailyClosures = $DailyClosuresTable(this);
   late final Index salesClosureIdIdx = Index(
     'sales_closure_id_idx',
     'CREATE INDEX sales_closure_id_idx ON sales (closure_id)',
@@ -962,6 +1926,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'sales_sync_status_idx',
     'CREATE INDEX sales_sync_status_idx ON sales (sync_status)',
   );
+  late final Index dailyClosuresDateIdx = Index(
+    'daily_closures_date_idx',
+    'CREATE INDEX daily_closures_date_idx ON daily_closures (closure_date)',
+  );
+  late final Index dailyClosuresSyncStatusIdx = Index(
+    'daily_closures_sync_status_idx',
+    'CREATE INDEX daily_closures_sync_status_idx ON daily_closures (sync_status)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -969,8 +1941,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     shops,
     sales,
+    dailyClosures,
     salesClosureIdIdx,
     salesSyncStatusIdx,
+    dailyClosuresDateIdx,
+    dailyClosuresSyncStatusIdx,
   ];
 }
 
@@ -1450,6 +2425,441 @@ typedef $$SalesTableProcessedTableManager =
       Sale,
       PrefetchHooks Function()
     >;
+typedef $$DailyClosuresTableCreateCompanionBuilder =
+    DailyClosuresCompanion Function({
+      required String id,
+      required String shopId,
+      required String closureDate,
+      required String cutoffTimestamp,
+      required int totalSalesAmount,
+      Value<int> totalCashDebtInflow,
+      Value<int> totalCreditSalesAmount,
+      Value<int> totalExpensesAmount,
+      Value<int> cashCounted,
+      Value<double?> gpsLatitude,
+      Value<double?> gpsLongitude,
+      Value<double?> distanceMeters,
+      Value<bool> isFlaggedLocation,
+      Value<String> syncStatus,
+      Value<String?> lastSyncedAt,
+      required String createdAt,
+      Value<int> rowid,
+    });
+typedef $$DailyClosuresTableUpdateCompanionBuilder =
+    DailyClosuresCompanion Function({
+      Value<String> id,
+      Value<String> shopId,
+      Value<String> closureDate,
+      Value<String> cutoffTimestamp,
+      Value<int> totalSalesAmount,
+      Value<int> totalCashDebtInflow,
+      Value<int> totalCreditSalesAmount,
+      Value<int> totalExpensesAmount,
+      Value<int> cashCounted,
+      Value<double?> gpsLatitude,
+      Value<double?> gpsLongitude,
+      Value<double?> distanceMeters,
+      Value<bool> isFlaggedLocation,
+      Value<String> syncStatus,
+      Value<String?> lastSyncedAt,
+      Value<String> createdAt,
+      Value<int> rowid,
+    });
+
+class $$DailyClosuresTableFilterComposer
+    extends Composer<_$AppDatabase, $DailyClosuresTable> {
+  $$DailyClosuresTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get shopId => $composableBuilder(
+    column: $table.shopId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get closureDate => $composableBuilder(
+    column: $table.closureDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get cutoffTimestamp => $composableBuilder(
+    column: $table.cutoffTimestamp,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get totalSalesAmount => $composableBuilder(
+    column: $table.totalSalesAmount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get totalCashDebtInflow => $composableBuilder(
+    column: $table.totalCashDebtInflow,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get totalCreditSalesAmount => $composableBuilder(
+    column: $table.totalCreditSalesAmount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get totalExpensesAmount => $composableBuilder(
+    column: $table.totalExpensesAmount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get cashCounted => $composableBuilder(
+    column: $table.cashCounted,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get gpsLatitude => $composableBuilder(
+    column: $table.gpsLatitude,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get gpsLongitude => $composableBuilder(
+    column: $table.gpsLongitude,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get distanceMeters => $composableBuilder(
+    column: $table.distanceMeters,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isFlaggedLocation => $composableBuilder(
+    column: $table.isFlaggedLocation,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastSyncedAt => $composableBuilder(
+    column: $table.lastSyncedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$DailyClosuresTableOrderingComposer
+    extends Composer<_$AppDatabase, $DailyClosuresTable> {
+  $$DailyClosuresTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get shopId => $composableBuilder(
+    column: $table.shopId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get closureDate => $composableBuilder(
+    column: $table.closureDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get cutoffTimestamp => $composableBuilder(
+    column: $table.cutoffTimestamp,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get totalSalesAmount => $composableBuilder(
+    column: $table.totalSalesAmount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get totalCashDebtInflow => $composableBuilder(
+    column: $table.totalCashDebtInflow,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get totalCreditSalesAmount => $composableBuilder(
+    column: $table.totalCreditSalesAmount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get totalExpensesAmount => $composableBuilder(
+    column: $table.totalExpensesAmount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get cashCounted => $composableBuilder(
+    column: $table.cashCounted,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get gpsLatitude => $composableBuilder(
+    column: $table.gpsLatitude,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get gpsLongitude => $composableBuilder(
+    column: $table.gpsLongitude,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get distanceMeters => $composableBuilder(
+    column: $table.distanceMeters,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isFlaggedLocation => $composableBuilder(
+    column: $table.isFlaggedLocation,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastSyncedAt => $composableBuilder(
+    column: $table.lastSyncedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$DailyClosuresTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DailyClosuresTable> {
+  $$DailyClosuresTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get shopId =>
+      $composableBuilder(column: $table.shopId, builder: (column) => column);
+
+  GeneratedColumn<String> get closureDate => $composableBuilder(
+    column: $table.closureDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get cutoffTimestamp => $composableBuilder(
+    column: $table.cutoffTimestamp,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get totalSalesAmount => $composableBuilder(
+    column: $table.totalSalesAmount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get totalCashDebtInflow => $composableBuilder(
+    column: $table.totalCashDebtInflow,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get totalCreditSalesAmount => $composableBuilder(
+    column: $table.totalCreditSalesAmount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get totalExpensesAmount => $composableBuilder(
+    column: $table.totalExpensesAmount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get cashCounted => $composableBuilder(
+    column: $table.cashCounted,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get gpsLatitude => $composableBuilder(
+    column: $table.gpsLatitude,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get gpsLongitude => $composableBuilder(
+    column: $table.gpsLongitude,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get distanceMeters => $composableBuilder(
+    column: $table.distanceMeters,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isFlaggedLocation => $composableBuilder(
+    column: $table.isFlaggedLocation,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastSyncedAt => $composableBuilder(
+    column: $table.lastSyncedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+}
+
+class $$DailyClosuresTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $DailyClosuresTable,
+          DailyClosure,
+          $$DailyClosuresTableFilterComposer,
+          $$DailyClosuresTableOrderingComposer,
+          $$DailyClosuresTableAnnotationComposer,
+          $$DailyClosuresTableCreateCompanionBuilder,
+          $$DailyClosuresTableUpdateCompanionBuilder,
+          (
+            DailyClosure,
+            BaseReferences<_$AppDatabase, $DailyClosuresTable, DailyClosure>,
+          ),
+          DailyClosure,
+          PrefetchHooks Function()
+        > {
+  $$DailyClosuresTableTableManager(_$AppDatabase db, $DailyClosuresTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DailyClosuresTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DailyClosuresTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DailyClosuresTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> shopId = const Value.absent(),
+                Value<String> closureDate = const Value.absent(),
+                Value<String> cutoffTimestamp = const Value.absent(),
+                Value<int> totalSalesAmount = const Value.absent(),
+                Value<int> totalCashDebtInflow = const Value.absent(),
+                Value<int> totalCreditSalesAmount = const Value.absent(),
+                Value<int> totalExpensesAmount = const Value.absent(),
+                Value<int> cashCounted = const Value.absent(),
+                Value<double?> gpsLatitude = const Value.absent(),
+                Value<double?> gpsLongitude = const Value.absent(),
+                Value<double?> distanceMeters = const Value.absent(),
+                Value<bool> isFlaggedLocation = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> lastSyncedAt = const Value.absent(),
+                Value<String> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DailyClosuresCompanion(
+                id: id,
+                shopId: shopId,
+                closureDate: closureDate,
+                cutoffTimestamp: cutoffTimestamp,
+                totalSalesAmount: totalSalesAmount,
+                totalCashDebtInflow: totalCashDebtInflow,
+                totalCreditSalesAmount: totalCreditSalesAmount,
+                totalExpensesAmount: totalExpensesAmount,
+                cashCounted: cashCounted,
+                gpsLatitude: gpsLatitude,
+                gpsLongitude: gpsLongitude,
+                distanceMeters: distanceMeters,
+                isFlaggedLocation: isFlaggedLocation,
+                syncStatus: syncStatus,
+                lastSyncedAt: lastSyncedAt,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String shopId,
+                required String closureDate,
+                required String cutoffTimestamp,
+                required int totalSalesAmount,
+                Value<int> totalCashDebtInflow = const Value.absent(),
+                Value<int> totalCreditSalesAmount = const Value.absent(),
+                Value<int> totalExpensesAmount = const Value.absent(),
+                Value<int> cashCounted = const Value.absent(),
+                Value<double?> gpsLatitude = const Value.absent(),
+                Value<double?> gpsLongitude = const Value.absent(),
+                Value<double?> distanceMeters = const Value.absent(),
+                Value<bool> isFlaggedLocation = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> lastSyncedAt = const Value.absent(),
+                required String createdAt,
+                Value<int> rowid = const Value.absent(),
+              }) => DailyClosuresCompanion.insert(
+                id: id,
+                shopId: shopId,
+                closureDate: closureDate,
+                cutoffTimestamp: cutoffTimestamp,
+                totalSalesAmount: totalSalesAmount,
+                totalCashDebtInflow: totalCashDebtInflow,
+                totalCreditSalesAmount: totalCreditSalesAmount,
+                totalExpensesAmount: totalExpensesAmount,
+                cashCounted: cashCounted,
+                gpsLatitude: gpsLatitude,
+                gpsLongitude: gpsLongitude,
+                distanceMeters: distanceMeters,
+                isFlaggedLocation: isFlaggedLocation,
+                syncStatus: syncStatus,
+                lastSyncedAt: lastSyncedAt,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$DailyClosuresTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $DailyClosuresTable,
+      DailyClosure,
+      $$DailyClosuresTableFilterComposer,
+      $$DailyClosuresTableOrderingComposer,
+      $$DailyClosuresTableAnnotationComposer,
+      $$DailyClosuresTableCreateCompanionBuilder,
+      $$DailyClosuresTableUpdateCompanionBuilder,
+      (
+        DailyClosure,
+        BaseReferences<_$AppDatabase, $DailyClosuresTable, DailyClosure>,
+      ),
+      DailyClosure,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -1458,4 +2868,6 @@ class $AppDatabaseManager {
       $$ShopsTableTableManager(_db, _db.shops);
   $$SalesTableTableManager get sales =>
       $$SalesTableTableManager(_db, _db.sales);
+  $$DailyClosuresTableTableManager get dailyClosures =>
+      $$DailyClosuresTableTableManager(_db, _db.dailyClosures);
 }

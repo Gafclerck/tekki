@@ -155,5 +155,15 @@ void main() {
         CashDashboardLoaded(summary: summary4Sales, isClosureLocked: true),
       ],
     );
+
+    blocTest<CashDashboardBloc, CashDashboardState>(
+      'handles ResetClosureLock and unlocks closure when previously locked',
+      build: () => CashDashboardBloc(watchTodaySalesUseCase: mockUseCase),
+      seed: () => CashDashboardLoaded(summary: summary3Sales, isClosureLocked: true),
+      act: (bloc) => bloc.add(const ResetClosureLock()),
+      expect: () => [
+        CashDashboardLoaded(summary: summary3Sales, isClosureLocked: false),
+      ],
+    );
   });
 }
