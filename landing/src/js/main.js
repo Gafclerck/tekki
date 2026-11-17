@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const phoneScreens = {
     accueil: `
       <div class="app-header-mini">
-        <span class="app-brand-mini">Tekki</span>
+        <img src="assets/branding/logo_horizontal.svg" alt="Tekki" height="20" style="height: 20px; width: auto;">
         <span class="app-date-mini">Mardi 17 Nov.</span>
       </div>
       <div class="cash-card-mini">
