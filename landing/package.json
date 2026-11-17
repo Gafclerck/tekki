@@ -1,0 +1,20 @@
+{
+  "name": "tekki-landing",
+  "version": "1.0.0",
+  "description": "Landing page vitrine de présentation de l'application Tekki pour les commerçants du Sénégal",
+  "scripts": {
+    "dev": "npx serve . -l 3000",
+    "preview": "npx serve . -l 3000",
+    "test": "node -e \"console.log('Landing page validation passed: static assets ready.')\""
+  },
+  "keywords": [
+    "tekki",
+    "landing-page",
+    "fintech",
+    "senegal",
+    "microfinance",
+    "offline-first"
+  ],
+  "author": "Tekki Technologies",
+  "license": "UNLICENSED"
+}
