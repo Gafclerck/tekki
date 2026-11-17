@@ -11,6 +11,7 @@ class TekkiApp extends StatelessWidget {
       title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
+      themeMode: ThemeMode.light,
       home: const _TekkiHomePlaceholder(),
     );
   }

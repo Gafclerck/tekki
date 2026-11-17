@@ -5,6 +5,7 @@ abstract final class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
+      brightness: Brightness.light,
       scaffoldBackgroundColor: AppColors.background,
       colorScheme: const ColorScheme(
         brightness: Brightness.light,
@@ -12,6 +13,8 @@ abstract final class AppTheme {
         onPrimary: AppColors.surface,
         secondary: AppColors.secondary,
         onSecondary: AppColors.surface,
+        tertiary: AppColors.tertiary,
+        onTertiary: AppColors.surface,
         error: AppColors.error,
         onError: AppColors.surface,
         surface: AppColors.surface,
@@ -36,10 +39,49 @@ abstract final class AppTheme {
           backgroundColor: AppColors.accent,
           foregroundColor: AppColors.surface,
           minimumSize: const Size.fromHeight(52),
+          tapTargetSize: MaterialTapTargetSize.padded,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
           textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+        ),
+      ),
+      textTheme: const TextTheme(
+        displayLarge: TextStyle(
+          fontSize: 28,
+          fontWeight: FontWeight.w800,
+          height: 34 / 28,
+          color: AppColors.primary,
+        ),
+        titleLarge: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w800,
+          height: 26 / 20,
+          color: AppColors.primary,
+        ),
+        headlineMedium: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+          height: 22 / 16,
+          color: AppColors.primary,
+        ),
+        bodyMedium: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+          height: 20 / 14,
+          color: AppColors.primary,
+        ),
+        bodySmall: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w600,
+          height: 15 / 11,
+          color: AppColors.secondary,
+        ),
+        labelSmall: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w600,
+          height: 15 / 11,
+          color: AppColors.secondary,
         ),
       ),
     );
