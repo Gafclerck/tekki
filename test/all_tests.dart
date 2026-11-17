@@ -1,6 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 
 // Core
+import 'core/crypto/base45_test.dart' as base45_test;
+import 'core/crypto/crypto_signature_service_test.dart'
+    as crypto_signature_service_test;
+import 'core/crypto/secure_key_storage_test.dart' as secure_key_storage_test;
 import 'core/database/app_database_test.dart' as app_database_test;
 import 'core/database/daily_closures_table_test.dart'
     as daily_closures_table_test;
@@ -14,10 +18,18 @@ import 'core/utils/haversine_calculator_test.dart' as haversine_calculator_test;
 import 'core/utils/result_test.dart' as result_test;
 
 // Features - Financial Passport
+import 'features/financial_passport/data/models/cbor_passport_payload_test.dart'
+    as cbor_passport_payload_test;
 import 'features/financial_passport/data/repositories/passport_repository_impl_test.dart'
     as passport_repository_impl_test;
+import 'features/financial_passport/domain/entities/signed_passport_payload_entity_test.dart'
+    as signed_passport_payload_entity_test;
 import 'features/financial_passport/domain/usecases/calculate_financial_passport_use_case_test.dart'
     as calculate_financial_passport_use_case_test;
+import 'features/financial_passport/domain/usecases/generate_signed_passport_use_case_test.dart'
+    as generate_signed_passport_use_case_test;
+import 'features/financial_passport/domain/usecases/verify_passport_payload_use_case_test.dart'
+    as verify_passport_payload_use_case_test;
 
 // Features - Karne Bor
 import 'features/karne_bor/data/datasources/debt_local_data_source_test.dart'
@@ -82,6 +94,9 @@ void main() {
   group('Tekki Full Test Suite', () {
     // Core
     group('Core Tests', () {
+      base45_test.main();
+      crypto_signature_service_test.main();
+      secure_key_storage_test.main();
       app_database_test.main();
       daily_closures_table_test.main();
       network_info_test.main();
@@ -96,8 +111,12 @@ void main() {
 
     // Features - Financial Passport
     group('Features: Financial Passport Tests', () {
+      cbor_passport_payload_test.main();
       calculate_financial_passport_use_case_test.main();
+      signed_passport_payload_entity_test.main();
+      generate_signed_passport_use_case_test.main();
       passport_repository_impl_test.main();
+      verify_passport_payload_use_case_test.main();
     });
 
     // Features - Karne Bor

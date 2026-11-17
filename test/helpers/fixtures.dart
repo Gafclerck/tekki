@@ -1,5 +1,6 @@
 import 'package:tekki/features/financial_passport/domain/entities/financial_passport_entity.dart';
 import 'package:tekki/features/financial_passport/domain/entities/score_breakdown_entity.dart';
+import 'package:tekki/features/financial_passport/domain/entities/signed_passport_payload_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_payment_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_status.dart';
@@ -193,5 +194,25 @@ FinancialPassportEntity createTestFinancialPassport({
     streak: streak,
     encouragementMessage: encouragementMessage,
     calculatedAt: calculatedAt,
+  );
+}
+
+SignedPassportPayloadEntity createTestSignedPassportPayload({
+  FinancialPassportEntity? passport,
+  String shopId = 'test-shop-1',
+  List<int>? signature,
+  List<int>? publicKey,
+  String base45Payload = 'TESTBASE45PAYLOAD',
+  String visualPin = '1234',
+  bool isValid = true,
+}) {
+  return SignedPassportPayloadEntity(
+    passport: passport ?? createTestFinancialPassport(),
+    shopId: shopId,
+    signature: signature ?? List.filled(64, 1),
+    publicKey: publicKey ?? List.filled(32, 2),
+    base45Payload: base45Payload,
+    visualPin: visualPin,
+    isValid: isValid,
   );
 }

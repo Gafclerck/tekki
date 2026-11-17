@@ -1,14 +1,19 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:tekki/core/crypto/crypto_signature_service.dart';
+import 'package:tekki/core/crypto/secure_key_storage.dart';
 import 'package:tekki/core/network/network_info.dart';
 import 'package:tekki/core/services/audio_service.dart';
 import 'package:tekki/core/services/location_service.dart';
 import 'package:tekki/core/services/whatsapp_service.dart';
 import 'package:tekki/features/financial_passport/domain/entities/financial_passport_entity.dart';
 import 'package:tekki/features/financial_passport/domain/entities/score_breakdown_entity.dart';
+import 'package:tekki/features/financial_passport/domain/entities/signed_passport_payload_entity.dart';
 import 'package:tekki/features/financial_passport/domain/repositories/passport_repository.dart';
 import 'package:tekki/features/financial_passport/domain/usecases/calculate_financial_passport_use_case.dart';
+import 'package:tekki/features/financial_passport/domain/usecases/generate_signed_passport_use_case.dart';
+import 'package:tekki/features/financial_passport/domain/usecases/verify_passport_payload_use_case.dart';
 import 'package:tekki/features/karne_bor/data/datasources/debt_local_data_source.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debtor_entity.dart';
@@ -54,6 +59,11 @@ class MockDebtLocalDataSource extends Mock implements DebtLocalDataSource {}
 // Services & Core
 class MockLocationService extends Mock implements ILocationService {}
 
+class MockSecureKeyStorage extends Mock implements ISecureKeyStorage {}
+
+class MockCryptoSignatureService extends Mock
+    implements ICryptoSignatureService {}
+
 class MockAudioPlayerService extends Mock implements IAudioPlayerService {}
 
 class MockAudioPlayer extends Mock implements AudioPlayer {}
@@ -95,6 +105,12 @@ class MockGetClosurePrefillUseCase extends Mock
 class MockCalculateFinancialPassportUseCase extends Mock
     implements CalculateFinancialPassportUseCase {}
 
+class MockGenerateSignedPassportUseCase extends Mock
+    implements GenerateSignedPassportUseCase {}
+
+class MockVerifyPassportPayloadUseCase extends Mock
+    implements VerifyPassportPayloadUseCase {}
+
 // BLoC & Cubits
 class MockCashDashboardBloc
     extends MockBloc<CashDashboardEvent, CashDashboardState>
@@ -114,5 +130,8 @@ class FakeRecordDebtParams extends Fake implements RecordDebtParams {}
 
 class FakeFinancialPassportEntity extends Fake
     implements FinancialPassportEntity {}
+
+class FakeSignedPassportPayloadEntity extends Fake
+    implements SignedPassportPayloadEntity {}
 
 class FakeScoreBreakdownEntity extends Fake implements ScoreBreakdownEntity {}

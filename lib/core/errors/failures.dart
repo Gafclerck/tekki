@@ -24,3 +24,7 @@ class ValidationFailure extends Failure {
 class SecurityFailure extends Failure {
   const SecurityFailure({required super.message});
 }
+
+class CryptoFailure extends Failure {
+  const CryptoFailure({required super.message});
+}
