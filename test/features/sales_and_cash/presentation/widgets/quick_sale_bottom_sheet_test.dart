@@ -20,6 +20,9 @@ void main() {
 
   setUp(() {
     mockUseCase = MockRecordQuickSaleUseCase();
+    addTearDown(() async {
+      await sl.reset();
+    });
   });
 
   Widget buildTestWidget({QuickSaleCubit? cubit}) {

@@ -56,6 +56,9 @@ void main() {
     mockWatchActiveDebtsUseCase = MockWatchActiveDebtsUseCase();
     mockRecordDebtUseCase = MockRecordDebtUseCase();
     mockGetDebtorsUseCase = MockGetDebtorsUseCase();
+    addTearDown(() async {
+      await sl.reset();
+    });
   });
 
   Widget createWidgetUnderTest({

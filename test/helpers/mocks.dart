@@ -1,0 +1,77 @@
+import 'package:bloc_test/bloc_test.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:tekki/core/network/network_info.dart';
+import 'package:tekki/core/services/audio_service.dart';
+import 'package:tekki/core/services/location_service.dart';
+import 'package:tekki/core/services/whatsapp_service.dart';
+import 'package:tekki/features/karne_bor/data/datasources/debt_local_data_source.dart';
+import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
+import 'package:tekki/features/karne_bor/domain/entities/debtor_entity.dart';
+import 'package:tekki/features/karne_bor/domain/repositories/debt_repository.dart';
+import 'package:tekki/features/karne_bor/domain/usecases/calculate_recovery_velocity_use_case.dart';
+import 'package:tekki/features/karne_bor/domain/usecases/get_debtors_use_case.dart';
+import 'package:tekki/features/karne_bor/domain/usecases/record_debt_payment_use_case.dart';
+import 'package:tekki/features/karne_bor/domain/usecases/record_debt_use_case.dart';
+import 'package:tekki/features/karne_bor/domain/usecases/watch_active_debts_use_case.dart';
+import 'package:tekki/features/karne_bor/presentation/cubit/karne_bor_cubit.dart';
+import 'package:tekki/features/karne_bor/presentation/cubit/karne_bor_state.dart';
+import 'package:tekki/features/sales_and_cash/data/datasources/closure_local_data_source.dart';
+import 'package:tekki/features/sales_and_cash/data/datasources/sales_local_data_source.dart';
+import 'package:tekki/features/sales_and_cash/domain/entities/daily_closure_entity.dart';
+import 'package:tekki/features/sales_and_cash/domain/repositories/closure_repository.dart';
+import 'package:tekki/features/sales_and_cash/domain/repositories/sales_repository.dart';
+import 'package:tekki/features/sales_and_cash/domain/usecases/execute_daily_closure_use_case.dart';
+import 'package:tekki/features/sales_and_cash/domain/usecases/get_closure_prefill_use_case.dart';
+import 'package:tekki/features/sales_and_cash/domain/usecases/record_quick_sale_use_case.dart';
+import 'package:tekki/features/sales_and_cash/domain/usecases/watch_today_sales_use_case.dart';
+import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_bloc.dart';
+import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_event.dart';
+import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_state.dart';
+import 'package:uuid/uuid.dart';
+
+// Repositories
+class MockClosureRepository extends Mock implements ClosureRepository {}
+class MockSalesRepository extends Mock implements SalesRepository {}
+class MockDebtRepository extends Mock implements DebtRepository {}
+
+// Data Sources
+class MockSalesLocalDataSource extends Mock implements SalesLocalDataSource {}
+class MockClosureLocalDataSource extends Mock implements ClosureLocalDataSource {}
+class MockDebtLocalDataSource extends Mock implements DebtLocalDataSource {}
+
+// Services & Core
+class MockLocationService extends Mock implements ILocationService {}
+class MockAudioPlayerService extends Mock implements IAudioPlayerService {}
+class MockAudioPlayer extends Mock implements AudioPlayer {}
+class MockWhatsAppService extends Mock implements IWhatsAppService {}
+class MockNetworkInfo extends Mock implements NetworkInfo {}
+class MockUuid extends Mock implements Uuid {}
+
+// Use Cases - Karne Bor
+class MockWatchActiveDebtsUseCase extends Mock implements WatchActiveDebtsUseCase {}
+class MockRecordDebtUseCase extends Mock implements RecordDebtUseCase {}
+class MockGetDebtorsUseCase extends Mock implements GetDebtorsUseCase {}
+class MockRecordDebtPaymentUseCase extends Mock implements RecordDebtPaymentUseCase {}
+class MockCalculateRecoveryVelocityUseCase extends Mock implements CalculateRecoveryVelocityUseCase {}
+
+// Use Cases - Sales & Cash
+class MockRecordQuickSaleUseCase extends Mock implements RecordQuickSaleUseCase {}
+class MockWatchTodaySalesUseCase extends Mock implements WatchTodaySalesUseCase {}
+class MockExecuteDailyClosureUseCase extends Mock implements ExecuteDailyClosureUseCase {}
+class MockGetClosurePrefillUseCase extends Mock implements GetClosurePrefillUseCase {}
+
+// BLoC & Cubits
+class MockCashDashboardBloc
+    extends MockBloc<CashDashboardEvent, CashDashboardState>
+    implements CashDashboardBloc {}
+
+class MockKarneBorCubit
+    extends MockCubit<KarneBorState>
+    implements KarneBorCubit {}
+
+// Fakes for Mocktail registerFallbackValue
+class FakeDailyClosureEntity extends Fake implements DailyClosureEntity {}
+class FakeDebtEntity extends Fake implements DebtEntity {}
+class FakeDebtorEntity extends Fake implements DebtorEntity {}
+class FakeRecordDebtParams extends Fake implements RecordDebtParams {}
