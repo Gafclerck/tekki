@@ -5,7 +5,9 @@ abstract final class CurrencyFormatter {
   static final NumberFormat _formatter = NumberFormat('#,##0', 'fr_FR');
 
   static String format(int amount) {
-    final formatted = _formatter.format(amount).replaceAll('\u00A0', ' ');
+    final formatted = _formatter
+        .format(amount)
+        .replaceAll(RegExp(r'[\u00A0\u202F]'), ' ');
     return '$formatted ${AppConstants.currencySymbol}';
   }
 }
