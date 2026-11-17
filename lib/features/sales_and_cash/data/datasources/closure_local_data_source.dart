@@ -51,12 +51,11 @@ class ClosureLocalDataSourceImpl implements ClosureLocalDataSource {
       final cutoffIso = closure.cutoffTimestamp.toUtc().toIso8601String();
       await database.transaction(() async {
         // 1. Seal orphan sales created at or before cutoffTimestamp
-        await (database.update(database.sales)
-              ..where(
-                (tbl) =>
-                    tbl.closureId.isNull() &
-                    tbl.recordedAt.isSmallerOrEqualValue(cutoffIso),
-              ))
+        await (database.update(database.sales)..where(
+              (tbl) =>
+                  tbl.closureId.isNull() &
+                  tbl.recordedAt.isSmallerOrEqualValue(cutoffIso),
+            ))
             .write(SalesCompanion(closureId: Value(closure.id)));
 
         // 2. Insert daily_closure row
@@ -96,10 +95,8 @@ class ClosureLocalDataSourceImpl implements ClosureLocalDataSource {
     try {
       final query = database.select(database.dailyClosures)
         ..orderBy([
-          (tbl) => OrderingTerm(
-                expression: tbl.createdAt,
-                mode: OrderingMode.desc,
-              ),
+          (tbl) =>
+              OrderingTerm(expression: tbl.createdAt, mode: OrderingMode.desc),
         ])
         ..limit(limit, offset: offset);
       final rows = await query.get();
@@ -118,8 +115,9 @@ class ClosureLocalDataSourceImpl implements ClosureLocalDataSource {
       final prefix = '$yearStr-$monthStr';
 
       final countColumn = database.dailyClosures.id.count();
-      Expression<bool> predicate =
-          database.dailyClosures.closureDate.like('$prefix%');
+      Expression<bool> predicate = database.dailyClosures.closureDate.like(
+        '$prefix%',
+      );
       if (shopId != null && shopId.isNotEmpty) {
         predicate = predicate & database.dailyClosures.shopId.equals(shopId);
       }

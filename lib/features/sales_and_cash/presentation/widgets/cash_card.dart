@@ -124,9 +124,7 @@ class CashCard extends StatelessWidget {
           const SizedBox(height: 20),
 
           // Quick Sale Action
-          QuickSaleButton(
-            onSaleRecorded: onSaleRecorded,
-          ),
+          QuickSaleButton(onSaleRecorded: onSaleRecorded),
         ],
       ),
     );

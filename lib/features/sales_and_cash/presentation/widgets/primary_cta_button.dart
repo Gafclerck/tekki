@@ -60,10 +60,7 @@ class _PrimaryCtaButtonState extends State<PrimaryCtaButton> {
         onPressed: _isEffectiveLocked ? null : _handleTap,
         child: Text(
           widget.text,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w800,
-          ),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
         ),
       ),
     );

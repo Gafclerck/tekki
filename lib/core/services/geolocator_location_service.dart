@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:geolocator/geolocator.dart';
 import 'package:tekki/core/constants/app_constants.dart';
 import 'package:tekki/core/services/location_service.dart';
@@ -6,9 +7,8 @@ import 'package:tekki/core/services/location_service.dart';
 typedef LocationServiceChecker = Future<bool> Function();
 typedef PermissionChecker = Future<LocationPermission> Function();
 typedef PermissionRequester = Future<LocationPermission> Function();
-typedef PositionGetter = Future<Position> Function({
-  LocationSettings? locationSettings,
-});
+typedef PositionGetter =
+    Future<Position> Function({LocationSettings? locationSettings});
 
 /// Concrete [ILocationService] implementation wrapping the `geolocator` package.
 /// Guarantees a passive, non-blocking capture with a strict 5-second overall timeout
@@ -19,9 +19,10 @@ class GeolocatorLocationService implements ILocationService {
     LocationServiceChecker? isServiceEnabled,
     PermissionChecker? checkPermission,
     PositionGetter? getPosition,
-  })  : _isServiceEnabled = isServiceEnabled ?? Geolocator.isLocationServiceEnabled,
-        _checkPermission = checkPermission ?? Geolocator.checkPermission,
-        _getPosition = getPosition ?? Geolocator.getCurrentPosition;
+  }) : _isServiceEnabled =
+           isServiceEnabled ?? Geolocator.isLocationServiceEnabled,
+       _checkPermission = checkPermission ?? Geolocator.checkPermission,
+       _getPosition = getPosition ?? Geolocator.getCurrentPosition;
 
   final Duration timeout;
   final LocationServiceChecker _isServiceEnabled;
@@ -44,9 +45,7 @@ class GeolocatorLocationService implements ILocationService {
 
     // 3. Acquire current position
     final position = await _getPosition(
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.high,
-      ),
+      locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
     );
 
     return GeoLocation(

@@ -95,9 +95,7 @@ void main() {
       build: () => QuickSaleCubit(recordQuickSaleUseCase: mockUseCase),
       seed: () => const QuickSaleState(amount: 7500),
       act: (cubit) => cubit.clear(),
-      expect: () => [
-        const QuickSaleState(amount: 0),
-      ],
+      expect: () => [const QuickSaleState(amount: 0)],
     );
 
     blocTest<QuickSaleCubit, QuickSaleState>(
@@ -113,20 +111,14 @@ void main() {
       'submit succeeds and emits submitting then success',
       build: () {
         when(
-          () => mockUseCase(
-            amount: 5000,
-            paymentMethod: PaymentMethod.especes,
-          ),
+          () => mockUseCase(amount: 5000, paymentMethod: PaymentMethod.especes),
         ).thenAnswer((_) async => Success(testSale));
         return QuickSaleCubit(recordQuickSaleUseCase: mockUseCase);
       },
       seed: () => const QuickSaleState(amount: 5000),
       act: (cubit) => cubit.submit(),
       expect: () => [
-        const QuickSaleState(
-          amount: 5000,
-          status: QuickSaleStatus.submitting,
-        ),
+        const QuickSaleState(amount: 5000, status: QuickSaleStatus.submitting),
         QuickSaleState(
           amount: 5000,
           status: QuickSaleStatus.success,
@@ -135,10 +127,7 @@ void main() {
       ],
       verify: (_) {
         verify(
-          () => mockUseCase(
-            amount: 5000,
-            paymentMethod: PaymentMethod.especes,
-          ),
+          () => mockUseCase(amount: 5000, paymentMethod: PaymentMethod.especes),
         ).called(1);
       },
     );
@@ -147,22 +136,17 @@ void main() {
       'submit fails and emits submitting then failure with message',
       build: () {
         when(
-          () => mockUseCase(
-            amount: 5000,
-            paymentMethod: PaymentMethod.especes,
-          ),
+          () => mockUseCase(amount: 5000, paymentMethod: PaymentMethod.especes),
         ).thenAnswer(
-          (_) async => const Error(DatabaseFailure(message: 'Database write error')),
+          (_) async =>
+              const Error(DatabaseFailure(message: 'Database write error')),
         );
         return QuickSaleCubit(recordQuickSaleUseCase: mockUseCase);
       },
       seed: () => const QuickSaleState(amount: 5000),
       act: (cubit) => cubit.submit(),
       expect: () => [
-        const QuickSaleState(
-          amount: 5000,
-          status: QuickSaleStatus.submitting,
-        ),
+        const QuickSaleState(amount: 5000, status: QuickSaleStatus.submitting),
         const QuickSaleState(
           amount: 5000,
           status: QuickSaleStatus.failure,
