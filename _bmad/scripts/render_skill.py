@@ -546,7 +546,14 @@ def _render_sources(sources: dict[str, str], skill_dir: Path, context: _RenderCo
     """Render every source as a Jinja2 template against the context; return the non-empty outputs."""
     # Skill sources name their bundled non-Markdown files (scripts, assets)
     # through {skill-root}; those stay in the installed skill directory.
-    bound = {name: content.replace("{skill-root}", skill_dir.as_posix()) for name, content in sources.items()}
+    def _preprocess(content: str) -> str:
+        content = content.replace("{skill-root}", skill_dir.as_posix())
+        content = re.sub(r"\[\[bmad-snapshot:([^\]]+)\]\]", lambda m: f"{{{{ rendered('{m.group(1)}') }}}}", content)
+        content = re.sub(r"\{\{\.([a-zA-Z0-9_]+)\}\}", r"{{ config.\1 }}", content)
+        content = re.sub(r"\{workflow\.([a-zA-Z0-9_]+)\}", r"{{ workflow.\1 }}", content)
+        return content
+
+    bound = {name: _preprocess(content) for name, content in sources.items()}
     environment = jinja2.Environment(
         loader=_SourceLoader(bound),
         undefined=jinja2.StrictUndefined,

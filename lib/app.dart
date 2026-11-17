@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tekki/core/constants/app_constants.dart';
+import 'package:tekki/core/theme/app_colors.dart';
 import 'package:tekki/core/theme/app_theme.dart';
+import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_bloc.dart';
+import 'package:tekki/features/sales_and_cash/presentation/screens/home_screen.dart';
+import 'package:tekki/injection_container.dart';
 
 class TekkiApp extends StatelessWidget {
-  const TekkiApp({super.key});
+  const TekkiApp({super.key, this.cashDashboardBloc});
+
+  final CashDashboardBloc? cashDashboardBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -11,53 +18,29 @@ class TekkiApp extends StatelessWidget {
       title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: const _TekkiHomePlaceholder(),
+      themeMode: ThemeMode.light,
+      home: _buildHome(),
     );
   }
-}
 
-class _TekkiHomePlaceholder extends StatelessWidget {
-  const _TekkiHomePlaceholder();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text(AppConstants.appName)),
-      body: const SafeArea(
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.all(24.0),
-            child: Card(
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.storefront_rounded,
-                      size: 64,
-                      color: Color(0xFF133E59),
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      'Tekki',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      'Gestion de caisse et passeport financier pour commercants',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 14, color: Colors.black54),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
+  Widget _buildHome() {
+    if (cashDashboardBloc != null) {
+      return BlocProvider.value(
+        value: cashDashboardBloc!,
+        child: const HomeScreen(),
+      );
+    }
+    if (sl.isRegistered<CashDashboardBloc>()) {
+      return BlocProvider(
+        create: (_) => sl<CashDashboardBloc>(),
+        child: const HomeScreen(),
+      );
+    }
+    // Fallback when DI is not initialized (e.g. in theme-only or isolated tests)
+    return const Scaffold(
+      backgroundColor: AppColors.background,
+      body: Center(
+        child: Text(AppConstants.appName),
       ),
     );
   }
