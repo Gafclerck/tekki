@@ -7,6 +7,8 @@ import 'package:tekki/features/sales_and_cash/data/datasources/sales_local_data_
 import 'package:tekki/features/sales_and_cash/data/repositories/sales_repository_impl.dart';
 import 'package:tekki/features/sales_and_cash/domain/repositories/sales_repository.dart';
 import 'package:tekki/features/sales_and_cash/domain/usecases/record_quick_sale_use_case.dart';
+import 'package:tekki/features/sales_and_cash/domain/usecases/watch_today_sales_use_case.dart';
+import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_bloc.dart';
 import 'package:tekki/features/sales_and_cash/presentation/cubit/quick_sale_cubit.dart';
 
 final sl = GetIt.instance;
@@ -42,9 +44,17 @@ Future<void> initDependencyInjection({
   sl.registerLazySingleton<RecordQuickSaleUseCase>(
     () => RecordQuickSaleUseCase(repository: sl<SalesRepository>()),
   );
+  sl.registerLazySingleton<WatchTodaySalesUseCase>(
+    () => WatchTodaySalesUseCase(repository: sl<SalesRepository>()),
+  );
 
   // Features: Presentation Cubits / BLoCs
   sl.registerFactory<QuickSaleCubit>(
     () => QuickSaleCubit(recordQuickSaleUseCase: sl<RecordQuickSaleUseCase>()),
+  );
+  sl.registerFactory<CashDashboardBloc>(
+    () => CashDashboardBloc(
+      watchTodaySalesUseCase: sl<WatchTodaySalesUseCase>(),
+    ),
   );
 }
