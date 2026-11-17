@@ -59,6 +59,6 @@ development_status:
 
   epic-4: in-progress
   4-1-moteur-déterministe-d-audit-indicateurs-visuels-de-gestion-f: done
-  4-2-lecteur-audio-conseiller-capsules-éducatives-bilingues-cache: backlog
+  4-2-lecteur-audio-conseiller-capsules-éducatives-bilingues-cache: done
   4-3-file-d-attente-locale-outbox-idempotence-synchronisation-rés: backlog
   epic-4-retrospective: optional

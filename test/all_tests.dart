@@ -19,15 +19,23 @@ import 'core/utils/currency_formatter_test.dart' as currency_formatter_test;
 import 'core/utils/haversine_calculator_test.dart' as haversine_calculator_test;
 import 'core/utils/result_test.dart' as result_test;
 
-// Features - Financial Passport
+// Features - Advisor
 import 'features/advisor/data/repositories/advisor_repository_impl_test.dart'
     as advisor_repository_impl_test;
+import 'features/advisor/data/repositories/audio_capsule_repository_impl_test.dart'
+    as audio_capsule_repository_impl_test;
 import 'features/advisor/domain/usecases/evaluate_financial_health_use_case_test.dart'
     as evaluate_financial_health_use_case_test;
+import 'features/advisor/domain/usecases/get_active_audio_capsule_use_case_test.dart'
+    as get_active_audio_capsule_use_case_test;
 import 'features/advisor/presentation/cubit/advisor_cubit_test.dart'
     as advisor_cubit_test;
+import 'features/advisor/presentation/cubit/audio_capsule_cubit_test.dart'
+    as audio_capsule_cubit_test;
 import 'features/advisor/presentation/pages/advisor_page_test.dart'
     as advisor_page_test;
+import 'features/advisor/presentation/widgets/audio_capsule_card_test.dart'
+    as audio_capsule_card_test;
 import 'features/financial_passport/data/datasources/pdf_generator_service_test.dart'
     as pdf_generator_service_test;
 import 'features/financial_passport/data/models/cbor_passport_payload_test.dart'
@@ -158,9 +166,13 @@ void main() {
     // Features - Advisor
     group('Features: Advisor Tests', () {
       evaluate_financial_health_use_case_test.main();
+      get_active_audio_capsule_use_case_test.main();
       advisor_repository_impl_test.main();
+      audio_capsule_repository_impl_test.main();
       advisor_cubit_test.main();
+      audio_capsule_cubit_test.main();
       advisor_page_test.main();
+      audio_capsule_card_test.main();
     });
 
     // Features - Karne Bor

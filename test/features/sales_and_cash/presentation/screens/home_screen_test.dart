@@ -6,9 +6,14 @@ import 'package:mocktail/mocktail.dart';
 import 'package:tekki/core/constants/app_constants.dart';
 import 'package:tekki/core/services/brightness_service.dart';
 import 'package:tekki/core/theme/app_colors.dart';
+import 'package:tekki/features/advisor/domain/entities/audio_language.dart';
+import 'package:tekki/features/advisor/domain/entities/capsule_playback_state.dart';
 import 'package:tekki/features/advisor/presentation/cubit/advisor_cubit.dart';
 import 'package:tekki/features/advisor/presentation/cubit/advisor_state.dart';
+import 'package:tekki/features/advisor/presentation/cubit/audio_capsule_cubit.dart';
+import 'package:tekki/features/advisor/presentation/cubit/audio_capsule_state.dart';
 import 'package:tekki/features/advisor/presentation/pages/advisor_page.dart';
+import 'package:tekki/features/advisor/presentation/widgets/audio_capsule_card.dart';
 import 'package:tekki/features/financial_passport/presentation/bloc/passport_bloc.dart';
 import 'package:tekki/features/financial_passport/presentation/bloc/passport_state.dart';
 import 'package:tekki/features/financial_passport/presentation/pages/passport_overview_page.dart';
@@ -27,6 +32,7 @@ import 'package:tekki/features/sales_and_cash/presentation/widgets/cash_card.dar
 import 'package:tekki/features/sales_and_cash/presentation/widgets/primary_cta_button.dart';
 import 'package:tekki/features/sales_and_cash/presentation/widgets/quick_sale_button.dart';
 import 'package:tekki/injection_container.dart';
+import '../../../../helpers/fixtures.dart';
 import '../../../../helpers/mocks.dart';
 
 class MockCashDashboardBloc
@@ -37,9 +43,22 @@ class MockKarneBorCubit extends Mock implements KarneBorCubit {}
 
 void main() {
   late MockCashDashboardBloc mockBloc;
+  late MockAudioCapsuleCubit mockAudioCapsuleCubit;
 
   setUp(() {
     mockBloc = MockCashDashboardBloc();
+    mockAudioCapsuleCubit = MockAudioCapsuleCubit();
+
+    when(() => mockAudioCapsuleCubit.state).thenReturn(
+      AudioCapsuleState(
+        capsule: createTestAudioCapsule(),
+        selectedLanguage: AudioLanguage.wolof,
+        playbackStatus: CapsulePlaybackStatus.idle,
+      ),
+    );
+
+    sl.registerLazySingleton<AudioCapsuleCubit>(() => mockAudioCapsuleCubit);
+
     addTearDown(() async {
       await sl.reset();
     });
@@ -74,6 +93,10 @@ void main() {
       expect(find.byType(CashCard), findsOneWidget);
       expect(find.byType(QuickSaleButton), findsOneWidget);
       expect(find.text('0 FCFA'), findsOneWidget);
+
+      // AudioCapsuleCard
+      expect(find.byType(AudioCapsuleCard), findsOneWidget);
+      expect(find.byKey(const ValueKey('audio_capsule_card')), findsOneWidget);
 
       // Reserved Cards
       expect(find.byKey(const ValueKey('karne_bor_card')), findsOneWidget);
@@ -318,6 +341,9 @@ void main() {
       final karneBorCard = find.byKey(const ValueKey('karne_bor_card'));
       expect(karneBorCard, findsOneWidget);
 
+      await tester.ensureVisible(karneBorCard);
+      await tester.pump();
+
       await tester.tap(karneBorCard);
       await tester.pumpAndSettle();
 
@@ -354,6 +380,9 @@ void main() {
 
       final passportCard = find.byKey(const ValueKey('passport_card'));
       expect(passportCard, findsOneWidget);
+
+      await tester.ensureVisible(passportCard);
+      await tester.pump();
 
       await tester.tap(passportCard);
       await tester.pump();

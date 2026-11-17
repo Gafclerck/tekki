@@ -6,6 +6,7 @@ import 'package:tekki/features/advisor/domain/entities/health_status.dart';
 import 'package:tekki/features/advisor/presentation/cubit/advisor_cubit.dart';
 import 'package:tekki/features/advisor/presentation/pages/advisor_page.dart';
 import 'package:tekki/features/advisor/presentation/widgets/advisor_health_badge.dart';
+import 'package:tekki/features/advisor/presentation/widgets/audio_capsule_card.dart';
 import 'package:tekki/features/financial_passport/presentation/bloc/passport_bloc.dart';
 import 'package:tekki/features/financial_passport/presentation/pages/passport_overview_page.dart';
 import 'package:tekki/features/karne_bor/presentation/screens/karne_bor_screen.dart';
@@ -97,6 +98,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Cash Card
                   _buildCashCard(state),
                   const SizedBox(height: 16),
+
+                  // Capsule Audio Conseiller Tekki
+                  const AudioCapsuleCard(),
+                  const SizedBox(height: 12),
 
                   // Espace: Karné Bor
                   _buildPlaceholderCard(

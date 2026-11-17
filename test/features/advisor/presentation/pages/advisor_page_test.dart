@@ -3,11 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:tekki/core/theme/app_theme.dart';
+import 'package:tekki/features/advisor/domain/entities/audio_language.dart';
+import 'package:tekki/features/advisor/domain/entities/capsule_playback_state.dart';
 import 'package:tekki/features/advisor/domain/entities/health_status.dart';
 import 'package:tekki/features/advisor/presentation/cubit/advisor_cubit.dart';
 import 'package:tekki/features/advisor/presentation/cubit/advisor_state.dart';
+import 'package:tekki/features/advisor/presentation/cubit/audio_capsule_cubit.dart';
+import 'package:tekki/features/advisor/presentation/cubit/audio_capsule_state.dart';
 import 'package:tekki/features/advisor/presentation/pages/advisor_page.dart';
 import 'package:tekki/features/advisor/presentation/widgets/advisor_health_badge.dart';
+import 'package:tekki/features/advisor/presentation/widgets/audio_capsule_card.dart';
 import 'package:tekki/features/advisor/presentation/widgets/health_traffic_light_card.dart';
 import 'package:tekki/injection_container.dart';
 
@@ -16,9 +21,22 @@ import '../../../../helpers/mocks.dart';
 
 void main() {
   late MockAdvisorCubit mockCubit;
+  late MockAudioCapsuleCubit mockAudioCapsuleCubit;
 
   setUp(() {
     mockCubit = MockAdvisorCubit();
+    mockAudioCapsuleCubit = MockAudioCapsuleCubit();
+
+    when(() => mockAudioCapsuleCubit.state).thenReturn(
+      AudioCapsuleState(
+        capsule: createTestAudioCapsule(),
+        selectedLanguage: AudioLanguage.wolof,
+        playbackStatus: CapsulePlaybackStatus.idle,
+      ),
+    );
+
+    sl.registerLazySingleton<AudioCapsuleCubit>(() => mockAudioCapsuleCubit);
+
     addTearDown(() async {
       await sl.reset();
     });
@@ -120,6 +138,13 @@ void main() {
         expect(find.text('Bilan Global'), findsOneWidget);
         expect(
           find.text('Bravo ! Votre boutique se porte très bien.'),
+          findsOneWidget,
+        );
+
+        // Capsule Audio Conseiller
+        expect(find.byType(AudioCapsuleCard), findsOneWidget);
+        expect(
+          find.byKey(const ValueKey('audio_capsule_card')),
           findsOneWidget,
         );
 

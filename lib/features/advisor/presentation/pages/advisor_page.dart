@@ -5,6 +5,7 @@ import 'package:tekki/features/advisor/domain/entities/financial_health_entity.d
 import 'package:tekki/features/advisor/presentation/cubit/advisor_cubit.dart';
 import 'package:tekki/features/advisor/presentation/cubit/advisor_state.dart';
 import 'package:tekki/features/advisor/presentation/widgets/advisor_health_badge.dart';
+import 'package:tekki/features/advisor/presentation/widgets/audio_capsule_card.dart';
 import 'package:tekki/features/advisor/presentation/widgets/health_traffic_light_card.dart';
 
 /// Page principale du Conseiller Tekki.
@@ -110,6 +111,10 @@ class _AdvisorPageState extends State<AdvisorPage> {
         children: [
           // Carte résumé de santé financière
           _buildOverallSummaryCard(health),
+          const SizedBox(height: 16),
+
+          // Capsule audio éducative bilingue
+          const AudioCapsuleCard(),
           const SizedBox(height: 20),
 
           // Titre de section

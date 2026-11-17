@@ -11,10 +11,15 @@ import 'package:tekki/core/services/geolocator_location_service.dart';
 import 'package:tekki/core/services/location_service.dart';
 import 'package:tekki/core/services/share_service.dart';
 import 'package:tekki/core/services/whatsapp_service.dart';
+import 'package:tekki/features/advisor/data/datasources/audio_capsule_local_data_source.dart';
 import 'package:tekki/features/advisor/data/repositories/advisor_repository_impl.dart';
+import 'package:tekki/features/advisor/data/repositories/audio_capsule_repository_impl.dart';
 import 'package:tekki/features/advisor/domain/repositories/advisor_repository.dart';
+import 'package:tekki/features/advisor/domain/repositories/audio_capsule_repository.dart';
 import 'package:tekki/features/advisor/domain/usecases/evaluate_financial_health_use_case.dart';
+import 'package:tekki/features/advisor/domain/usecases/get_active_audio_capsule_use_case.dart';
 import 'package:tekki/features/advisor/presentation/cubit/advisor_cubit.dart';
+import 'package:tekki/features/advisor/presentation/cubit/audio_capsule_cubit.dart';
 import 'package:tekki/features/financial_passport/data/datasources/pdf_generator_service_impl.dart';
 import 'package:tekki/features/financial_passport/data/repositories/passport_repository_impl.dart';
 import 'package:tekki/features/financial_passport/domain/repositories/passport_repository.dart';
@@ -178,6 +183,18 @@ Future<void> initDependencyInjection({
   );
 
   // Features: Advisor Repository & Use Cases
+  sl.registerLazySingleton<AudioCapsuleLocalDataSource>(
+    () => const AudioCapsuleLocalDataSourceImpl(),
+  );
+  sl.registerLazySingleton<AudioCapsuleRepository>(
+    () => AudioCapsuleRepositoryImpl(
+      localDataSource: sl<AudioCapsuleLocalDataSource>(),
+    ),
+  );
+  sl.registerLazySingleton<GetActiveAudioCapsuleUseCase>(
+    () =>
+        GetActiveAudioCapsuleUseCase(repository: sl<AudioCapsuleRepository>()),
+  );
   sl.registerLazySingleton<AdvisorRepository>(
     () => AdvisorRepositoryImpl(
       closureRepository: sl<ClosureRepository>(),
@@ -234,6 +251,12 @@ Future<void> initDependencyInjection({
   sl.registerFactory<AdvisorCubit>(
     () => AdvisorCubit(
       evaluateFinancialHealthUseCase: sl<EvaluateFinancialHealthUseCase>(),
+    ),
+  );
+  sl.registerLazySingleton<AudioCapsuleCubit>(
+    () => AudioCapsuleCubit(
+      getActiveAudioCapsuleUseCase: sl<GetActiveAudioCapsuleUseCase>(),
+      audioPlayerService: sl<IAudioPlayerService>(),
     ),
   );
 }

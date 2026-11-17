@@ -1,3 +1,4 @@
+import 'package:tekki/features/advisor/domain/entities/audio_capsule_entity.dart';
 import 'package:tekki/features/advisor/domain/entities/financial_health_entity.dart';
 import 'package:tekki/features/advisor/domain/entities/health_indicator_entity.dart';
 import 'package:tekki/features/advisor/domain/entities/health_status.dart';
@@ -268,5 +269,30 @@ FinancialHealthEntity createTestFinancialHealth({
           ),
         ],
     evaluatedAt: evaluatedAt ?? DateTime.utc(2026, 11, 17, 12, 0),
+  );
+}
+
+AudioCapsuleEntity createTestAudioCapsule({
+  String id = 'capsule_welcome',
+  String title = 'Gérer sa caisse au quotidien',
+  String category = 'Gestion de caisse',
+  int durationSeconds = 35,
+  String wolofTrackPath = 'assets/audio/capsule_welcome_wo.opus',
+  String frenchTrackPath = 'assets/audio/capsule_welcome_fr.opus',
+  bool isWolofAsset = true,
+  bool isFrenchAsset = true,
+  String summary =
+      'Conseils pratiques en Wolof et Français pour clôturer sa caisse chaque soir sans stress.',
+}) {
+  return AudioCapsuleEntity(
+    id: id,
+    title: title,
+    category: category,
+    durationSeconds: durationSeconds,
+    wolofTrackPath: wolofTrackPath,
+    frenchTrackPath: frenchTrackPath,
+    isWolofAsset: isWolofAsset,
+    isFrenchAsset: isFrenchAsset,
+    summary: summary,
   );
 }

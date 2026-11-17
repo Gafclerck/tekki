@@ -32,3 +32,7 @@ class CryptoFailure extends Failure {
 class ServiceFailure extends Failure {
   const ServiceFailure({required super.message});
 }
+
+class AudioFailure extends Failure {
+  const AudioFailure({required super.message});
+}
