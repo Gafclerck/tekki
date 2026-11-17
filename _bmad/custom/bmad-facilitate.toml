@@ -1,0 +1,4 @@
+[workflow]
+persistent_facts = [
+  "Rédiger tous les documents et livrables en français.",
+]

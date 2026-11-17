@@ -1,0 +1,67 @@
+name: tekki
+description: "Application mobile de gestion commerciale et passeport financier pour commercants."
+publish_to: 'none'
+
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.12.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # State Management & Architecture
+  flutter_bloc: ^9.1.0
+  bloc: ^9.0.0
+  get_it: ^8.0.3
+  injectable: ^2.5.0
+  equatable: ^2.0.7
+
+  # Local Database & Persistence
+  drift: ^2.24.2
+  drift_flutter: ^0.3.1
+  path_provider: ^2.1.5
+  flutter_secure_storage: ^9.2.4
+
+  # Cryptography & Offline Passport
+  cryptography: ^2.7.0
+  cbor: ^6.3.0
+  dart_base45: ^1.0.0
+  qr_flutter: ^4.1.0
+  pdf: ^3.11.2
+  share_plus: ^10.1.4
+
+  # Hardware & Services
+  geolocator: ^13.0.2
+  just_audio: ^0.9.44
+  connectivity_plus: ^6.1.1
+  url_launcher: ^6.3.1
+  http: ^1.6.0
+
+  # Utilities
+  uuid: ^4.5.1
+  intl: ^0.19.0
+  meta: ^1.16.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+  # Code Generation
+  build_runner: ^2.4.14
+  drift_dev: ^2.24.2
+  injectable_generator: ^2.6.2
+
+  # Testing Infrastructure
+  bloc_test: ^10.0.0
+  mocktail: ^1.0.4
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/audio/
+    - assets/icons/

@@ -1,0 +1,6 @@
+[core]
+project_name = "tekki"
+output_folder = "{project-root}/_bmad-output"
+communication_language = "fr"
+document_language = "fr"
+document_output_language = "fr"
