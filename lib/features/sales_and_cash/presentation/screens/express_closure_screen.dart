@@ -48,10 +48,7 @@ class ExpressClosureScreen extends StatelessWidget {
 }
 
 class _ExpressClosureView extends StatefulWidget {
-  const _ExpressClosureView({
-    this.audioPlayerService,
-    this.onClosureSuccess,
-  });
+  const _ExpressClosureView({this.audioPlayerService, this.onClosureSuccess});
 
   final IAudioPlayerService? audioPlayerService;
   final void Function(DailyClosureEntity closure)? onClosureSuccess;
@@ -112,13 +109,15 @@ class _ExpressClosureViewState extends State<_ExpressClosureView> {
             previous.prefilledSalesAmount != current.prefilledSalesAmount;
       },
       listener: (context, state) {
-        if (state.status == ExpressClosureStatus.ready && !_salesFieldModified) {
+        if (state.status == ExpressClosureStatus.ready &&
+            !_salesFieldModified) {
           _salesController.text = state.totalSalesAmount.toString();
         }
         if (state.status == ExpressClosureStatus.success &&
             state.createdClosure != null) {
           try {
-            final audio = widget.audioPlayerService ??
+            final audio =
+                widget.audioPlayerService ??
                 (sl.isRegistered<IAudioPlayerService>()
                     ? sl<IAudioPlayerService>()
                     : null);
@@ -153,11 +152,7 @@ class _ExpressClosureViewState extends State<_ExpressClosureView> {
         }
       },
       builder: (context, state) {
-        return _buildScaffold(
-          context: context,
-          state: state,
-          cubit: cubit,
-        );
+        return _buildScaffold(context: context, state: state, cubit: cubit);
       },
     );
   }
@@ -170,7 +165,7 @@ class _ExpressClosureViewState extends State<_ExpressClosureView> {
       'Jeudi',
       'Vendredi',
       'Samedi',
-      'Dimanche'
+      'Dimanche',
     ];
     const months = [
       'Janvier',
@@ -184,7 +179,7 @@ class _ExpressClosureViewState extends State<_ExpressClosureView> {
       'Septembre',
       'Octobre',
       'Novembre',
-      'Décembre'
+      'Décembre',
     ];
     final dayName = days[dt.weekday - 1];
     final monthName = months[dt.month - 1];
@@ -534,10 +529,7 @@ class _ExpressClosureViewState extends State<_ExpressClosureView> {
           const SizedBox(height: 4),
           Text(
             hint,
-            style: const TextStyle(
-              fontSize: 11,
-              color: AppColors.secondary,
-            ),
+            style: const TextStyle(fontSize: 11, color: AppColors.secondary),
           ),
         ],
       ),
@@ -603,10 +595,7 @@ class _ExpressClosureViewState extends State<_ExpressClosureView> {
                   const SizedBox(height: 2),
                   const Text(
                     'Ancrage GPS conforme · Passeport Financier mis à jour.',
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: AppColors.secondary,
-                    ),
+                    style: TextStyle(fontSize: 10, color: AppColors.secondary),
                   ),
                 ],
               ],

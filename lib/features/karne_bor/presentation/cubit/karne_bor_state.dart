@@ -17,10 +17,7 @@ final class KarneBorLoading extends KarneBorState {
 }
 
 final class KarneBorLoaded extends KarneBorState {
-  const KarneBorLoaded({
-    required this.debts,
-    required this.totalDebt,
-  });
+  const KarneBorLoaded({required this.debts, required this.totalDebt});
 
   final List<DebtEntity> debts;
   final int totalDebt;

@@ -10,8 +10,7 @@ part 'app_database.g.dart';
 
 @DriftDatabase(tables: [Shops, Sales, DailyClosures, Debtors, Debts])
 class AppDatabase extends _$AppDatabase {
-  AppDatabase([QueryExecutor? executor])
-      : super(executor ?? openConnection());
+  AppDatabase([QueryExecutor? executor]) : super(executor ?? openConnection());
 
   AppDatabase.forTesting(super.executor);
 
@@ -20,19 +19,19 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-        onCreate: (Migrator m) async {
-          await m.createAll();
-        },
-        onUpgrade: (Migrator m, int from, int to) async {
-          if (from < 2) {
-            await m.createTable(debtors);
-            await m.createTable(debts);
-          }
-        },
-        beforeOpen: (details) async {
-          await customStatement('PRAGMA foreign_keys = ON;');
-          await customStatement('PRAGMA journal_mode = WAL;');
-          await customStatement('PRAGMA synchronous = NORMAL;');
-        },
-      );
+    onCreate: (Migrator m) async {
+      await m.createAll();
+    },
+    onUpgrade: (Migrator m, int from, int to) async {
+      if (from < 2) {
+        await m.createTable(debtors);
+        await m.createTable(debts);
+      }
+    },
+    beforeOpen: (details) async {
+      await customStatement('PRAGMA foreign_keys = ON;');
+      await customStatement('PRAGMA journal_mode = WAL;');
+      await customStatement('PRAGMA synchronous = NORMAL;');
+    },
+  );
 }

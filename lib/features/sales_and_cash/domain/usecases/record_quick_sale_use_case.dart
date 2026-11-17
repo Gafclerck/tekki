@@ -22,7 +22,8 @@ class RecordQuickSaleUseCase {
     if (amount <= 0) {
       return const Error(
         ValidationFailure(
-          message: 'Le montant de la vente doit être strictement supérieur à zéro.',
+          message:
+              'Le montant de la vente doit être strictement supérieur à zéro.',
         ),
       );
     }

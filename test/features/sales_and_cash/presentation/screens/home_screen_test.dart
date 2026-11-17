@@ -38,20 +38,17 @@ void main() {
     return MaterialApp(
       home: BlocProvider<CashDashboardBloc>.value(
         value: mockBloc,
-        child: HomeScreen(
-          onCloseCashier: onCloseCashier,
-        ),
+        child: HomeScreen(onCloseCashier: onCloseCashier),
       ),
     );
   }
 
   group('HomeScreen Widget Integration', () {
-    testWidgets('renders all primary elements: header, cards, and bottom CTA',
-        (tester) async {
+    testWidgets('renders all primary elements: header, cards, and bottom CTA', (
+      tester,
+    ) async {
       when(() => mockBloc.state).thenReturn(
-        const CashDashboardLoaded(
-          summary: CashSummaryEntity.empty(),
-        ),
+        const CashDashboardLoaded(summary: CashSummaryEntity.empty()),
       );
 
       await tester.pumpWidget(buildSubject());
@@ -78,41 +75,44 @@ void main() {
       expect(find.text('🔒 Clôturer la caisse'), findsOneWidget);
     });
 
-    testWidgets('has exactly ONE orange accent CTA button on the entire screen',
-        (tester) async {
-      when(() => mockBloc.state).thenReturn(
-        const CashDashboardLoaded(
-          summary: CashSummaryEntity.empty(),
-        ),
-      );
+    testWidgets(
+      'has exactly ONE orange accent CTA button on the entire screen',
+      (tester) async {
+        when(() => mockBloc.state).thenReturn(
+          const CashDashboardLoaded(summary: CashSummaryEntity.empty()),
+        );
 
-      await tester.pumpWidget(buildSubject());
+        await tester.pumpWidget(buildSubject());
 
-      // Find all ElevatedButtons
-      final elevatedButtons = tester.widgetList<ElevatedButton>(
-        find.byType(ElevatedButton),
-      );
+        // Find all ElevatedButtons
+        final elevatedButtons = tester.widgetList<ElevatedButton>(
+          find.byType(ElevatedButton),
+        );
 
-      // Filter those with background color == AppColors.accent
-      final orangeAccentButtons = elevatedButtons.where((button) {
-        final bg = button.style?.backgroundColor?.resolve({});
-        return bg == AppColors.accent;
-      }).toList();
+        // Filter those with background color == AppColors.accent
+        final orangeAccentButtons = elevatedButtons.where((button) {
+          final bg = button.style?.backgroundColor?.resolve({});
+          return bg == AppColors.accent;
+        }).toList();
 
-      expect(orangeAccentButtons.length, equals(1));
-    });
+        expect(orangeAccentButtons.length, equals(1));
+      },
+    );
 
-    testWidgets('dispatches WatchCashDashboardStarted on mount when in Initial state',
-        (tester) async {
-      when(() => mockBloc.state).thenReturn(const CashDashboardInitial());
+    testWidgets(
+      'dispatches WatchCashDashboardStarted on mount when in Initial state',
+      (tester) async {
+        when(() => mockBloc.state).thenReturn(const CashDashboardInitial());
 
-      await tester.pumpWidget(buildSubject());
+        await tester.pumpWidget(buildSubject());
 
-      verify(() => mockBloc.add(const WatchCashDashboardStarted())).called(1);
-    });
+        verify(() => mockBloc.add(const WatchCashDashboardStarted())).called(1);
+      },
+    );
 
-    testWidgets('updates CashCard when loaded with active sales',
-        (tester) async {
+    testWidgets('updates CashCard when loaded with active sales', (
+      tester,
+    ) async {
       final sale1 = SaleEntity(
         id: 's1',
         amount: 5000,
@@ -142,111 +142,123 @@ void main() {
       expect(find.text('2 ventes'), findsOneWidget);
     });
 
-    testWidgets('tapping PrimaryCtaButton dispatches CloseCashierTapped and triggers listener',
-        (tester) async {
-      whenListen(
-        mockBloc,
-        Stream.fromIterable([
-          const CashDashboardLoaded(
+    testWidgets(
+      'tapping PrimaryCtaButton dispatches CloseCashierTapped and triggers listener',
+      (tester) async {
+        whenListen(
+          mockBloc,
+          Stream.fromIterable([
+            const CashDashboardLoaded(
+              summary: CashSummaryEntity.empty(),
+              isClosureLocked: false,
+            ),
+            const CashDashboardLoaded(
+              summary: CashSummaryEntity.empty(),
+              isClosureLocked: true,
+            ),
+          ]),
+          initialState: const CashDashboardLoaded(
             summary: CashSummaryEntity.empty(),
             isClosureLocked: false,
           ),
-          const CashDashboardLoaded(
-            summary: CashSummaryEntity.empty(),
-            isClosureLocked: true,
-          ),
-        ]),
-        initialState: const CashDashboardLoaded(
-          summary: CashSummaryEntity.empty(),
-          isClosureLocked: false,
-        ),
-      );
+        );
 
-      var callbackTriggered = false;
-      await tester.pumpWidget(
-        buildSubject(onCloseCashier: () => callbackTriggered = true),
-      );
+        var callbackTriggered = false;
+        await tester.pumpWidget(
+          buildSubject(onCloseCashier: () => callbackTriggered = true),
+        );
 
-      final buttonFinder = find.byKey(const ValueKey('button-primary-cta'));
-      await tester.tap(buttonFinder);
-      await tester.pumpAndSettle();
+        final buttonFinder = find.byKey(const ValueKey('button-primary-cta'));
+        await tester.tap(buttonFinder);
+        await tester.pumpAndSettle();
 
-      verify(() => mockBloc.add(const CloseCashierTapped())).called(1);
-      expect(callbackTriggered, isTrue);
-      expect(find.byKey(const ValueKey('closure_initiated_snackbar')), findsOneWidget);
-    });
-
-    testWidgets('displays discreet non-blocking error banner on CashDashboardError',
-        (tester) async {
-      when(() => mockBloc.state).thenReturn(
-        const CashDashboardError(message: 'Database query failed'),
-      );
-
-      await tester.pumpWidget(buildSubject());
-
-      // Discreet banner exists
-      expect(
-        find.byKey(const ValueKey('cash_dashboard_error_banner')),
-        findsOneWidget,
-      );
-      expect(
-        find.text(
-          'Information de caisse temporairement indisponible. Vous pouvez continuer à enregistrer vos ventes.',
-        ),
-        findsOneWidget,
-      );
-
-      // QuickSaleButton is STILL accessible
-      expect(find.byType(QuickSaleButton), findsOneWidget);
-    });
-
-    testWidgets('PrimaryCtaButton is disabled when state is not CashDashboardLoaded',
-        (tester) async {
-      when(() => mockBloc.state).thenReturn(const CashDashboardLoading());
-
-      await tester.pumpWidget(buildSubject());
-
-      final buttonFinder = find.byKey(const ValueKey('button-primary-cta'));
-      expect(buttonFinder, findsOneWidget);
-
-      final elevatedButton = tester.widget<ElevatedButton>(find.byType(ElevatedButton).last);
-      expect(elevatedButton.onPressed, isNull);
-    });
+        verify(() => mockBloc.add(const CloseCashierTapped())).called(1);
+        expect(callbackTriggered, isTrue);
+        expect(
+          find.byKey(const ValueKey('closure_initiated_snackbar')),
+          findsOneWidget,
+        );
+      },
+    );
 
     testWidgets(
-        'navigates to ExpressClosureScreen when onCloseCashier is null and dispatches ResetClosureLock on cancel',
-        (tester) async {
-      whenListen(
-        mockBloc,
-        Stream.fromIterable([
-          const CashDashboardLoaded(
+      'displays discreet non-blocking error banner on CashDashboardError',
+      (tester) async {
+        when(() => mockBloc.state).thenReturn(
+          const CashDashboardError(message: 'Database query failed'),
+        );
+
+        await tester.pumpWidget(buildSubject());
+
+        // Discreet banner exists
+        expect(
+          find.byKey(const ValueKey('cash_dashboard_error_banner')),
+          findsOneWidget,
+        );
+        expect(
+          find.text(
+            'Information de caisse temporairement indisponible. Vous pouvez continuer à enregistrer vos ventes.',
+          ),
+          findsOneWidget,
+        );
+
+        // QuickSaleButton is STILL accessible
+        expect(find.byType(QuickSaleButton), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'PrimaryCtaButton is disabled when state is not CashDashboardLoaded',
+      (tester) async {
+        when(() => mockBloc.state).thenReturn(const CashDashboardLoading());
+
+        await tester.pumpWidget(buildSubject());
+
+        final buttonFinder = find.byKey(const ValueKey('button-primary-cta'));
+        expect(buttonFinder, findsOneWidget);
+
+        final elevatedButton = tester.widget<ElevatedButton>(
+          find.byType(ElevatedButton).last,
+        );
+        expect(elevatedButton.onPressed, isNull);
+      },
+    );
+
+    testWidgets(
+      'navigates to ExpressClosureScreen when onCloseCashier is null and dispatches ResetClosureLock on cancel',
+      (tester) async {
+        whenListen(
+          mockBloc,
+          Stream.fromIterable([
+            const CashDashboardLoaded(
+              summary: CashSummaryEntity.empty(),
+              isClosureLocked: false,
+            ),
+            const CashDashboardLoaded(
+              summary: CashSummaryEntity.empty(),
+              isClosureLocked: true,
+            ),
+          ]),
+          initialState: const CashDashboardLoaded(
             summary: CashSummaryEntity.empty(),
             isClosureLocked: false,
           ),
-          const CashDashboardLoaded(
-            summary: CashSummaryEntity.empty(),
-            isClosureLocked: true,
-          ),
-        ]),
-        initialState: const CashDashboardLoaded(
-          summary: CashSummaryEntity.empty(),
-          isClosureLocked: false,
-        ),
-      );
+        );
 
-      await tester.pumpWidget(buildSubject(onCloseCashier: null));
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(buildSubject(onCloseCashier: null));
+        await tester.pumpAndSettle();
 
-      expect(find.byType(ExpressClosureScreen), findsOneWidget);
+        expect(find.byType(ExpressClosureScreen), findsOneWidget);
 
-      // Pop back without completing closure
-      final backButton = find.byKey(const ValueKey('back_button'));
-      expect(backButton, findsOneWidget);
-      await tester.tap(backButton);
-      await tester.pumpAndSettle();
+        // Pop back without completing closure
+        final backButton = find.byKey(const ValueKey('back_button'));
+        expect(backButton, findsOneWidget);
+        await tester.tap(backButton);
+        await tester.pumpAndSettle();
 
-      verify(() => mockBloc.add(const ResetClosureLock())).called(1);
-    });
+        verify(() => mockBloc.add(const ResetClosureLock())).called(1);
+      },
+    );
 
     testWidgets('onSaleRecorded triggers floating SnackBar', (tester) async {
       when(() => mockBloc.state).thenReturn(
@@ -271,15 +283,16 @@ void main() {
       expect(find.text('Vente de 2500 FCFA enregistrée !'), findsOneWidget);
     });
 
-    testWidgets('tapping karne_bor_card navigates to KarneBorScreen', (tester) async {
+    testWidgets('tapping karne_bor_card navigates to KarneBorScreen', (
+      tester,
+    ) async {
       when(() => mockBloc.state).thenReturn(
         const CashDashboardLoaded(summary: CashSummaryEntity.empty()),
       );
 
       final mockKarneCubit = MockKarneBorCubit();
-      when(() => mockKarneCubit.state).thenReturn(
-        const KarneBorLoaded(debts: [], totalDebt: 0),
-      );
+      when(() => mockKarneCubit.state)
+          .thenReturn(const KarneBorLoaded(debts: [], totalDebt: 0));
       when(() => mockKarneCubit.startWatching()).thenReturn(null);
       when(() => mockKarneCubit.stream).thenAnswer((_) => const Stream.empty());
       when(() => mockKarneCubit.close()).thenAnswer((_) async {});

@@ -12,7 +12,9 @@ class DebtRepositoryImpl implements DebtRepository {
   final DebtLocalDataSource localDataSource;
 
   @override
-  Future<Result<DebtorEntity, Failure>> createDebtor(DebtorEntity debtor) async {
+  Future<Result<DebtorEntity, Failure>> createDebtor(
+    DebtorEntity debtor,
+  ) async {
     try {
       await localDataSource.insertDebtor(debtor);
       return Success(debtor);
@@ -63,7 +65,9 @@ class DebtRepositoryImpl implements DebtRepository {
   }
 
   @override
-  Future<Result<List<DebtorEntity>, Failure>> getAllDebtors({int limit = 50}) async {
+  Future<Result<List<DebtorEntity>, Failure>> getAllDebtors({
+    int limit = 50,
+  }) async {
     try {
       final debtors = await localDataSource.getAllDebtors(limit: limit);
       return Success(debtors);
@@ -113,7 +117,9 @@ class DebtRepositoryImpl implements DebtRepository {
   }
 
   @override
-  Future<Result<List<DebtEntity>, Failure>> getDebtsByDebtor(String debtorId) async {
+  Future<Result<List<DebtEntity>, Failure>> getDebtsByDebtor(
+    String debtorId,
+  ) async {
     try {
       final debts = await localDataSource.getDebtsByDebtor(debtorId);
       return Success(debts);
@@ -130,7 +136,10 @@ class DebtRepositoryImpl implements DebtRepository {
     int? offset,
   }) async {
     try {
-      final debts = await localDataSource.getActiveDebts(limit: limit, offset: offset);
+      final debts = await localDataSource.getActiveDebts(
+        limit: limit,
+        offset: offset,
+      );
       return Success(debts);
     } on DatabaseException catch (e) {
       return Error(DatabaseFailure(message: e.message));

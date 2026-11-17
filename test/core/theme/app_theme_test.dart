@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tekki/app.dart';
@@ -106,26 +107,27 @@ void main() {
   });
 
   group('ThemeMode Locking (No Dark Mode)', () {
-    testWidgets('TekkiApp enforces ThemeMode.light even when OS is in Dark Mode',
-        (tester) async {
-      await tester.pumpWidget(
-        const MediaQuery(
-          data: MediaQueryData(platformBrightness: Brightness.dark),
-          child: TekkiApp(),
-        ),
-      );
-      await tester.pumpAndSettle();
+    testWidgets(
+      'TekkiApp enforces ThemeMode.light even when OS is in Dark Mode',
+      (tester) async {
+        await tester.pumpWidget(
+          const MediaQuery(
+            data: MediaQueryData(platformBrightness: Brightness.dark),
+            child: TekkiApp(),
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
-      expect(materialApp.themeMode, ThemeMode.light);
-      expect(materialApp.darkTheme, isNull);
+        final materialApp = tester.widget<MaterialApp>(
+          find.byType(MaterialApp),
+        );
+        expect(materialApp.themeMode, ThemeMode.light);
+        expect(materialApp.darkTheme, isNull);
 
-      final BuildContext context = tester.element(find.byType(Scaffold));
-      expect(Theme.of(context).brightness, Brightness.light);
-      expect(
-        Theme.of(context).scaffoldBackgroundColor,
-        AppColors.background,
-      );
-    });
+        final BuildContext context = tester.element(find.byType(Scaffold));
+        expect(Theme.of(context).brightness, Brightness.light);
+        expect(Theme.of(context).scaffoldBackgroundColor, AppColors.background);
+      },
+    );
   });
 }

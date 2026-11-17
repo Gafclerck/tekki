@@ -118,9 +118,8 @@ Future<void> initDependencyInjection({
     ),
   );
   sl.registerFactory<CashDashboardBloc>(
-    () => CashDashboardBloc(
-      watchTodaySalesUseCase: sl<WatchTodaySalesUseCase>(),
-    ),
+    () =>
+        CashDashboardBloc(watchTodaySalesUseCase: sl<WatchTodaySalesUseCase>()),
   );
   sl.registerFactory<RecordDebtCubit>(
     () => RecordDebtCubit(
@@ -129,8 +128,6 @@ Future<void> initDependencyInjection({
     ),
   );
   sl.registerFactory<KarneBorCubit>(
-    () => KarneBorCubit(
-      watchActiveDebtsUseCase: sl<WatchActiveDebtsUseCase>(),
-    ),
+    () => KarneBorCubit(watchActiveDebtsUseCase: sl<WatchActiveDebtsUseCase>()),
   );
 }

@@ -48,65 +48,59 @@ void main() {
 
     test('searches debtors with case-insensitivity and limit', () async {
       await dataSource.insertDebtor(
-        DebtorEntity(
-          id: 'd-1',
-          name: 'Modou Fall',
-          createdAt: testDate,
-        ),
+        DebtorEntity(id: 'd-1', name: 'Modou Fall', createdAt: testDate),
       );
       await dataSource.insertDebtor(
-        DebtorEntity(
-          id: 'd-2',
-          name: 'Modou Ndiaye',
-          createdAt: testDate,
-        ),
+        DebtorEntity(id: 'd-2', name: 'Modou Ndiaye', createdAt: testDate),
       );
       await dataSource.insertDebtor(
-        DebtorEntity(
-          id: 'd-3',
-          name: 'Awa Diop',
-          createdAt: testDate,
-        ),
+        DebtorEntity(id: 'd-3', name: 'Awa Diop', createdAt: testDate),
       );
 
       final results = await dataSource.searchDebtors('modou');
       expect(results.length, 2);
-      expect(results.map((d) => d.name).toList(), containsAll(['Modou Fall', 'Modou Ndiaye']));
+      expect(
+        results.map((d) => d.name).toList(),
+        containsAll(['Modou Fall', 'Modou Ndiaye']),
+      );
     });
 
-    test('recordDebtWithDebtor persists both debtor and debt atomically', () async {
-      final debtor = DebtorEntity(
-        id: 'debtor-atom-1',
-        name: 'Ibrahima Fall',
-        phoneNumber: '781112233',
-        createdAt: testDate,
-      );
+    test(
+      'recordDebtWithDebtor persists both debtor and debt atomically',
+      () async {
+        final debtor = DebtorEntity(
+          id: 'debtor-atom-1',
+          name: 'Ibrahima Fall',
+          phoneNumber: '781112233',
+          createdAt: testDate,
+        );
 
-      final debt = DebtEntity(
-        id: 'debt-atom-1',
-        debtorId: 'debtor-atom-1',
-        initialAmount: 7500,
-        remainingAmount: 7500,
-        dueDate: testDate.add(const Duration(days: 5)),
-        status: DebtStatus.active,
-        syncStatus: 'pending',
-        createdAt: testDate,
-      );
+        final debt = DebtEntity(
+          id: 'debt-atom-1',
+          debtorId: 'debtor-atom-1',
+          initialAmount: 7500,
+          remainingAmount: 7500,
+          dueDate: testDate.add(const Duration(days: 5)),
+          status: DebtStatus.active,
+          syncStatus: 'pending',
+          createdAt: testDate,
+        );
 
-      await dataSource.recordDebtWithDebtor(
-        debtor: debtor,
-        debt: debt,
-        isNewDebtor: true,
-      );
+        await dataSource.recordDebtWithDebtor(
+          debtor: debtor,
+          debt: debt,
+          isNewDebtor: true,
+        );
 
-      final retrievedDebtor = await dataSource.getDebtorById('debtor-atom-1');
-      final retrievedDebt = await dataSource.getDebtById('debt-atom-1');
+        final retrievedDebtor = await dataSource.getDebtorById('debtor-atom-1');
+        final retrievedDebt = await dataSource.getDebtById('debt-atom-1');
 
-      expect(retrievedDebtor, isNotNull);
-      expect(retrievedDebt, isNotNull);
-      expect(retrievedDebt?.initialAmount, 7500);
-      expect(retrievedDebt?.debtor?.name, 'Ibrahima Fall');
-    });
+        expect(retrievedDebtor, isNotNull);
+        expect(retrievedDebt, isNotNull);
+        expect(retrievedDebt?.initialAmount, 7500);
+        expect(retrievedDebt?.debtor?.name, 'Ibrahima Fall');
+      },
+    );
 
     test('recordDebtWithDebtor rolls back completely when debt insertion fails', () async {
       // First insert a debt with id 'duplicate-debt-id'
@@ -150,8 +144,9 @@ void main() {
       );
 
       // Verify atomicity: newDebtor was NOT persisted!
-      final shouldBeNull =
-          await dataSource.getDebtorById('new-debtor-should-rollback');
+      final shouldBeNull = await dataSource.getDebtorById(
+        'new-debtor-should-rollback',
+      );
       expect(shouldBeNull, isNull);
     });
 
@@ -184,11 +179,7 @@ void main() {
 
       final expectation = expectLater(
         dataSource.watchActiveDebts(),
-        emitsInOrder([
-          isEmpty,
-          hasLength(1),
-          hasLength(2),
-        ]),
+        emitsInOrder([isEmpty, hasLength(1), hasLength(2)]),
       );
 
       // Allow stream setup

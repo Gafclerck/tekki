@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:drift/drift.dart' hide isNull, isNotNull;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -36,20 +37,22 @@ void main() {
   });
 
   group('AppDatabase Initialization & Pragmas', () {
-    test('Applies WAL, NORMAL, and foreign_keys pragmas during opening',
-        () async {
-      final syncResult = await database.customSelect(
-        'PRAGMA synchronous;',
-      ).getSingle();
-      // NORMAL corresponds to synchronous = 1
-      expect(syncResult.data['synchronous'], equals(1));
+    test(
+      'Applies WAL, NORMAL, and foreign_keys pragmas during opening',
+      () async {
+        final syncResult = await database
+            .customSelect('PRAGMA synchronous;')
+            .getSingle();
+        // NORMAL corresponds to synchronous = 1
+        expect(syncResult.data['synchronous'], equals(1));
 
-      final fkResult = await database.customSelect(
-        'PRAGMA foreign_keys;',
-      ).getSingle();
-      // foreign_keys = 1 when ON
-      expect(fkResult.data['foreign_keys'], equals(1));
-    });
+        final fkResult = await database
+            .customSelect('PRAGMA foreign_keys;')
+            .getSingle();
+        // foreign_keys = 1 when ON
+        expect(fkResult.data['foreign_keys'], equals(1));
+      },
+    );
 
     test('WAL pragma persists on a file-backed database', () async {
       final tempDir = await Directory.systemTemp.createTemp('tekki_db_test_');
@@ -57,22 +60,22 @@ void main() {
       final diskDb = AppDatabase.forTesting(NativeDatabase(dbFile));
 
       try {
-        final journalResult = await diskDb.customSelect(
-          'PRAGMA journal_mode;',
-        ).getSingle();
+        final journalResult = await diskDb
+            .customSelect('PRAGMA journal_mode;')
+            .getSingle();
         expect(
           journalResult.data['journal_mode'].toString().toLowerCase(),
           equals('wal'),
         );
 
-        final syncResult = await diskDb.customSelect(
-          'PRAGMA synchronous;',
-        ).getSingle();
+        final syncResult = await diskDb
+            .customSelect('PRAGMA synchronous;')
+            .getSingle();
         expect(syncResult.data['synchronous'], equals(1));
 
-        final fkResult = await diskDb.customSelect(
-          'PRAGMA foreign_keys;',
-        ).getSingle();
+        final fkResult = await diskDb
+            .customSelect('PRAGMA foreign_keys;')
+            .getSingle();
         expect(fkResult.data['foreign_keys'], equals(1));
       } finally {
         await diskDb.close();
@@ -83,27 +86,31 @@ void main() {
     });
 
     test('Tables shops and sales exist in SQLite schema', () async {
-      final tables = await database.customSelect(
-        "SELECT name FROM sqlite_master WHERE type='table';",
-      ).get();
+      final tables = await database
+          .customSelect("SELECT name FROM sqlite_master WHERE type='table';")
+          .get();
 
-      final tableNames =
-          tables.map((row) => row.data['name'] as String).toSet();
+      final tableNames = tables
+          .map((row) => row.data['name'] as String)
+          .toSet();
       expect(tableNames.contains('shops'), isTrue);
       expect(tableNames.contains('sales'), isTrue);
     });
 
-    test('Indexes sales_closure_id_idx and sales_sync_status_idx exist on sales',
-        () async {
-      final indexes = await database.customSelect(
-        "SELECT name FROM sqlite_master WHERE type='index';",
-      ).get();
+    test(
+      'Indexes sales_closure_id_idx and sales_sync_status_idx exist on sales',
+      () async {
+        final indexes = await database
+            .customSelect("SELECT name FROM sqlite_master WHERE type='index';")
+            .get();
 
-      final indexNames =
-          indexes.map((row) => row.data['name'] as String).toSet();
-      expect(indexNames.contains('sales_closure_id_idx'), isTrue);
-      expect(indexNames.contains('sales_sync_status_idx'), isTrue);
-    });
+        final indexNames = indexes
+            .map((row) => row.data['name'] as String)
+            .toSet();
+        expect(indexNames.contains('sales_closure_id_idx'), isTrue);
+        expect(indexNames.contains('sales_sync_status_idx'), isTrue);
+      },
+    );
   });
 
   group('Shop Operations', () {
@@ -189,9 +196,7 @@ void main() {
       );
     });
 
-    test(
-        'ShopEntity rejects out-of-range or NaN coordinates and normalizes createdAt to UTC',
-        () {
+    test('ShopEntity rejects out-of-range or NaN coordinates and normalizes createdAt to UTC', () {
       final localDate = DateTime.parse('2026-11-17 10:00:00');
       final shop = ShopEntity(
         id: 'shop-valid-utc',
@@ -264,8 +269,7 @@ void main() {
       await expectation;
     });
 
-    test('ShopModel.toEntity() produces a genuine ShopEntity with Equatable equality',
-        () {
+    test('ShopModel.toEntity() produces a genuine ShopEntity with Equatable equality', () {
       final now = DateTime.now().toUtc();
       final model = ShopModel(
         id: 'shop-model-1',
@@ -297,9 +301,7 @@ void main() {
   });
 
   group('Sale Operations', () {
-    test(
-        'Inserts a quick sale with default closure_id null and sync_status pending',
-        () async {
+    test('Inserts a quick sale with default closure_id null and sync_status pending', () async {
       final recordedAt = DateTime.parse('2026-11-17T07:15:00.000Z');
       final sale = SaleEntity(
         id: 'sale-uuid-quick-1',
@@ -353,9 +355,7 @@ void main() {
       );
     });
 
-    test(
-        'SaleEntity rejects whitespace-only closureId and normalizes timestamps to UTC',
-        () {
+    test('SaleEntity rejects whitespace-only closureId and normalizes timestamps to UTC', () {
       final localRecordedAt = DateTime.parse('2026-11-17 12:00:00');
       final localSyncedAt = DateTime.parse('2026-11-17 12:05:00');
       final sale = SaleEntity(
@@ -380,52 +380,52 @@ void main() {
       );
     });
 
-    test('Filters orphan sales where closure_id IS NULL and uses index in < 50ms',
-        () async {
-      // Empty check
-      final initialOrphans = await dataSource.getOrphanSales();
-      expect(initialOrphans, isEmpty);
-
-      final now = DateTime.now().toUtc();
-      // Insert 10 orphan sales and 5 closed sales
-      for (var i = 0; i < 10; i++) {
-        await dataSource.insertSale(
-          SaleEntity(
-            id: 'orphan-sale-$i',
-            amount: 1000 + (i * 500),
-            paymentMethod: i.isEven
-                ? PaymentMethod.especes
-                : PaymentMethod.mobileMoney,
-            recordedAt: now.add(Duration(minutes: i)),
-            closureId: null,
-          ),
-        );
-      }
-
-      for (var i = 0; i < 5; i++) {
-        await dataSource.insertSale(
-          SaleEntity(
-            id: 'closed-sale-$i',
-            amount: 2000,
-            paymentMethod: PaymentMethod.creditClient,
-            recordedAt: now.subtract(Duration(hours: 1, minutes: i)),
-            closureId: 'daily-closure-uuid-yesterday',
-          ),
-        );
-      }
-
-      final stopwatch = Stopwatch()..start();
-      final orphans = await dataSource.getOrphanSales();
-      stopwatch.stop();
-
-      expect(orphans.length, equals(10));
-      expect(orphans.every((s) => s.closureId == null), isTrue);
-      expect(stopwatch.elapsedMilliseconds, lessThan(50));
-    });
-
     test(
-        'getAllSales and watchAllSales reject non-positive limit and support pagination',
-        () async {
+      'Filters orphan sales where closure_id IS NULL and uses index in < 50ms',
+      () async {
+        // Empty check
+        final initialOrphans = await dataSource.getOrphanSales();
+        expect(initialOrphans, isEmpty);
+
+        final now = DateTime.now().toUtc();
+        // Insert 10 orphan sales and 5 closed sales
+        for (var i = 0; i < 10; i++) {
+          await dataSource.insertSale(
+            SaleEntity(
+              id: 'orphan-sale-$i',
+              amount: 1000 + (i * 500),
+              paymentMethod: i.isEven
+                  ? PaymentMethod.especes
+                  : PaymentMethod.mobileMoney,
+              recordedAt: now.add(Duration(minutes: i)),
+              closureId: null,
+            ),
+          );
+        }
+
+        for (var i = 0; i < 5; i++) {
+          await dataSource.insertSale(
+            SaleEntity(
+              id: 'closed-sale-$i',
+              amount: 2000,
+              paymentMethod: PaymentMethod.creditClient,
+              recordedAt: now.subtract(Duration(hours: 1, minutes: i)),
+              closureId: 'daily-closure-uuid-yesterday',
+            ),
+          );
+        }
+
+        final stopwatch = Stopwatch()..start();
+        final orphans = await dataSource.getOrphanSales();
+        stopwatch.stop();
+
+        expect(orphans.length, equals(10));
+        expect(orphans.every((s) => s.closureId == null), isTrue);
+        expect(stopwatch.elapsedMilliseconds, lessThan(50));
+      },
+    );
+
+    test('getAllSales and watchAllSales reject non-positive limit and support pagination', () async {
       expect(
         () => dataSource.getAllSales(limit: 0),
         throwsA(isA<ArgumentError>()),
@@ -472,11 +472,7 @@ void main() {
 
       final expectation = expectLater(
         dataSource.watchOrphanSales(),
-        emitsInOrder([
-          isEmpty,
-          hasLength(1),
-          hasLength(2),
-        ]),
+        emitsInOrder([isEmpty, hasLength(1), hasLength(2)]),
       );
 
       await Future<void>.delayed(const Duration(milliseconds: 20));
@@ -487,30 +483,31 @@ void main() {
       await expectation;
     });
 
-    test('PaymentMethod string conversions are bidirectional and normalized',
-        () {
-      expect(PaymentMethod.especes.toValue(), 'ESPECES');
-      expect(PaymentMethod.mobileMoney.toValue(), 'MOBILE_MONEY');
-      expect(PaymentMethod.creditClient.toValue(), 'CREDIT_CLIENT');
+    test(
+      'PaymentMethod string conversions are bidirectional and normalized',
+      () {
+        expect(PaymentMethod.especes.toValue(), 'ESPECES');
+        expect(PaymentMethod.mobileMoney.toValue(), 'MOBILE_MONEY');
+        expect(PaymentMethod.creditClient.toValue(), 'CREDIT_CLIENT');
 
-      expect(PaymentMethod.fromValue('especes'), PaymentMethod.especes);
-      expect(
-        PaymentMethod.fromValue('MOBILE_MONEY'),
-        PaymentMethod.mobileMoney,
-      );
-      expect(
-        PaymentMethod.fromValue('credit-client'),
-        PaymentMethod.creditClient,
-      );
+        expect(PaymentMethod.fromValue('especes'), PaymentMethod.especes);
+        expect(
+          PaymentMethod.fromValue('MOBILE_MONEY'),
+          PaymentMethod.mobileMoney,
+        );
+        expect(
+          PaymentMethod.fromValue('credit-client'),
+          PaymentMethod.creditClient,
+        );
 
-      expect(
-        () => PaymentMethod.fromValue('BITCOIN'),
-        throwsA(isA<ArgumentError>()),
-      );
-    });
+        expect(
+          () => PaymentMethod.fromValue('BITCOIN'),
+          throwsA(isA<ArgumentError>()),
+        );
+      },
+    );
 
-    test('SaleModel.toEntity() produces a genuine SaleEntity with Equatable equality',
-        () {
+    test('SaleModel.toEntity() produces a genuine SaleEntity with Equatable equality', () {
       final now = DateTime.now().toUtc();
       final model = SaleModel(
         id: 'sale-model-1',
@@ -553,32 +550,34 @@ void main() {
   });
 
   group('Dependency Injection (get_it)', () {
-    test('Registers AppDatabase and SalesLocalDataSource without domain leakage',
-        () async {
-      await di.sl.reset();
-      await di.initDependencyInjection(inMemoryDatabase: true);
+    test(
+      'Registers AppDatabase and SalesLocalDataSource without domain leakage',
+      () async {
+        await di.sl.reset();
+        await di.initDependencyInjection(inMemoryDatabase: true);
 
-      expect(di.sl.isRegistered<AppDatabase>(), isTrue);
-      expect(di.sl.isRegistered<SalesLocalDataSource>(), isTrue);
-      expect(di.sl.isRegistered<ClosureLocalDataSource>(), isTrue);
-      expect(di.sl.isRegistered<ClosureRepository>(), isTrue);
-      expect(di.sl.isRegistered<GetClosurePrefillUseCase>(), isTrue);
-      expect(di.sl.isRegistered<ExecuteDailyClosureUseCase>(), isTrue);
-      expect(di.sl.isRegistered<ExpressClosureCubit>(), isTrue);
+        expect(di.sl.isRegistered<AppDatabase>(), isTrue);
+        expect(di.sl.isRegistered<SalesLocalDataSource>(), isTrue);
+        expect(di.sl.isRegistered<ClosureLocalDataSource>(), isTrue);
+        expect(di.sl.isRegistered<ClosureRepository>(), isTrue);
+        expect(di.sl.isRegistered<GetClosurePrefillUseCase>(), isTrue);
+        expect(di.sl.isRegistered<ExecuteDailyClosureUseCase>(), isTrue);
+        expect(di.sl.isRegistered<ExpressClosureCubit>(), isTrue);
 
-      final resolvedDb = di.sl<AppDatabase>();
-      expect(resolvedDb, isA<AppDatabase>());
+        final resolvedDb = di.sl<AppDatabase>();
+        expect(resolvedDb, isA<AppDatabase>());
 
-      final resolvedDs = di.sl<SalesLocalDataSource>();
-      expect(resolvedDs, isA<SalesLocalDataSource>());
+        final resolvedDs = di.sl<SalesLocalDataSource>();
+        expect(resolvedDs, isA<SalesLocalDataSource>());
 
-      final resolvedClosureDs = di.sl<ClosureLocalDataSource>();
-      expect(resolvedClosureDs, isA<ClosureLocalDataSource>());
+        final resolvedClosureDs = di.sl<ClosureLocalDataSource>();
+        expect(resolvedClosureDs, isA<ClosureLocalDataSource>());
 
-      final resolvedClosureCubit = di.sl<ExpressClosureCubit>();
-      expect(resolvedClosureCubit, isA<ExpressClosureCubit>());
+        final resolvedClosureCubit = di.sl<ExpressClosureCubit>();
+        expect(resolvedClosureCubit, isA<ExpressClosureCubit>());
 
-      await di.sl.reset();
-    });
+        await di.sl.reset();
+      },
+    );
   });
 }

@@ -13,8 +13,11 @@ import 'package:tekki/features/karne_bor/presentation/cubit/karne_bor_cubit.dart
 import 'package:tekki/features/karne_bor/presentation/cubit/record_debt_cubit.dart';
 import 'package:tekki/features/karne_bor/presentation/screens/karne_bor_screen.dart';
 
-class MockWatchActiveDebtsUseCase extends Mock implements WatchActiveDebtsUseCase {}
+class MockWatchActiveDebtsUseCase extends Mock
+    implements WatchActiveDebtsUseCase {}
+
 class MockRecordDebtUseCase extends Mock implements RecordDebtUseCase {}
+
 class MockGetDebtorsUseCase extends Mock implements GetDebtorsUseCase {}
 
 class FakeRecordDebtParams extends Fake implements RecordDebtParams {}
@@ -42,8 +45,12 @@ void main() {
   }) {
     when(() => mockWatchActiveDebtsUseCase.call(limit: any(named: 'limit')))
         .thenAnswer((_) => Stream.value(initialDebts));
-    when(() => mockGetDebtorsUseCase.call(query: any(named: 'query'), limit: any(named: 'limit')))
-        .thenAnswer((_) async => Success(knownDebtors));
+    when(
+      () => mockGetDebtorsUseCase.call(
+        query: any(named: 'query'),
+        limit: any(named: 'limit'),
+      ),
+    ).thenAnswer((_) async => Success(knownDebtors));
 
     final karneCubit = KarneBorCubit(
       watchActiveDebtsUseCase: mockWatchActiveDebtsUseCase,
@@ -63,14 +70,18 @@ void main() {
   }
 
   group('KarneBorScreen Widget Tests', () {
-    testWidgets('renders header, summary card and empty state when no debts',
-        (tester) async {
+    testWidgets('renders header, summary card and empty state when no debts', (
+      tester,
+    ) async {
       await tester.pumpWidget(createWidgetUnderTest(initialDebts: []));
       await tester.pumpAndSettle();
 
       expect(find.text('Karné Bor'), findsOneWidget);
       expect(find.text('Carnet Numérique'), findsOneWidget);
-      expect(find.byKey(const ValueKey('karne_bor_summary_card')), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('karne_bor_summary_card')),
+        findsOneWidget,
+      );
       expect(find.text('0 FCFA'), findsOneWidget);
       expect(find.text('0 créance'), findsOneWidget);
 
@@ -81,59 +92,66 @@ void main() {
       expect(find.byKey(const ValueKey('add_debt_button')), findsOneWidget);
     });
 
-    testWidgets('renders list of active debts with name, amount and overdue badge',
-        (tester) async {
-      final debtor1 = DebtorEntity(
-        id: 'd-1',
-        name: 'Modou Fall',
-        createdAt: testDate,
-      );
-      final debtor2 = DebtorEntity(
-        id: 'd-2',
-        name: 'Fatou Kiné',
-        createdAt: testDate,
-      );
-
-      final debts = [
-        DebtEntity(
-          id: 'debt-overdue',
-          debtorId: 'd-1',
-          initialAmount: 15000,
-          remainingAmount: 15000,
-          dueDate: DateTime.now().toUtc().subtract(const Duration(days: 3)), // Overdue!
-          status: DebtStatus.active,
+    testWidgets(
+      'renders list of active debts with name, amount and overdue badge',
+      (tester) async {
+        final debtor1 = DebtorEntity(
+          id: 'd-1',
+          name: 'Modou Fall',
           createdAt: testDate,
-          debtor: debtor1,
-        ),
-        DebtEntity(
-          id: 'debt-nominal',
-          debtorId: 'd-2',
-          initialAmount: 5000,
-          remainingAmount: 5000,
-          dueDate: DateTime.now().toUtc().add(const Duration(days: 4)), // Future!
-          status: DebtStatus.active,
+        );
+        final debtor2 = DebtorEntity(
+          id: 'd-2',
+          name: 'Fatou Kiné',
           createdAt: testDate,
-          debtor: debtor2,
-        ),
-      ];
+        );
 
-      await tester.pumpWidget(createWidgetUnderTest(initialDebts: debts));
-      await tester.pumpAndSettle();
+        final debts = [
+          DebtEntity(
+            id: 'debt-overdue',
+            debtorId: 'd-1',
+            initialAmount: 15000,
+            remainingAmount: 15000,
+            dueDate: DateTime.now().toUtc().subtract(
+              const Duration(days: 3),
+            ), // Overdue!
+            status: DebtStatus.active,
+            createdAt: testDate,
+            debtor: debtor1,
+          ),
+          DebtEntity(
+            id: 'debt-nominal',
+            debtorId: 'd-2',
+            initialAmount: 5000,
+            remainingAmount: 5000,
+            dueDate: DateTime.now().toUtc().add(
+              const Duration(days: 4),
+            ), // Future!
+            status: DebtStatus.active,
+            createdAt: testDate,
+            debtor: debtor2,
+          ),
+        ];
 
-      expect(find.text('Modou Fall'), findsOneWidget);
-      expect(find.text('15 000 FCFA'), findsOneWidget);
-      expect(find.text('⚠️ Retard'), findsOneWidget);
+        await tester.pumpWidget(createWidgetUnderTest(initialDebts: debts));
+        await tester.pumpAndSettle();
 
-      expect(find.text('Fatou Kiné'), findsOneWidget);
-      expect(find.text('5 000 FCFA'), findsOneWidget);
-      expect(find.text('À jour'), findsOneWidget);
+        expect(find.text('Modou Fall'), findsOneWidget);
+        expect(find.text('15 000 FCFA'), findsOneWidget);
+        expect(find.text('⚠️ Retard'), findsOneWidget);
 
-      expect(find.text('20 000 FCFA'), findsOneWidget); // 15000 + 5000
-      expect(find.text('2 créances'), findsOneWidget);
-    });
+        expect(find.text('Fatou Kiné'), findsOneWidget);
+        expect(find.text('5 000 FCFA'), findsOneWidget);
+        expect(find.text('À jour'), findsOneWidget);
 
-    testWidgets('tapping add debt button opens bottom sheet and records debt',
-        (tester) async {
+        expect(find.text('20 000 FCFA'), findsOneWidget); // 15000 + 5000
+        expect(find.text('2 créances'), findsOneWidget);
+      },
+    );
+
+    testWidgets('tapping add debt button opens bottom sheet and records debt', (
+      tester,
+    ) async {
       final recordedDebt = DebtEntity(
         id: 'new-debt-id',
         debtorId: 'new-debtor-id',
@@ -159,7 +177,10 @@ void main() {
       await tester.pumpAndSettle();
 
       // Bottom sheet is visible
-      expect(find.byKey(const ValueKey('record_debt_bottom_sheet')), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('record_debt_bottom_sheet')),
+        findsOneWidget,
+      );
       expect(find.byKey(const ValueKey('debtor_name_input')), findsOneWidget);
       expect(find.byKey(const ValueKey('debt_amount_input')), findsOneWidget);
 
@@ -179,8 +200,14 @@ void main() {
       await tester.pumpAndSettle();
 
       // Modal is closed and confirmation SnackBar is displayed
-      expect(find.byKey(const ValueKey('record_debt_bottom_sheet')), findsNothing);
-      expect(find.byKey(const ValueKey('debt_recorded_snackbar')), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('record_debt_bottom_sheet')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const ValueKey('debt_recorded_snackbar')),
+        findsOneWidget,
+      );
       expect(find.textContaining('Fatou Kiné'), findsOneWidget);
     });
 

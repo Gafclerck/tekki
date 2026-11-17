@@ -32,9 +32,8 @@ void main() {
   group('ClosureRepositoryImpl', () {
     group('getPrefillSalesAmount', () {
       test('returns Success(amount) when data source succeeds', () async {
-        when(() => mockDataSource.getPrefillSalesAmount(cutoff)).thenAnswer(
-          (_) async => 17500,
-        );
+        when(() => mockDataSource.getPrefillSalesAmount(cutoff))
+            .thenAnswer((_) async => 17500);
 
         final result = await repository.getPrefillSalesAmount(cutoff);
 
@@ -46,48 +45,49 @@ void main() {
         verify(() => mockDataSource.getPrefillSalesAmount(cutoff)).called(1);
       });
 
-      test('returns DatabaseFailure when data source throws DatabaseException',
-          () async {
-        when(() => mockDataSource.getPrefillSalesAmount(cutoff)).thenThrow(
-          const DatabaseException('SQLite query error'),
-        );
+      test(
+        'returns DatabaseFailure when data source throws DatabaseException',
+        () async {
+          when(() => mockDataSource.getPrefillSalesAmount(cutoff))
+              .thenThrow(const DatabaseException('SQLite query error'));
 
-        final result = await repository.getPrefillSalesAmount(cutoff);
+          final result = await repository.getPrefillSalesAmount(cutoff);
 
-        expect(result.isError, isTrue);
-        result.fold(
-          onSuccess: (_) => fail('Should not succeed'),
-          onError: (failure) {
-            expect(failure, isA<DatabaseFailure>());
-            expect(failure.message, equals('SQLite query error'));
-          },
-        );
-      });
+          expect(result.isError, isTrue);
+          result.fold(
+            onSuccess: (_) => fail('Should not succeed'),
+            onError: (failure) {
+              expect(failure, isA<DatabaseFailure>());
+              expect(failure.message, equals('SQLite query error'));
+            },
+          );
+        },
+      );
 
-      test('returns DatabaseFailure when an unexpected exception occurs',
-          () async {
-        when(() => mockDataSource.getPrefillSalesAmount(cutoff)).thenThrow(
-          Exception('Unexpected crash'),
-        );
+      test(
+        'returns DatabaseFailure when an unexpected exception occurs',
+        () async {
+          when(() => mockDataSource.getPrefillSalesAmount(cutoff))
+              .thenThrow(Exception('Unexpected crash'));
 
-        final result = await repository.getPrefillSalesAmount(cutoff);
+          final result = await repository.getPrefillSalesAmount(cutoff);
 
-        expect(result.isError, isTrue);
-        result.fold(
-          onSuccess: (_) => fail('Should not succeed'),
-          onError: (failure) {
-            expect(failure, isA<DatabaseFailure>());
-            expect(failure.message, contains('Erreur inattendue'));
-          },
-        );
-      });
+          expect(result.isError, isTrue);
+          result.fold(
+            onSuccess: (_) => fail('Should not succeed'),
+            onError: (failure) {
+              expect(failure, isA<DatabaseFailure>());
+              expect(failure.message, contains('Erreur inattendue'));
+            },
+          );
+        },
+      );
     });
 
     group('executeDailyClosure', () {
       test('returns Success(closure) when transaction succeeds', () async {
-        when(() => mockDataSource.executeDailyClosure(testClosure)).thenAnswer(
-          (_) async => testClosure,
-        );
+        when(() => mockDataSource.executeDailyClosure(testClosure))
+            .thenAnswer((_) async => testClosure);
 
         final result = await repository.executeDailyClosure(testClosure);
 
@@ -99,41 +99,44 @@ void main() {
         verify(() => mockDataSource.executeDailyClosure(testClosure)).called(1);
       });
 
-      test('returns DatabaseFailure when transaction throws DatabaseException',
-          () async {
-        when(() => mockDataSource.executeDailyClosure(testClosure)).thenThrow(
-          const DatabaseException('Transaction rollback: disk full'),
-        );
+      test(
+        'returns DatabaseFailure when transaction throws DatabaseException',
+        () async {
+          when(() => mockDataSource.executeDailyClosure(testClosure)).thenThrow(
+            const DatabaseException('Transaction rollback: disk full'),
+          );
 
-        final result = await repository.executeDailyClosure(testClosure);
+          final result = await repository.executeDailyClosure(testClosure);
 
-        expect(result.isError, isTrue);
-        result.fold(
-          onSuccess: (_) => fail('Should not succeed'),
-          onError: (failure) {
-            expect(failure, isA<DatabaseFailure>());
-            expect(failure.message, contains('Transaction rollback'));
-          },
-        );
-      });
+          expect(result.isError, isTrue);
+          result.fold(
+            onSuccess: (_) => fail('Should not succeed'),
+            onError: (failure) {
+              expect(failure, isA<DatabaseFailure>());
+              expect(failure.message, contains('Transaction rollback'));
+            },
+          );
+        },
+      );
 
-      test('returns DatabaseFailure when an unexpected exception occurs',
-          () async {
-        when(() => mockDataSource.executeDailyClosure(testClosure)).thenThrow(
-          Exception('Unexpected write error'),
-        );
+      test(
+        'returns DatabaseFailure when an unexpected exception occurs',
+        () async {
+          when(() => mockDataSource.executeDailyClosure(testClosure))
+              .thenThrow(Exception('Unexpected write error'));
 
-        final result = await repository.executeDailyClosure(testClosure);
+          final result = await repository.executeDailyClosure(testClosure);
 
-        expect(result.isError, isTrue);
-        result.fold(
-          onSuccess: (_) => fail('Should not succeed'),
-          onError: (failure) {
-            expect(failure, isA<DatabaseFailure>());
-            expect(failure.message, contains('Erreur inattendue'));
-          },
-        );
-      });
+          expect(result.isError, isTrue);
+          result.fold(
+            onSuccess: (_) => fail('Should not succeed'),
+            onError: (failure) {
+              expect(failure, isA<DatabaseFailure>());
+              expect(failure.message, contains('Erreur inattendue'));
+            },
+          );
+        },
+      );
     });
 
     group('getClosureById', () {
@@ -163,23 +166,24 @@ void main() {
         );
       });
 
-      test('returns DatabaseFailure when data source throws DatabaseException',
-          () async {
-        when(() => mockDataSource.getClosureById('any-id')).thenThrow(
-          const DatabaseException('Database read error'),
-        );
+      test(
+        'returns DatabaseFailure when data source throws DatabaseException',
+        () async {
+          when(() => mockDataSource.getClosureById('any-id'))
+              .thenThrow(const DatabaseException('Database read error'));
 
-        final result = await repository.getClosureById('any-id');
+          final result = await repository.getClosureById('any-id');
 
-        expect(result.isError, isTrue);
-        result.fold(
-          onSuccess: (_) => fail('Should not succeed'),
-          onError: (failure) {
-            expect(failure, isA<DatabaseFailure>());
-            expect(failure.message, equals('Database read error'));
-          },
-        );
-      });
+          expect(result.isError, isTrue);
+          result.fold(
+            onSuccess: (_) => fail('Should not succeed'),
+            onError: (failure) {
+              expect(failure, isA<DatabaseFailure>());
+              expect(failure.message, equals('Database read error'));
+            },
+          );
+        },
+      );
     });
 
     group('getAllClosures', () {
@@ -196,22 +200,24 @@ void main() {
         );
       });
 
-      test('returns DatabaseFailure when data source throws DatabaseException',
-          () async {
-        when(() => mockDataSource.getAllClosures(limit: 50, offset: null))
-            .thenThrow(const DatabaseException('Pagination error'));
+      test(
+        'returns DatabaseFailure when data source throws DatabaseException',
+        () async {
+          when(() => mockDataSource.getAllClosures(limit: 50, offset: null))
+              .thenThrow(const DatabaseException('Pagination error'));
 
-        final result = await repository.getAllClosures();
+          final result = await repository.getAllClosures();
 
-        expect(result.isError, isTrue);
-        result.fold(
-          onSuccess: (_) => fail('Should not succeed'),
-          onError: (failure) {
-            expect(failure, isA<DatabaseFailure>());
-            expect(failure.message, equals('Pagination error'));
-          },
-        );
-      });
+          expect(result.isError, isTrue);
+          result.fold(
+            onSuccess: (_) => fail('Should not succeed'),
+            onError: (failure) {
+              expect(failure, isA<DatabaseFailure>());
+              expect(failure.message, equals('Pagination error'));
+            },
+          );
+        },
+      );
     });
   });
 }

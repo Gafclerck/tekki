@@ -34,8 +34,9 @@ class SaleModel extends SaleEntity {
       recordedAt: DateTime.parse(row.recordedAt),
       closureId: row.closureId,
       syncStatus: row.syncStatus,
-      lastSyncedAt:
-          row.lastSyncedAt != null ? DateTime.parse(row.lastSyncedAt!) : null,
+      lastSyncedAt: row.lastSyncedAt != null
+          ? DateTime.parse(row.lastSyncedAt!)
+          : null,
     );
   }
 

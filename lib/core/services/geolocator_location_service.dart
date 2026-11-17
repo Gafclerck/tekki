@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:geolocator/geolocator.dart';
 import 'package:tekki/core/constants/app_constants.dart';
 import 'package:tekki/core/services/location_service.dart';
@@ -19,9 +20,10 @@ class GeolocatorLocationService implements ILocationService {
     LocationServiceChecker? isServiceEnabled,
     PermissionChecker? checkPermission,
     PositionGetter? getPosition,
-  })  : _isServiceEnabled = isServiceEnabled ?? Geolocator.isLocationServiceEnabled,
-        _checkPermission = checkPermission ?? Geolocator.checkPermission,
-        _getPosition = getPosition ?? Geolocator.getCurrentPosition;
+  }) : _isServiceEnabled =
+           isServiceEnabled ?? Geolocator.isLocationServiceEnabled,
+       _checkPermission = checkPermission ?? Geolocator.checkPermission,
+       _getPosition = getPosition ?? Geolocator.getCurrentPosition;
 
   final Duration timeout;
   final LocationServiceChecker _isServiceEnabled;
@@ -44,9 +46,7 @@ class GeolocatorLocationService implements ILocationService {
 
     // 3. Acquire current position
     final position = await _getPosition(
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.high,
-      ),
+      locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
     );
 
     return GeoLocation(

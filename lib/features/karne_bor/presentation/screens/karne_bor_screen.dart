@@ -11,11 +11,7 @@ import 'package:tekki/features/karne_bor/presentation/widgets/record_debt_bottom
 import 'package:tekki/injection_container.dart';
 
 class KarneBorScreen extends StatefulWidget {
-  const KarneBorScreen({
-    super.key,
-    this.karneBorCubit,
-    this.recordDebtCubit,
-  });
+  const KarneBorScreen({super.key, this.karneBorCubit, this.recordDebtCubit});
 
   final KarneBorCubit? karneBorCubit;
   final RecordDebtCubit? recordDebtCubit;
@@ -30,7 +26,8 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
   @override
   void initState() {
     super.initState();
-    _cubit = widget.karneBorCubit ??
+    _cubit =
+        widget.karneBorCubit ??
         (sl.isRegistered<KarneBorCubit>()
             ? sl<KarneBorCubit>()
             : KarneBorCubit(watchActiveDebtsUseCase: sl()));
@@ -147,8 +144,14 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
                 children: [
                   // Summary Banner: Argent Dehors
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: _buildSummaryCard(loaded.totalDebt, loaded.debts.length),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    child: _buildSummaryCard(
+                      loaded.totalDebt,
+                      loaded.debts.length,
+                    ),
                   ),
 
                   // Content: list or empty state
@@ -181,10 +184,7 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
                 icon: const Icon(Icons.add_circle_outline, size: 20),
                 label: const Text(
                   '+ Noter une Dette Client',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.accent,
@@ -328,7 +328,9 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
             color: AppColors.surface,
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
-              color: isLate ? AppColors.accent : AppColors.tertiary.withValues(alpha: 0.4),
+              color: isLate
+                  ? AppColors.accent
+                  : AppColors.tertiary.withValues(alpha: 0.4),
               width: isLate ? 1.5 : 1,
             ),
           ),
@@ -372,7 +374,10 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
                   ),
                   if (isLate)
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.accentSoft,
                         borderRadius: BorderRadius.circular(6),

@@ -1,13 +1,13 @@
 import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
 import 'package:tekki/features/karne_bor/domain/usecases/watch_active_debts_use_case.dart';
 import 'package:tekki/features/karne_bor/presentation/cubit/karne_bor_state.dart';
 
 class KarneBorCubit extends Cubit<KarneBorState> {
-  KarneBorCubit({
-    required this.watchActiveDebtsUseCase,
-  }) : super(const KarneBorInitial());
+  KarneBorCubit({required this.watchActiveDebtsUseCase})
+    : super(const KarneBorInitial());
 
   final WatchActiveDebtsUseCase watchActiveDebtsUseCase;
   StreamSubscription<List<DebtEntity>>? _subscription;

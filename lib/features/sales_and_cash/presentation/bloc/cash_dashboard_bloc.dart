@@ -5,9 +5,8 @@ import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_e
 import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_state.dart';
 
 class CashDashboardBloc extends Bloc<CashDashboardEvent, CashDashboardState> {
-  CashDashboardBloc({
-    required this.watchTodaySalesUseCase,
-  }) : super(const CashDashboardInitial()) {
+  CashDashboardBloc({required this.watchTodaySalesUseCase})
+    : super(const CashDashboardInitial()) {
     on<WatchCashDashboardStarted>(_onWatchCashDashboardStarted);
     on<CloseCashierTapped>(_onCloseCashierTapped);
     on<ResetClosureLock>(_onResetClosureLock);

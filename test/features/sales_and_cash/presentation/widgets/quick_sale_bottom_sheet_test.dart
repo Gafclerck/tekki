@@ -28,8 +28,7 @@ void main() {
       home: Scaffold(
         body: BlocProvider<QuickSaleCubit>(
           create: (_) =>
-              cubit ??
-              QuickSaleCubit(recordQuickSaleUseCase: mockUseCase),
+              cubit ?? QuickSaleCubit(recordQuickSaleUseCase: mockUseCase),
           child: const QuickSaleBottomSheet(),
         ),
       ),
@@ -44,7 +43,10 @@ void main() {
       expect(find.text('Vente rapide'), findsOneWidget);
 
       // Initial Amount display (0 FCFA)
-      expect(find.byKey(const ValueKey('quick_sale_amount_display')), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('quick_sale_amount_display')),
+        findsOneWidget,
+      );
       expect(find.textContaining('0 FCFA'), findsOneWidget);
 
       // Payment options
@@ -52,7 +54,9 @@ void main() {
       expect(find.text('Mobile Money'), findsOneWidget);
 
       // Validation button is disabled when amount is 0
-      final submitButtonFinder = find.byKey(const ValueKey('quick_sale_submit_button'));
+      final submitButtonFinder = find.byKey(
+        const ValueKey('quick_sale_submit_button'),
+      );
       expect(submitButtonFinder, findsOneWidget);
       final elevatedButton = tester.widget<ElevatedButton>(submitButtonFinder);
       expect(elevatedButton.onPressed, isNull);
@@ -69,26 +73,29 @@ void main() {
       }
     });
 
-    testWidgets('tapping digits updates amount display and enables submit button', (tester) async {
-      await tester.pumpWidget(buildTestWidget());
+    testWidgets(
+      'tapping digits updates amount display and enables submit button',
+      (tester) async {
+        await tester.pumpWidget(buildTestWidget());
 
-      // Tap 2, 5, 0, 0 -> 2 500 F CFA
-      await tester.tap(find.byKey(const ValueKey('keypad_2')));
-      await tester.pump();
-      await tester.tap(find.byKey(const ValueKey('keypad_5')));
-      await tester.pump();
-      await tester.tap(find.byKey(const ValueKey('keypad_0')));
-      await tester.pump();
-      await tester.tap(find.byKey(const ValueKey('keypad_0')));
-      await tester.pump();
+        // Tap 2, 5, 0, 0 -> 2 500 F CFA
+        await tester.tap(find.byKey(const ValueKey('keypad_2')));
+        await tester.pump();
+        await tester.tap(find.byKey(const ValueKey('keypad_5')));
+        await tester.pump();
+        await tester.tap(find.byKey(const ValueKey('keypad_0')));
+        await tester.pump();
+        await tester.tap(find.byKey(const ValueKey('keypad_0')));
+        await tester.pump();
 
-      expect(find.textContaining('2 500 FCFA'), findsWidgets);
+        expect(find.textContaining('2 500 FCFA'), findsWidgets);
 
-      final submitButton = tester.widget<ElevatedButton>(
-        find.byKey(const ValueKey('quick_sale_submit_button')),
-      );
-      expect(submitButton.onPressed, isNotNull);
-    });
+        final submitButton = tester.widget<ElevatedButton>(
+          find.byKey(const ValueKey('quick_sale_submit_button')),
+        );
+        expect(submitButton.onPressed, isNotNull);
+      },
+    );
 
     testWidgets('tapping backspace removes last digit', (tester) async {
       await tester.pumpWidget(buildTestWidget());
@@ -110,15 +117,21 @@ void main() {
       await tester.pumpWidget(buildTestWidget());
 
       // Tap Mobile Money
-      await tester.tap(find.byKey(const ValueKey('payment_method_mobile_money')));
+      await tester.tap(
+        find.byKey(const ValueKey('payment_method_mobile_money')),
+      );
       await tester.pump();
 
       // Mobile money is selected
-      final mmFinder = find.byKey(const ValueKey('payment_method_mobile_money'));
+      final mmFinder = find.byKey(
+        const ValueKey('payment_method_mobile_money'),
+      );
       expect(mmFinder, findsOneWidget);
     });
 
-    testWidgets('validating submission calls useCase and pops on success', (tester) async {
+    testWidgets('validating submission calls useCase and pops on success', (
+      tester,
+    ) async {
       final createdSale = SaleEntity(
         id: 'sale-123',
         amount: 2500,
@@ -127,10 +140,7 @@ void main() {
       );
 
       when(
-        () => mockUseCase(
-          amount: 2500,
-          paymentMethod: PaymentMethod.especes,
-        ),
+        () => mockUseCase(amount: 2500, paymentMethod: PaymentMethod.especes),
       ).thenAnswer((_) async => Success(createdSale));
 
       SaleEntity? poppedResult;
@@ -148,7 +158,8 @@ void main() {
                       isScrollControlled: true,
                       backgroundColor: Colors.transparent,
                       builder: (_) => BlocProvider<QuickSaleCubit>(
-                        create: (_) => QuickSaleCubit(recordQuickSaleUseCase: mockUseCase),
+                        create: (_) =>
+                            QuickSaleCubit(recordQuickSaleUseCase: mockUseCase),
                         child: const QuickSaleBottomSheet(),
                       ),
                     );
@@ -186,7 +197,9 @@ void main() {
       expect(poppedResult, equals(createdSale));
     });
 
-    testWidgets('QuickSaleButton opens bottom sheet via get_it', (tester) async {
+    testWidgets('QuickSaleButton opens bottom sheet via get_it', (
+      tester,
+    ) async {
       // Register in GetIt for this test
       if (sl.isRegistered<RecordQuickSaleUseCase>()) {
         sl.unregister<RecordQuickSaleUseCase>();
@@ -195,16 +208,14 @@ void main() {
         sl.unregister<QuickSaleCubit>();
       }
       sl.registerLazySingleton<RecordQuickSaleUseCase>(() => mockUseCase);
-      sl.registerFactory<QuickSaleCubit>(() => QuickSaleCubit(recordQuickSaleUseCase: sl()));
+      sl.registerFactory<QuickSaleCubit>(
+        () => QuickSaleCubit(recordQuickSaleUseCase: sl()),
+      );
 
       await tester.pumpWidget(
         MaterialApp(
           theme: AppTheme.lightTheme,
-          home: const Scaffold(
-            body: Center(
-              child: QuickSaleButton(),
-            ),
-          ),
+          home: const Scaffold(body: Center(child: QuickSaleButton())),
         ),
       );
 
@@ -213,7 +224,10 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Vente rapide'), findsOneWidget);
-      expect(find.byKey(const ValueKey('quick_sale_amount_display')), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('quick_sale_amount_display')),
+        findsOneWidget,
+      );
     });
   });
 }

@@ -30,7 +30,8 @@ abstract final class HaversineCalculator {
     final sinDLat2 = math.sin(dLat / 2);
     final sinDLon2 = math.sin(dLon / 2);
 
-    final a = sinDLat2 * sinDLat2 +
+    final a =
+        sinDLat2 * sinDLat2 +
         math.cos(rLat1) * math.cos(rLat2) * sinDLon2 * sinDLon2;
 
     // Clamp 'a' to [0, 1] to avoid domain errors with math.asin or math.sqrt

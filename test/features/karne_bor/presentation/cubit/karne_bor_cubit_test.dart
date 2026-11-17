@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
@@ -6,7 +7,8 @@ import 'package:tekki/features/karne_bor/domain/usecases/watch_active_debts_use_
 import 'package:tekki/features/karne_bor/presentation/cubit/karne_bor_cubit.dart';
 import 'package:tekki/features/karne_bor/presentation/cubit/karne_bor_state.dart';
 
-class MockWatchActiveDebtsUseCase extends Mock implements WatchActiveDebtsUseCase {}
+class MockWatchActiveDebtsUseCase extends Mock
+    implements WatchActiveDebtsUseCase {}
 
 void main() {
   late MockWatchActiveDebtsUseCase mockWatchActiveDebtsUseCase;
@@ -34,37 +36,43 @@ void main() {
       expect(cubit.state, const KarneBorInitial());
     });
 
-    test('startWatching emits Loading then Loaded with calculated totalDebt', () async {
-      final debts = [
-        DebtEntity(
-          id: 'debt-1',
-          debtorId: 'debtor-1',
-          initialAmount: 5000,
-          remainingAmount: 5000,
-          dueDate: testDate,
-          createdAt: testDate,
-        ),
-        DebtEntity(
-          id: 'debt-2',
-          debtorId: 'debtor-2',
-          initialAmount: 3000,
-          remainingAmount: 2000, // partial remaining
-          dueDate: testDate,
-          createdAt: testDate,
-        ),
-      ];
+    test(
+      'startWatching emits Loading then Loaded with calculated totalDebt',
+      () async {
+        final debts = [
+          DebtEntity(
+            id: 'debt-1',
+            debtorId: 'debtor-1',
+            initialAmount: 5000,
+            remainingAmount: 5000,
+            dueDate: testDate,
+            createdAt: testDate,
+          ),
+          DebtEntity(
+            id: 'debt-2',
+            debtorId: 'debtor-2',
+            initialAmount: 3000,
+            remainingAmount: 2000, // partial remaining
+            dueDate: testDate,
+            createdAt: testDate,
+          ),
+        ];
 
-      final expectedStates = [
-        const KarneBorLoading(),
-        KarneBorLoaded(debts: debts, totalDebt: 7000), // 5000 + 2000
-      ];
+        final expectedStates = [
+          const KarneBorLoading(),
+          KarneBorLoaded(debts: debts, totalDebt: 7000), // 5000 + 2000
+        ];
 
-      final expectation = expectLater(cubit.stream, emitsInOrder(expectedStates));
+        final expectation = expectLater(
+          cubit.stream,
+          emitsInOrder(expectedStates),
+        );
 
-      cubit.startWatching();
-      streamController.add(debts);
-      await expectation;
-    });
+        cubit.startWatching();
+        streamController.add(debts);
+        await expectation;
+      },
+    );
 
     test('startWatching emits Error on stream error', () async {
       final expectedStates = [
@@ -74,7 +82,10 @@ void main() {
         ),
       ];
 
-      final expectation = expectLater(cubit.stream, emitsInOrder(expectedStates));
+      final expectation = expectLater(
+        cubit.stream,
+        emitsInOrder(expectedStates),
+      );
 
       cubit.startWatching();
       streamController.addError(Exception('Database failure'));

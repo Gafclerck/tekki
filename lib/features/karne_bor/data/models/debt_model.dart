@@ -42,8 +42,9 @@ class DebtModel extends DebtEntity {
       dueDate: DateTime.parse(row.dueDate),
       status: DebtStatus.fromValue(row.status),
       syncStatus: row.syncStatus,
-      lastSyncedAt:
-          row.lastSyncedAt != null ? DateTime.parse(row.lastSyncedAt!) : null,
+      lastSyncedAt: row.lastSyncedAt != null
+          ? DateTime.parse(row.lastSyncedAt!)
+          : null,
       createdAt: DateTime.parse(row.createdAt),
       debtor: debtor?.toEntity(),
     );
@@ -63,7 +64,8 @@ class DebtModel extends DebtEntity {
           : null,
       createdAt: DateTime.parse(json['created_at'] as String),
       debtor: json['debtor'] != null
-          ? DebtorModel.fromJson(json['debtor'] as Map<String, dynamic>).toEntity()
+          ? DebtorModel.fromJson(json['debtor'] as Map<String, dynamic>)
+                .toEntity()
           : null,
     );
   }
@@ -79,7 +81,9 @@ class DebtModel extends DebtEntity {
       'sync_status': syncStatus,
       'last_synced_at': lastSyncedAt?.toUtc().toIso8601String(),
       'created_at': createdAt.toUtc().toIso8601String(),
-      'debtor': debtor != null ? DebtorModel.fromEntity(debtor!).toJson() : null,
+      'debtor': debtor != null
+          ? DebtorModel.fromEntity(debtor!).toJson()
+          : null,
     };
   }
 

@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/cash_summary_entity.dart';
@@ -38,10 +39,12 @@ void main() {
         expectLater(
           useCase(),
           emits(
-            predicate<CashSummaryEntity>((summary) =>
-                summary.totalAmount == 0 &&
-                summary.salesCount == 0 &&
-                summary.sales.isEmpty),
+            predicate<CashSummaryEntity>(
+              (summary) =>
+                  summary.totalAmount == 0 &&
+                  summary.salesCount == 0 &&
+                  summary.sales.isEmpty,
+            ),
           ),
         ),
       );
@@ -73,10 +76,12 @@ void main() {
         expectLater(
           useCase(),
           emits(
-            predicate<CashSummaryEntity>((summary) =>
-                summary.totalAmount == 17500 &&
-                summary.salesCount == 3 &&
-                summary.sales.length == 3),
+            predicate<CashSummaryEntity>(
+              (summary) =>
+                  summary.totalAmount == 17500 &&
+                  summary.salesCount == 3 &&
+                  summary.sales.length == 3,
+            ),
           ),
         ),
       );
@@ -102,10 +107,12 @@ void main() {
         expectLater(
           useCase(),
           emits(
-            predicate<CashSummaryEntity>((summary) =>
-                summary.totalAmount == 4000 &&
-                summary.salesCount == 1 &&
-                summary.sales.first.id == 'sale-today'),
+            predicate<CashSummaryEntity>(
+              (summary) =>
+                  summary.totalAmount == 4000 &&
+                  summary.salesCount == 1 &&
+                  summary.sales.first.id == 'sale-today',
+            ),
           ),
         ),
       );
@@ -132,10 +139,12 @@ void main() {
         expectLater(
           useCase(),
           emits(
-            predicate<CashSummaryEntity>((summary) =>
-                summary.totalAmount == 3000 &&
-                summary.salesCount == 1 &&
-                summary.sales.first.id == 'sale-orphan'),
+            predicate<CashSummaryEntity>(
+              (summary) =>
+                  summary.totalAmount == 3000 &&
+                  summary.salesCount == 1 &&
+                  summary.sales.first.id == 'sale-orphan',
+            ),
           ),
         ),
       );
@@ -143,44 +152,51 @@ void main() {
       streamController.add([closedSale, orphanSale]);
     });
 
-    test('reactively emits updated totals as new sales arrive via stream', () async {
-      final sale1 = SaleEntity(
-        id: 'sale-1',
-        amount: 5000,
-        paymentMethod: PaymentMethod.especes,
-        recordedAt: DateTime(2026, 11, 17, 8, 0),
-      );
-      final sale2 = SaleEntity(
-        id: 'sale-2',
-        amount: 2500,
-        paymentMethod: PaymentMethod.especes,
-        recordedAt: DateTime(2026, 11, 17, 9, 0),
-      );
-      final sale3 = SaleEntity(
-        id: 'sale-3',
-        amount: 10000,
-        paymentMethod: PaymentMethod.especes,
-        recordedAt: DateTime(2026, 11, 17, 10, 0),
-      );
-      final newSale = SaleEntity(
-        id: 'sale-4',
-        amount: 3000,
-        paymentMethod: PaymentMethod.especes,
-        recordedAt: DateTime(2026, 11, 17, 11, 0),
-      );
+    test(
+      'reactively emits updated totals as new sales arrive via stream',
+      () async {
+        final sale1 = SaleEntity(
+          id: 'sale-1',
+          amount: 5000,
+          paymentMethod: PaymentMethod.especes,
+          recordedAt: DateTime(2026, 11, 17, 8, 0),
+        );
+        final sale2 = SaleEntity(
+          id: 'sale-2',
+          amount: 2500,
+          paymentMethod: PaymentMethod.especes,
+          recordedAt: DateTime(2026, 11, 17, 9, 0),
+        );
+        final sale3 = SaleEntity(
+          id: 'sale-3',
+          amount: 10000,
+          paymentMethod: PaymentMethod.especes,
+          recordedAt: DateTime(2026, 11, 17, 10, 0),
+        );
+        final newSale = SaleEntity(
+          id: 'sale-4',
+          amount: 3000,
+          paymentMethod: PaymentMethod.especes,
+          recordedAt: DateTime(2026, 11, 17, 11, 0),
+        );
 
-      final expectations = [
-        predicate<CashSummaryEntity>((summary) =>
-            summary.totalAmount == 17500 && summary.salesCount == 3),
-        predicate<CashSummaryEntity>((summary) =>
-            summary.totalAmount == 20500 && summary.salesCount == 4),
-      ];
+        final expectations = [
+          predicate<CashSummaryEntity>(
+            (summary) =>
+                summary.totalAmount == 17500 && summary.salesCount == 3,
+          ),
+          predicate<CashSummaryEntity>(
+            (summary) =>
+                summary.totalAmount == 20500 && summary.salesCount == 4,
+          ),
+        ];
 
-      unawaited(expectLater(useCase(), emitsInOrder(expectations)));
+        unawaited(expectLater(useCase(), emitsInOrder(expectations)));
 
-      streamController.add([sale1, sale2, sale3]);
-      await Future<void>.delayed(const Duration(milliseconds: 10));
-      streamController.add([sale1, sale2, sale3, newSale]);
-    });
+        streamController.add([sale1, sale2, sale3]);
+        await Future<void>.delayed(const Duration(milliseconds: 10));
+        streamController.add([sale1, sale2, sale3, newSale]);
+      },
+    );
   });
 }

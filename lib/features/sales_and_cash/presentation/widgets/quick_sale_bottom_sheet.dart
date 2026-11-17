@@ -105,7 +105,8 @@ class QuickSaleBottomSheet extends StatelessWidget {
                         Text(
                           CurrencyFormatter.format(state.amount),
                           key: const ValueKey('quick_sale_amount_display'),
-                          style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                          style: Theme.of(context).textTheme.displayLarge
+                              ?.copyWith(
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.w800,
                               ),
@@ -145,8 +146,9 @@ class QuickSaleBottomSheet extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.accent,
                         foregroundColor: Colors.white,
-                        disabledBackgroundColor:
-                            AppColors.tertiary.withValues(alpha: 0.4),
+                        disabledBackgroundColor: AppColors.tertiary.withValues(
+                          alpha: 0.4,
+                        ),
                         disabledForegroundColor: Colors.white70,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),

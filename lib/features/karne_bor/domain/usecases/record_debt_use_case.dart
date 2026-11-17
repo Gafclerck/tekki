@@ -23,10 +23,7 @@ class RecordDebtParams {
 }
 
 class RecordDebtUseCase {
-  const RecordDebtUseCase({
-    required this.repository,
-    this.uuid = const Uuid(),
-  });
+  const RecordDebtUseCase({required this.repository, this.uuid = const Uuid()});
 
   final DebtRepository repository;
   final Uuid uuid;
@@ -35,7 +32,8 @@ class RecordDebtUseCase {
     if (params.amount <= 0) {
       return const Error(
         ValidationFailure(
-          message: 'Le montant de la dette doit être strictement supérieur à zéro.',
+          message:
+              'Le montant de la dette doit être strictement supérieur à zéro.',
         ),
       );
     }
@@ -53,8 +51,9 @@ class RecordDebtUseCase {
 
     if (params.existingDebtorId != null &&
         params.existingDebtorId!.trim().isNotEmpty) {
-      final debtorResult =
-          await repository.getDebtorById(params.existingDebtorId!.trim());
+      final debtorResult = await repository.getDebtorById(
+        params.existingDebtorId!.trim(),
+      );
       if (debtorResult is Error<DebtorEntity?, Failure>) {
         return Error(debtorResult.failure);
       }
@@ -91,7 +90,8 @@ class RecordDebtUseCase {
     }
 
     final now = DateTime.now().toUtc();
-    final effectiveDueDate = params.dueDate?.toUtc() ?? now.add(const Duration(days: 7));
+    final effectiveDueDate =
+        params.dueDate?.toUtc() ?? now.add(const Duration(days: 7));
 
     final debt = DebtEntity(
       id: uuid.v4(),

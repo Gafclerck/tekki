@@ -28,20 +28,24 @@ class ExpressClosureCubit extends Cubit<ExpressClosureState> {
       return;
     }
 
-    emit(state.copyWith(
-      status: ExpressClosureStatus.loadingPrefill,
-      clearErrorMessage: true,
-    ));
+    emit(
+      state.copyWith(
+        status: ExpressClosureStatus.loadingPrefill,
+        clearErrorMessage: true,
+      ),
+    );
 
     final result = await getClosurePrefillUseCase(state.cutoffTimestamp);
     if (isClosed) return;
 
     if (result.isError) {
       final failure = (result as Error<int, Failure>).failure;
-      emit(state.copyWith(
-        status: ExpressClosureStatus.failure,
-        errorMessage: failure.message,
-      ));
+      emit(
+        state.copyWith(
+          status: ExpressClosureStatus.failure,
+          errorMessage: failure.message,
+        ),
+      );
       return;
     }
 
@@ -54,30 +58,26 @@ class ExpressClosureCubit extends Cubit<ExpressClosureState> {
         referenceDate: state.cutoffTimestamp,
         shopId: shopId,
       );
-      streakResult.fold(
-        onSuccess: (s) => streak = s,
-        onError: (_) {},
-      );
+      streakResult.fold(onSuccess: (s) => streak = s, onError: (_) {});
 
       final monthlyResult = await closureRepository!.getMonthlyClosuresCount(
         state.cutoffTimestamp,
         shopId: shopId,
       );
-      monthlyResult.fold(
-        onSuccess: (m) => monthlyCount = m,
-        onError: (_) {},
-      );
+      monthlyResult.fold(onSuccess: (m) => monthlyCount = m, onError: (_) {});
     }
 
     if (isClosed) return;
-    emit(state.copyWith(
-      status: ExpressClosureStatus.ready,
-      prefilledSalesAmount: prefillAmount,
-      totalSalesAmount: prefillAmount,
-      activeStreak: streak,
-      monthlyClosuresCount: monthlyCount,
-      clearErrorMessage: true,
-    ));
+    emit(
+      state.copyWith(
+        status: ExpressClosureStatus.ready,
+        prefilledSalesAmount: prefillAmount,
+        totalSalesAmount: prefillAmount,
+        activeStreak: streak,
+        monthlyClosuresCount: monthlyCount,
+        clearErrorMessage: true,
+      ),
+    );
   }
 
   void setStep(int step) {
@@ -89,43 +89,40 @@ class ExpressClosureCubit extends Cubit<ExpressClosureState> {
   void setTotalSales(int amount) {
     if (state.status == ExpressClosureStatus.submitting) return;
     if (amount < 0) {
-      emit(state.copyWith(
-        errorMessage: 'Le montant des ventes ne peut pas être négatif.',
-      ));
+      emit(
+        state.copyWith(
+          errorMessage: 'Le montant des ventes ne peut pas être négatif.',
+        ),
+      );
       return;
     }
-    emit(state.copyWith(
-      totalSalesAmount: amount,
-      clearErrorMessage: true,
-    ));
+    emit(state.copyWith(totalSalesAmount: amount, clearErrorMessage: true));
   }
 
   void setTotalExpenses(int amount) {
     if (state.status == ExpressClosureStatus.submitting) return;
     if (amount < 0) {
-      emit(state.copyWith(
-        errorMessage: 'Le montant des dépenses ne peut pas être négatif.',
-      ));
+      emit(
+        state.copyWith(
+          errorMessage: 'Le montant des dépenses ne peut pas être négatif.',
+        ),
+      );
       return;
     }
-    emit(state.copyWith(
-      totalExpensesAmount: amount,
-      clearErrorMessage: true,
-    ));
+    emit(state.copyWith(totalExpensesAmount: amount, clearErrorMessage: true));
   }
 
   void setCashCounted(int amount) {
     if (state.status == ExpressClosureStatus.submitting) return;
     if (amount < 0) {
-      emit(state.copyWith(
-        errorMessage: 'Le montant des espèces ne peut pas être négatif.',
-      ));
+      emit(
+        state.copyWith(
+          errorMessage: 'Le montant des espèces ne peut pas être négatif.',
+        ),
+      );
       return;
     }
-    emit(state.copyWith(
-      cashCounted: amount,
-      clearErrorMessage: true,
-    ));
+    emit(state.copyWith(cashCounted: amount, clearErrorMessage: true));
   }
 
   void reset([DateTime? newCutoff]) {
@@ -135,10 +132,12 @@ class ExpressClosureCubit extends Cubit<ExpressClosureState> {
   Future<void> submitClosure({String shopId = 'default-shop'}) async {
     if (!state.canSubmit) return;
 
-    emit(state.copyWith(
-      status: ExpressClosureStatus.submitting,
-      clearErrorMessage: true,
-    ));
+    emit(
+      state.copyWith(
+        status: ExpressClosureStatus.submitting,
+        clearErrorMessage: true,
+      ),
+    );
 
     final result = await executeDailyClosureUseCase(
       cutoffTimestamp: state.cutoffTimestamp,
@@ -160,10 +159,7 @@ class ExpressClosureCubit extends Cubit<ExpressClosureState> {
           referenceDate: state.cutoffTimestamp,
           shopId: shopId,
         );
-        streakResult.fold(
-          onSuccess: (s) => updatedStreak = s,
-          onError: (_) {},
-        );
+        streakResult.fold(onSuccess: (s) => updatedStreak = s, onError: (_) {});
 
         final monthlyResult = await closureRepository!.getMonthlyClosuresCount(
           state.cutoffTimestamp,
@@ -176,18 +172,22 @@ class ExpressClosureCubit extends Cubit<ExpressClosureState> {
       }
 
       if (isClosed) return;
-      emit(state.copyWith(
-        status: ExpressClosureStatus.success,
-        createdClosure: closure,
-        activeStreak: updatedStreak,
-        monthlyClosuresCount: updatedMonthly,
-      ));
+      emit(
+        state.copyWith(
+          status: ExpressClosureStatus.success,
+          createdClosure: closure,
+          activeStreak: updatedStreak,
+          monthlyClosuresCount: updatedMonthly,
+        ),
+      );
     } else {
       final failure = (result as Error<DailyClosureEntity, Failure>).failure;
-      emit(state.copyWith(
-        status: ExpressClosureStatus.failure,
-        errorMessage: failure.message,
-      ));
+      emit(
+        state.copyWith(
+          status: ExpressClosureStatus.failure,
+          errorMessage: failure.message,
+        ),
+      );
     }
   }
 }

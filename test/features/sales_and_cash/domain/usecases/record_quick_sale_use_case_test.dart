@@ -9,6 +9,7 @@ import 'package:tekki/features/sales_and_cash/domain/usecases/record_quick_sale_
 import 'package:uuid/uuid.dart';
 
 class MockSalesRepository extends Mock implements SalesRepository {}
+
 class MockUuid extends Mock implements Uuid {}
 
 class FakeSaleEntity extends Fake implements SaleEntity {}
@@ -37,14 +38,12 @@ void main() {
     test('successfully records a quick sale with default cash payment and UTC date', () async {
       when(() => mockUuid.v4()).thenReturn(testId);
       when(() => mockRepository.recordSale(any())).thenAnswer(
-        (invocation) async => Success(invocation.positionalArguments[0] as SaleEntity),
+        (invocation) async =>
+            Success(invocation.positionalArguments[0] as SaleEntity),
       );
 
       final now = DateTime(2026, 11, 17, 10, 30);
-      final result = await useCase(
-        amount: 5000,
-        recordedAt: now,
-      );
+      final result = await useCase(amount: 5000, recordedAt: now);
 
       expect(result.isSuccess, isTrue);
       result.fold(
@@ -63,26 +62,30 @@ void main() {
       verify(() => mockRepository.recordSale(any())).called(1);
     });
 
-    test('successfully records a quick sale with Mobile Money payment method', () async {
-      when(() => mockUuid.v4()).thenReturn(testId);
-      when(() => mockRepository.recordSale(any())).thenAnswer(
-        (invocation) async => Success(invocation.positionalArguments[0] as SaleEntity),
-      );
+    test(
+      'successfully records a quick sale with Mobile Money payment method',
+      () async {
+        when(() => mockUuid.v4()).thenReturn(testId);
+        when(() => mockRepository.recordSale(any())).thenAnswer(
+          (invocation) async =>
+              Success(invocation.positionalArguments[0] as SaleEntity),
+        );
 
-      final result = await useCase(
-        amount: 1500,
-        paymentMethod: PaymentMethod.mobileMoney,
-      );
+        final result = await useCase(
+          amount: 1500,
+          paymentMethod: PaymentMethod.mobileMoney,
+        );
 
-      expect(result.isSuccess, isTrue);
-      result.fold(
-        onSuccess: (sale) {
-          expect(sale.amount, equals(1500));
-          expect(sale.paymentMethod, equals(PaymentMethod.mobileMoney));
-        },
-        onError: (_) => fail('Should not fail'),
-      );
-    });
+        expect(result.isSuccess, isTrue);
+        result.fold(
+          onSuccess: (sale) {
+            expect(sale.amount, equals(1500));
+            expect(sale.paymentMethod, equals(PaymentMethod.mobileMoney));
+          },
+          onError: (_) => fail('Should not fail'),
+        );
+      },
+    );
 
     test('returns ValidationFailure when amount is 0', () async {
       final result = await useCase(amount: 0);
@@ -111,19 +114,22 @@ void main() {
       verifyZeroInteractions(mockRepository);
     });
 
-    test('returns ValidationFailure when amount exceeds 999 999 999 FCFA', () async {
-      final result = await useCase(amount: 1000000000);
+    test(
+      'returns ValidationFailure when amount exceeds 999 999 999 FCFA',
+      () async {
+        final result = await useCase(amount: 1000000000);
 
-      expect(result.isError, isTrue);
-      result.fold(
-        onSuccess: (_) => fail('Should not succeed'),
-        onError: (failure) {
-          expect(failure, isA<ValidationFailure>());
-          expect(failure.message, contains('plafond'));
-        },
-      );
-      verifyZeroInteractions(mockRepository);
-    });
+        expect(result.isError, isTrue);
+        result.fold(
+          onSuccess: (_) => fail('Should not succeed'),
+          onError: (failure) {
+            expect(failure, isA<ValidationFailure>());
+            expect(failure.message, contains('plafond'));
+          },
+        );
+        verifyZeroInteractions(mockRepository);
+      },
+    );
 
     test('propagates DatabaseFailure when repository fails', () async {
       when(() => mockUuid.v4()).thenReturn(testId);
