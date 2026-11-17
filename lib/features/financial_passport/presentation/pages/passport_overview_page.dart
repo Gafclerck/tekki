@@ -141,7 +141,31 @@ class _PassportOverviewPageState extends State<PassportOverviewPage> {
       ),
       body: SafeArea(
         child: BlocConsumer<PassportBloc, PassportState>(
-          listener: (context, state) {},
+          listener: (context, state) {
+            if (state is PassportActiveLoaded) {
+              if (state.sharePdfError != null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    key: const ValueKey('passport_share_error_snackbar'),
+                    content: Text(state.sharePdfError!),
+                    backgroundColor: AppColors.error,
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              } else if (state.pdfSharedSuccessfully) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    key: ValueKey('passport_share_success_snackbar'),
+                    content: Text(
+                      'Attestation PDF générée et partagée avec succès !',
+                    ),
+                    backgroundColor: AppColors.secondary,
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              }
+            }
+          },
           builder: (context, state) {
             if (state is PassportLoading || state is PassportInitial) {
               return const Center(
@@ -225,23 +249,38 @@ class _PassportOverviewPageState extends State<PassportOverviewPage> {
                     // Action de partage de l'attestation PDF
                     ElevatedButton.icon(
                       key: const ValueKey('share_pdf_whatsapp_button'),
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Génération de l\'attestation PDF en cours...',
+                      onPressed: state.isSharingPdf
+                          ? null
+                          : () {
+                              final bloc =
+                                  widget.bloc ??
+                                  _localBloc ??
+                                  context.read<PassportBloc>();
+                              bloc.add(
+                                SharePassportPdfEvent(shopName: widget.shopId),
+                              );
+                            },
+                      icon: state.isSharingPdf
+                          ? const SizedBox(
+                              width: 18,
+                              height: 18,
+                              child: CircularProgressIndicator(
+                                key: ValueKey('share_pdf_loading_spinner'),
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.white,
+                                ),
+                              ),
+                            )
+                          : const Icon(
+                              Icons.share_outlined,
+                              color: Colors.white,
                             ),
-                            behavior: SnackBarBehavior.floating,
-                          ),
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.share_outlined,
-                        color: Colors.white,
-                      ),
-                      label: const Text(
-                        '📲 Partager l\'Attestation PDF sur WhatsApp',
-                        style: TextStyle(
+                      label: Text(
+                        state.isSharingPdf
+                            ? 'Génération de l\'attestation...'
+                            : '📲 Partager l\'Attestation PDF sur WhatsApp',
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
@@ -249,6 +288,9 @@ class _PassportOverviewPageState extends State<PassportOverviewPage> {
                       ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.accent,
+                        disabledBackgroundColor: AppColors.accent.withAlpha(
+                          180,
+                        ),
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),

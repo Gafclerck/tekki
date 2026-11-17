@@ -7,13 +7,16 @@ import 'package:tekki/core/network/network_info.dart';
 import 'package:tekki/core/services/audio_service.dart';
 import 'package:tekki/core/services/brightness_service.dart';
 import 'package:tekki/core/services/location_service.dart';
+import 'package:tekki/core/services/share_service.dart';
 import 'package:tekki/core/services/whatsapp_service.dart';
 import 'package:tekki/features/financial_passport/domain/entities/financial_passport_entity.dart';
 import 'package:tekki/features/financial_passport/domain/entities/score_breakdown_entity.dart';
 import 'package:tekki/features/financial_passport/domain/entities/signed_passport_payload_entity.dart';
 import 'package:tekki/features/financial_passport/domain/repositories/passport_repository.dart';
+import 'package:tekki/features/financial_passport/domain/services/pdf_generator_service.dart';
 import 'package:tekki/features/financial_passport/domain/usecases/calculate_financial_passport_use_case.dart';
 import 'package:tekki/features/financial_passport/domain/usecases/generate_signed_passport_use_case.dart';
+import 'package:tekki/features/financial_passport/domain/usecases/share_passport_pdf_use_case.dart';
 import 'package:tekki/features/financial_passport/domain/usecases/verify_passport_payload_use_case.dart';
 import 'package:tekki/features/financial_passport/presentation/bloc/passport_bloc.dart';
 import 'package:tekki/features/financial_passport/presentation/bloc/passport_event.dart';
@@ -127,6 +130,14 @@ class MockKarneBorCubit extends MockCubit<KarneBorState>
 
 class MockPassportBloc extends MockBloc<PassportEvent, PassportState>
     implements PassportBloc {}
+
+// Services
+class MockShareService extends Mock implements IShareService {}
+
+class MockPdfGeneratorService extends Mock implements IPdfGeneratorService {}
+
+class MockSharePassportPdfUseCase extends Mock
+    implements SharePassportPdfUseCase {}
 
 // Fakes for Mocktail registerFallbackValue
 class FakeDailyClosureEntity extends Fake implements DailyClosureEntity {}

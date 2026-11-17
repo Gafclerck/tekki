@@ -43,18 +43,28 @@ class PassportActiveLoaded extends PassportState {
     required this.signedPayload,
     required this.secondsRemainingInMinute,
     required this.lastUpdated,
+    this.isSharingPdf = false,
+    this.sharePdfError,
+    this.pdfSharedSuccessfully = false,
   });
 
   final FinancialPassportEntity passport;
   final SignedPassportPayloadEntity signedPayload;
   final int secondsRemainingInMinute;
   final DateTime lastUpdated;
+  final bool isSharingPdf;
+  final String? sharePdfError;
+  final bool pdfSharedSuccessfully;
 
   PassportActiveLoaded copyWith({
     FinancialPassportEntity? passport,
     SignedPassportPayloadEntity? signedPayload,
     int? secondsRemainingInMinute,
     DateTime? lastUpdated,
+    bool? isSharingPdf,
+    String? sharePdfError,
+    bool? pdfSharedSuccessfully,
+    bool clearShareError = false,
   }) {
     return PassportActiveLoaded(
       passport: passport ?? this.passport,
@@ -62,6 +72,12 @@ class PassportActiveLoaded extends PassportState {
       secondsRemainingInMinute:
           secondsRemainingInMinute ?? this.secondsRemainingInMinute,
       lastUpdated: lastUpdated ?? this.lastUpdated,
+      isSharingPdf: isSharingPdf ?? this.isSharingPdf,
+      sharePdfError: clearShareError
+          ? null
+          : (sharePdfError ?? this.sharePdfError),
+      pdfSharedSuccessfully:
+          pdfSharedSuccessfully ?? this.pdfSharedSuccessfully,
     );
   }
 
@@ -71,6 +87,9 @@ class PassportActiveLoaded extends PassportState {
     signedPayload,
     secondsRemainingInMinute,
     lastUpdated,
+    isSharingPdf,
+    sharePdfError,
+    pdfSharedSuccessfully,
   ];
 }
 

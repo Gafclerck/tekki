@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tekki/features/financial_passport/domain/usecases/calculate_financial_passport_use_case.dart';
 import 'package:tekki/features/financial_passport/domain/usecases/generate_signed_passport_use_case.dart';
+import 'package:tekki/features/financial_passport/domain/usecases/share_passport_pdf_use_case.dart';
 import 'package:tekki/features/financial_passport/presentation/bloc/passport_event.dart';
 import 'package:tekki/features/financial_passport/presentation/bloc/passport_state.dart';
 
@@ -10,13 +11,16 @@ class PassportBloc extends Bloc<PassportEvent, PassportState> {
   PassportBloc({
     required this.calculateFinancialPassportUseCase,
     required this.generateSignedPassportUseCase,
+    this.sharePassportPdfUseCase,
   }) : super(const PassportInitial()) {
     on<LoadPassportEvent>(_onLoadPassport);
     on<RefreshPinTickEvent>(_onRefreshPinTick);
+    on<SharePassportPdfEvent>(_onSharePassportPdf);
   }
 
   final CalculateFinancialPassportUseCase calculateFinancialPassportUseCase;
   final GenerateSignedPassportUseCase generateSignedPassportUseCase;
+  final SharePassportPdfUseCase? sharePassportPdfUseCase;
 
   Future<void> _onLoadPassport(
     LoadPassportEvent event,
@@ -107,5 +111,58 @@ class PassportBloc extends Bloc<PassportEvent, PassportState> {
       final secondsRemaining = 60 - now.second;
       emit(currentState.copyWith(secondsRemainingInMinute: secondsRemaining));
     }
+  }
+
+  Future<void> _onSharePassportPdf(
+    SharePassportPdfEvent event,
+    Emitter<PassportState> emit,
+  ) async {
+    final currentState = state;
+    if (currentState is! PassportActiveLoaded) return;
+    if (currentState.isSharingPdf) return;
+
+    emit(
+      currentState.copyWith(
+        isSharingPdf: true,
+        clearShareError: true,
+        pdfSharedSuccessfully: false,
+      ),
+    );
+
+    final shareUseCase = sharePassportPdfUseCase;
+    if (shareUseCase == null) {
+      emit(
+        currentState.copyWith(
+          isSharingPdf: false,
+          sharePdfError: 'Service de partage non configuré.',
+        ),
+      );
+      return;
+    }
+
+    final result = await shareUseCase(
+      payload: currentState.signedPayload,
+      shopName: event.shopName,
+      emissionDate: event.emissionDate,
+    );
+
+    result.fold(
+      onError: (failure) {
+        emit(
+          currentState.copyWith(
+            isSharingPdf: false,
+            sharePdfError: failure.message,
+          ),
+        );
+      },
+      onSuccess: (_) {
+        emit(
+          currentState.copyWith(
+            isSharingPdf: false,
+            pdfSharedSuccessfully: true,
+          ),
+        );
+      },
+    );
   }
 }

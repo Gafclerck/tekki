@@ -12,6 +12,7 @@ import 'core/network/network_info_test.dart' as network_info_test;
 import 'core/services/audio_service_test.dart' as audio_service_test;
 import 'core/services/brightness_service_test.dart' as brightness_service_test;
 import 'core/services/location_service_test.dart' as location_service_test;
+import 'core/services/share_service_test.dart' as share_service_test;
 import 'core/services/whatsapp_service_test.dart' as whatsapp_service_test;
 import 'core/theme/app_theme_test.dart' as app_theme_test;
 import 'core/utils/currency_formatter_test.dart' as currency_formatter_test;
@@ -19,6 +20,8 @@ import 'core/utils/haversine_calculator_test.dart' as haversine_calculator_test;
 import 'core/utils/result_test.dart' as result_test;
 
 // Features - Financial Passport
+import 'features/financial_passport/data/datasources/pdf_generator_service_test.dart'
+    as pdf_generator_service_test;
 import 'features/financial_passport/data/models/cbor_passport_payload_test.dart'
     as cbor_passport_payload_test;
 import 'features/financial_passport/data/repositories/passport_repository_impl_test.dart'
@@ -29,10 +32,16 @@ import 'features/financial_passport/domain/usecases/calculate_financial_passport
     as calculate_financial_passport_use_case_test;
 import 'features/financial_passport/domain/usecases/generate_signed_passport_use_case_test.dart'
     as generate_signed_passport_use_case_test;
+import 'features/financial_passport/domain/usecases/share_passport_pdf_use_case_test.dart'
+    as share_passport_pdf_use_case_test;
 import 'features/financial_passport/domain/usecases/verify_passport_payload_use_case_test.dart'
     as verify_passport_payload_use_case_test;
+import 'features/financial_passport/presentation/bloc/passport_bloc_share_pdf_test.dart'
+    as passport_bloc_share_pdf_test;
 import 'features/financial_passport/presentation/bloc/passport_bloc_test.dart'
     as passport_bloc_test;
+import 'features/financial_passport/presentation/pages/passport_overview_page_share_test.dart'
+    as passport_overview_page_share_test;
 import 'features/financial_passport/presentation/pages/passport_overview_page_test.dart'
     as passport_overview_page_test;
 import 'features/financial_passport/presentation/widgets/passport_fullscreen_qr_dialog_test.dart'
@@ -112,6 +121,7 @@ void main() {
       audio_service_test.main();
       brightness_service_test.main();
       location_service_test.main();
+      share_service_test.main();
       whatsapp_service_test.main();
       app_theme_test.main();
       currency_formatter_test.main();
@@ -127,10 +137,14 @@ void main() {
       generate_signed_passport_use_case_test.main();
       passport_repository_impl_test.main();
       verify_passport_payload_use_case_test.main();
+      pdf_generator_service_test.main();
+      share_passport_pdf_use_case_test.main();
       passport_bloc_test.main();
+      passport_bloc_share_pdf_test.main();
       passport_qr_card_test.main();
       passport_fullscreen_qr_dialog_test.main();
       passport_overview_page_test.main();
+      passport_overview_page_share_test.main();
     });
 
     // Features - Karne Bor

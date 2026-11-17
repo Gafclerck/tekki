@@ -29,3 +29,14 @@ class RefreshPinTickEvent extends PassportEvent {
   @override
   List<Object?> get props => [now, shopId];
 }
+
+/// Événement déclenchant la génération et le partage 1-clic WhatsApp de l'attestation PDF.
+class SharePassportPdfEvent extends PassportEvent {
+  const SharePassportPdfEvent({this.shopName, this.emissionDate});
+
+  final String? shopName;
+  final DateTime? emissionDate;
+
+  @override
+  List<Object?> get props => [shopName, emissionDate];
+}

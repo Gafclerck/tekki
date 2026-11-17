@@ -28,3 +28,7 @@ class SecurityFailure extends Failure {
 class CryptoFailure extends Failure {
   const CryptoFailure({required super.message});
 }
+
+class ServiceFailure extends Failure {
+  const ServiceFailure({required super.message});
+}
