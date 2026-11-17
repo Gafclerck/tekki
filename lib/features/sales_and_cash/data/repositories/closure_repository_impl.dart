@@ -30,6 +30,24 @@ class ClosureRepositoryImpl implements ClosureRepository {
   }
 
   @override
+  Future<Result<int, Failure>> getPrefillDebtCashInflow(
+    DateTime cutoffTimestamp,
+  ) async {
+    try {
+      final inflow = await localDataSource.getPrefillDebtCashInflow(
+        cutoffTimestamp,
+      );
+      return Success(inflow);
+    } on DatabaseException catch (e) {
+      return Error(DatabaseFailure(message: e.message));
+    } catch (e) {
+      return Error(
+        DatabaseFailure(message: 'Erreur inattendue de base de données : $e'),
+      );
+    }
+  }
+
+  @override
   Future<Result<DailyClosureEntity, Failure>> executeDailyClosure(
     DailyClosureEntity closure,
   ) async {

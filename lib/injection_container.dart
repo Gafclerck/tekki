@@ -6,12 +6,17 @@ import 'package:tekki/core/network/network_info.dart';
 import 'package:tekki/core/services/audio_service.dart';
 import 'package:tekki/core/services/geolocator_location_service.dart';
 import 'package:tekki/core/services/location_service.dart';
+import 'package:tekki/core/services/whatsapp_service.dart';
 import 'package:tekki/features/karne_bor/data/datasources/debt_local_data_source.dart';
 import 'package:tekki/features/karne_bor/data/repositories/debt_repository_impl.dart';
+import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
 import 'package:tekki/features/karne_bor/domain/repositories/debt_repository.dart';
+import 'package:tekki/features/karne_bor/domain/usecases/calculate_recovery_velocity_use_case.dart';
 import 'package:tekki/features/karne_bor/domain/usecases/get_debtors_use_case.dart';
+import 'package:tekki/features/karne_bor/domain/usecases/record_debt_payment_use_case.dart';
 import 'package:tekki/features/karne_bor/domain/usecases/record_debt_use_case.dart';
 import 'package:tekki/features/karne_bor/domain/usecases/watch_active_debts_use_case.dart';
+import 'package:tekki/features/karne_bor/presentation/cubit/collect_debt_payment_cubit.dart';
 import 'package:tekki/features/karne_bor/presentation/cubit/karne_bor_cubit.dart';
 import 'package:tekki/features/karne_bor/presentation/cubit/record_debt_cubit.dart';
 import 'package:tekki/features/sales_and_cash/data/datasources/closure_local_data_source.dart';
@@ -43,6 +48,9 @@ Future<void> initDependencyInjection({
   // Core: Hardware & Device Services
   sl.registerLazySingleton<ILocationService>(() => GeolocatorLocationService());
   sl.registerLazySingleton<IAudioPlayerService>(() => JustAudioPlayerService());
+  sl.registerLazySingleton<IWhatsAppService>(
+    () => const UrlLauncherWhatsAppService(),
+  );
 
   // Core: Persistence Drift SQLite
   sl.registerLazySingleton<AppDatabase>(
@@ -104,6 +112,12 @@ Future<void> initDependencyInjection({
   sl.registerLazySingleton<GetDebtorsUseCase>(
     () => GetDebtorsUseCase(repository: sl<DebtRepository>()),
   );
+  sl.registerLazySingleton<RecordDebtPaymentUseCase>(
+    () => RecordDebtPaymentUseCase(repository: sl<DebtRepository>()),
+  );
+  sl.registerLazySingleton<CalculateRecoveryVelocityUseCase>(
+    () => CalculateRecoveryVelocityUseCase(repository: sl<DebtRepository>()),
+  );
 
   // Features: Presentation Cubits / BLoCs
   sl.registerFactory<QuickSaleCubit>(
@@ -128,6 +142,16 @@ Future<void> initDependencyInjection({
     ),
   );
   sl.registerFactory<KarneBorCubit>(
-    () => KarneBorCubit(watchActiveDebtsUseCase: sl<WatchActiveDebtsUseCase>()),
+    () => KarneBorCubit(
+      watchActiveDebtsUseCase: sl<WatchActiveDebtsUseCase>(),
+      calculateRecoveryVelocityUseCase: sl<CalculateRecoveryVelocityUseCase>(),
+    ),
+  );
+  sl.registerFactoryParam<CollectDebtPaymentCubit, DebtEntity, void>(
+    (debt, _) => CollectDebtPaymentCubit(
+      debt: debt,
+      recordDebtPaymentUseCase: sl<RecordDebtPaymentUseCase>(),
+      audioPlayerService: sl<IAudioPlayerService>(),
+    ),
   );
 }
