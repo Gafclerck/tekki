@@ -5,6 +5,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:tekki/core/constants/app_constants.dart';
 import 'package:tekki/core/theme/app_colors.dart';
+import 'package:tekki/features/karne_bor/presentation/cubit/karne_bor_cubit.dart';
+import 'package:tekki/features/karne_bor/presentation/cubit/karne_bor_state.dart';
+import 'package:tekki/features/karne_bor/presentation/screens/karne_bor_screen.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/cash_summary_entity.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/payment_method.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/sale_entity.dart';
@@ -16,10 +19,13 @@ import 'package:tekki/features/sales_and_cash/presentation/screens/home_screen.d
 import 'package:tekki/features/sales_and_cash/presentation/widgets/cash_card.dart';
 import 'package:tekki/features/sales_and_cash/presentation/widgets/primary_cta_button.dart';
 import 'package:tekki/features/sales_and_cash/presentation/widgets/quick_sale_button.dart';
+import 'package:tekki/injection_container.dart';
 
 class MockCashDashboardBloc
     extends MockBloc<CashDashboardEvent, CashDashboardState>
     implements CashDashboardBloc {}
+
+class MockKarneBorCubit extends Mock implements KarneBorCubit {}
 
 void main() {
   late MockCashDashboardBloc mockBloc;
@@ -263,6 +269,34 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Vente de 2500 FCFA enregistrée !'), findsOneWidget);
+    });
+
+    testWidgets('tapping karne_bor_card navigates to KarneBorScreen', (tester) async {
+      when(() => mockBloc.state).thenReturn(
+        const CashDashboardLoaded(summary: CashSummaryEntity.empty()),
+      );
+
+      final mockKarneCubit = MockKarneBorCubit();
+      when(() => mockKarneCubit.state).thenReturn(
+        const KarneBorLoaded(debts: [], totalDebt: 0),
+      );
+      when(() => mockKarneCubit.startWatching()).thenReturn(null);
+      when(() => mockKarneCubit.stream).thenAnswer((_) => const Stream.empty());
+      when(() => mockKarneCubit.close()).thenAnswer((_) async {});
+      if (sl.isRegistered<KarneBorCubit>()) {
+        sl.unregister<KarneBorCubit>();
+      }
+      sl.registerFactory<KarneBorCubit>(() => mockKarneCubit);
+
+      await tester.pumpWidget(buildSubject());
+
+      final karneBorCard = find.byKey(const ValueKey('karne_bor_card'));
+      expect(karneBorCard, findsOneWidget);
+
+      await tester.tap(karneBorCard);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(KarneBorScreen), findsOneWidget);
     });
   });
 }

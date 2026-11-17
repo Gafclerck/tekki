@@ -35,16 +35,16 @@ project_key: NOKEY
 tracking_system: file-system
 story_location: D:\tekki\_bmad-output\implementation-artifacts
 development_status:
-  epic-1: in-progress
+  epic-1: done
   1-1-socle-applicatif-thème-visuel-tekki-persistance-locale-drift: done
   1-2-enregistrement-rapide-de-vente-au-fil-de-l-eau-quick-sale: done
   1-3-tableau-de-bord-caisse-suivi-des-ventes-en-temps-réel: done
   1-4-clôture-express-tiroir-caisse-snapshotting-atomique: done
-  1-5-ancrage-géographique-passif-flag-silencieux-d-intégrité: review
+  1-5-ancrage-géographique-passif-flag-silencieux-d-intégrité: done
   epic-1-retrospective: optional
 
-  epic-2: backlog
-  2-1-enregistrement-d-une-dette-client-création-du-débiteur-dans: backlog
+  epic-2: in-progress
+  2-1-enregistrement-d-une-dette-client-création-du-débiteur-dans: done
   2-2-tableau-de-bord-karné-bor-total-argent-dehors-suivi-des-reta: backlog
   2-3-encaissement-de-remboursement-réconciliation-avec-le-tiroir: backlog
   2-4-relance-client-1-clic-via-whatsapp-calcul-de-la-vélocité-de: backlog

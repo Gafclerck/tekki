@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tekki/core/constants/app_constants.dart';
 import 'package:tekki/core/theme/app_colors.dart';
+import 'package:tekki/features/karne_bor/presentation/screens/karne_bor_screen.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/daily_closure_entity.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/sale_entity.dart';
 import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_bloc.dart';
@@ -91,13 +92,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   _buildCashCard(state),
                   const SizedBox(height: 16),
 
-                  // Espace réservé: Karné Bor
+                  // Espace: Karné Bor
                   _buildPlaceholderCard(
                     key: const ValueKey('karne_bor_card'),
                     icon: Icons.menu_book_outlined,
                     title: 'Karné Bor',
                     subtitle: 'Gestion du crédit client & suivi des dettes',
-                    badge: 'Bientôt',
+                    badge: 'Actif',
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const KarneBorScreen(),
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 12),
 
@@ -285,8 +293,9 @@ class _HomeScreenState extends State<HomeScreen> {
     required String title,
     required String subtitle,
     required String badge,
+    VoidCallback? onTap,
   }) {
-    return Container(
+    final card = Container(
       key: key,
       width: double.infinity,
       padding: const EdgeInsets.all(16),
@@ -363,5 +372,14 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+
+    if (onTap != null) {
+      return InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: onTap,
+        child: card,
+      );
+    }
+    return card;
   }
 }
