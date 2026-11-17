@@ -3,6 +3,7 @@ import 'package:tekki/core/errors/failures.dart';
 import 'package:tekki/core/utils/result.dart';
 import 'package:tekki/features/sales_and_cash/data/datasources/closure_local_data_source.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/daily_closure_entity.dart';
+import 'package:tekki/features/sales_and_cash/domain/entities/shop_entity.dart';
 import 'package:tekki/features/sales_and_cash/domain/repositories/closure_repository.dart';
 
 class ClosureRepositoryImpl implements ClosureRepository {
@@ -68,6 +69,74 @@ class ClosureRepositoryImpl implements ClosureRepository {
         offset: offset,
       );
       return Success(closures);
+    } on DatabaseException catch (e) {
+      return Error(DatabaseFailure(message: e.message));
+    } catch (e) {
+      return Error(
+        DatabaseFailure(message: 'Erreur inattendue : $e'),
+      );
+    }
+  }
+
+  @override
+  Future<Result<int, Failure>> getMonthlyClosuresCount(
+    DateTime date, {
+    String? shopId,
+  }) async {
+    try {
+      final count = await localDataSource.getMonthlyClosuresCount(
+        date,
+        shopId: shopId,
+      );
+      return Success(count);
+    } on DatabaseException catch (e) {
+      return Error(DatabaseFailure(message: e.message));
+    } catch (e) {
+      return Error(
+        DatabaseFailure(message: 'Erreur inattendue : $e'),
+      );
+    }
+  }
+
+  @override
+  Future<Result<int, Failure>> getActiveStreak({
+    DateTime? referenceDate,
+    String? shopId,
+  }) async {
+    try {
+      final streak = await localDataSource.getActiveStreak(
+        referenceDate: referenceDate,
+        shopId: shopId,
+      );
+      return Success(streak);
+    } on DatabaseException catch (e) {
+      return Error(DatabaseFailure(message: e.message));
+    } catch (e) {
+      return Error(
+        DatabaseFailure(message: 'Erreur inattendue : $e'),
+      );
+    }
+  }
+
+  @override
+  Future<Result<ShopEntity?, Failure>> getShopById(String id) async {
+    try {
+      final shop = await localDataSource.getShopById(id);
+      return Success(shop);
+    } on DatabaseException catch (e) {
+      return Error(DatabaseFailure(message: e.message));
+    } catch (e) {
+      return Error(
+        DatabaseFailure(message: 'Erreur inattendue : $e'),
+      );
+    }
+  }
+
+  @override
+  Future<Result<ShopEntity?, Failure>> getShop() async {
+    try {
+      final shop = await localDataSource.getShop();
+      return Success(shop);
     } on DatabaseException catch (e) {
       return Error(DatabaseFailure(message: e.message));
     } catch (e) {

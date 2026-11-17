@@ -3,6 +3,9 @@ import 'package:get_it/get_it.dart';
 import 'package:tekki/core/database/app_database.dart';
 import 'package:tekki/core/database/connection/open_connection.dart';
 import 'package:tekki/core/network/network_info.dart';
+import 'package:tekki/core/services/audio_service.dart';
+import 'package:tekki/core/services/geolocator_location_service.dart';
+import 'package:tekki/core/services/location_service.dart';
 import 'package:tekki/features/sales_and_cash/data/datasources/closure_local_data_source.dart';
 import 'package:tekki/features/sales_and_cash/data/datasources/sales_local_data_source.dart';
 import 'package:tekki/features/sales_and_cash/data/repositories/closure_repository_impl.dart';
@@ -28,6 +31,10 @@ Future<void> initDependencyInjection({
   sl.registerLazySingleton<NetworkInfo>(
     () => NetworkInfoImpl(connectivity: sl()),
   );
+
+  // Core: Hardware & Device Services
+  sl.registerLazySingleton<ILocationService>(() => GeolocatorLocationService());
+  sl.registerLazySingleton<IAudioPlayerService>(() => JustAudioPlayerService());
 
   // Core: Persistence Drift SQLite
   sl.registerLazySingleton<AppDatabase>(
@@ -63,7 +70,10 @@ Future<void> initDependencyInjection({
     () => GetClosurePrefillUseCase(repository: sl<ClosureRepository>()),
   );
   sl.registerLazySingleton<ExecuteDailyClosureUseCase>(
-    () => ExecuteDailyClosureUseCase(repository: sl<ClosureRepository>()),
+    () => ExecuteDailyClosureUseCase(
+      repository: sl<ClosureRepository>(),
+      locationService: sl<ILocationService>(),
+    ),
   );
 
   // Features: Presentation Cubits / BLoCs
@@ -74,6 +84,8 @@ Future<void> initDependencyInjection({
     () => ExpressClosureCubit(
       getClosurePrefillUseCase: sl<GetClosurePrefillUseCase>(),
       executeDailyClosureUseCase: sl<ExecuteDailyClosureUseCase>(),
+      closureRepository: sl<ClosureRepository>(),
+      audioPlayerService: sl<IAudioPlayerService>(),
     ),
   );
   sl.registerFactory<CashDashboardBloc>(

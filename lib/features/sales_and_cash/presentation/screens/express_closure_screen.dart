@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tekki/core/services/audio_service.dart';
 import 'package:tekki/core/theme/app_colors.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/daily_closure_entity.dart';
 import 'package:tekki/features/sales_and_cash/presentation/cubit/express_closure_cubit.dart';
@@ -11,10 +12,12 @@ class ExpressClosureScreen extends StatelessWidget {
   const ExpressClosureScreen({
     super.key,
     this.cubit,
+    this.audioPlayerService,
     this.onClosureSuccess,
   });
 
   final ExpressClosureCubit? cubit;
+  final IAudioPlayerService? audioPlayerService;
   final void Function(DailyClosureEntity closure)? onClosureSuccess;
 
   @override
@@ -22,22 +25,35 @@ class ExpressClosureScreen extends StatelessWidget {
     if (cubit != null) {
       return BlocProvider.value(
         value: cubit!,
-        child: _ExpressClosureView(onClosureSuccess: onClosureSuccess),
+        child: _ExpressClosureView(
+          audioPlayerService: audioPlayerService,
+          onClosureSuccess: onClosureSuccess,
+        ),
       );
     }
     if (sl.isRegistered<ExpressClosureCubit>()) {
       return BlocProvider(
         create: (_) => sl<ExpressClosureCubit>()..init(),
-        child: _ExpressClosureView(onClosureSuccess: onClosureSuccess),
+        child: _ExpressClosureView(
+          audioPlayerService: audioPlayerService,
+          onClosureSuccess: onClosureSuccess,
+        ),
       );
     }
-    return _ExpressClosureView(onClosureSuccess: onClosureSuccess);
+    return _ExpressClosureView(
+      audioPlayerService: audioPlayerService,
+      onClosureSuccess: onClosureSuccess,
+    );
   }
 }
 
 class _ExpressClosureView extends StatefulWidget {
-  const _ExpressClosureView({this.onClosureSuccess});
+  const _ExpressClosureView({
+    this.audioPlayerService,
+    this.onClosureSuccess,
+  });
 
+  final IAudioPlayerService? audioPlayerService;
   final void Function(DailyClosureEntity closure)? onClosureSuccess;
 
   @override
@@ -101,11 +117,35 @@ class _ExpressClosureViewState extends State<_ExpressClosureView> {
         }
         if (state.status == ExpressClosureStatus.success &&
             state.createdClosure != null) {
+          try {
+            final audio = widget.audioPlayerService ??
+                (sl.isRegistered<IAudioPlayerService>()
+                    ? sl<IAudioPlayerService>()
+                    : null);
+            audio?.playCashDrawerSound();
+          } catch (_) {}
+
+          try {
+            HapticFeedback.mediumImpact();
+          } catch (_) {}
+
           widget.onClosureSuccess?.call(state.createdClosure!);
+
+          final streakMsg = state.activeStreak > 0
+              ? ' · Série : ${state.activeStreak} jour${state.activeStreak > 1 ? "s" : ""}'
+              : '';
+          final monthlyMsg = state.monthlyClosuresCount > 0
+              ? ' · ${state.monthlyClosuresCount} ce mois'
+              : '';
+
+          if (!context.mounted) return;
+
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              key: ValueKey('closure_success_snackbar'),
-              content: Text('✅ Caisse clôturée et verrouillée avec succès !'),
+            SnackBar(
+              key: const ValueKey('closure_success_snackbar'),
+              content: Text(
+                '✅ Caisse clôturée et verrouillée avec succès !$streakMsg$monthlyMsg',
+              ),
               behavior: SnackBarBehavior.floating,
             ),
           );
@@ -279,7 +319,7 @@ class _ExpressClosureViewState extends State<_ExpressClosureView> {
               const SizedBox(height: 16),
 
               // Streak banner
-              _buildStreakBanner(),
+              _buildStreakBanner(state),
               const SizedBox(height: 20),
             ],
           ),
@@ -504,7 +544,26 @@ class _ExpressClosureViewState extends State<_ExpressClosureView> {
     );
   }
 
-  Widget _buildStreakBanner() {
+  Widget _buildStreakBanner(ExpressClosureState state) {
+    final streak = state.activeStreak;
+    final monthly = state.monthlyClosuresCount;
+
+    final String title;
+    final String subtitle;
+
+    if (streak > 0) {
+      title = 'Clôture quotidienne · Série active ($streak j) !';
+      subtitle =
+          '$streak jour${streak > 1 ? "s" : ""} consécutif${streak > 1 ? "s" : ""} · $monthly clôture${monthly > 1 ? "s" : ""} ce mois-ci';
+    } else if (monthly > 0) {
+      title = 'Clôture quotidienne · Série active !';
+      subtitle =
+          '$monthly clôture${monthly > 1 ? "s" : ""} ce mois-ci · Démarrez votre série !';
+    } else {
+      title = 'Clôture quotidienne · Série active !';
+      subtitle = 'Ancrage GPS conforme · Passeport Financier mis à jour.';
+    }
+
     return Container(
       key: const ValueKey('streak_banner'),
       padding: const EdgeInsets.all(12),
@@ -516,30 +575,40 @@ class _ExpressClosureViewState extends State<_ExpressClosureView> {
           width: 0.5,
         ),
       ),
-      child: const Row(
+      child: Row(
         children: [
-          Text('🔥', style: TextStyle(fontSize: 22)),
-          SizedBox(width: 10),
+          const Text('🔥', style: TextStyle(fontSize: 22)),
+          const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Clôture quotidienne · Série active !',
-                  style: TextStyle(
+                  title,
+                  style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w800,
                     color: AppColors.primary,
                   ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
-                  'Ancrage GPS conforme · Passeport Financier mis à jour.',
-                  style: TextStyle(
+                  subtitle,
+                  style: const TextStyle(
                     fontSize: 11,
                     color: AppColors.secondary,
                   ),
                 ),
+                if (streak > 0 || monthly > 0) ...[
+                  const SizedBox(height: 2),
+                  const Text(
+                    'Ancrage GPS conforme · Passeport Financier mis à jour.',
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: AppColors.secondary,
+                    ),
+                  ),
+                ],
               ],
             ),
           ),

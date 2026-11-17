@@ -2,8 +2,10 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:tekki/core/errors/failures.dart';
+import 'package:tekki/core/services/audio_service.dart';
 import 'package:tekki/core/utils/result.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/daily_closure_entity.dart';
+import 'package:tekki/features/sales_and_cash/domain/repositories/closure_repository.dart';
 import 'package:tekki/features/sales_and_cash/domain/usecases/execute_daily_closure_use_case.dart';
 import 'package:tekki/features/sales_and_cash/domain/usecases/get_closure_prefill_use_case.dart';
 import 'package:tekki/features/sales_and_cash/presentation/cubit/express_closure_cubit.dart';
@@ -14,6 +16,10 @@ class MockGetClosurePrefillUseCase extends Mock
 
 class MockExecuteDailyClosureUseCase extends Mock
     implements ExecuteDailyClosureUseCase {}
+
+class MockClosureRepository extends Mock implements ClosureRepository {}
+
+class MockAudioPlayerService extends Mock implements IAudioPlayerService {}
 
 void main() {
   late MockGetClosurePrefillUseCase mockPrefillUseCase;
@@ -346,6 +352,110 @@ void main() {
       expect(cubit.state.totalSalesAmount, equals(0));
       expect(cubit.state.cutoffTimestamp, equals(newCutoff));
       cubit.close();
+    });
+
+    group('Story 1.5 - Streak Loading on Init & Submit', () {
+      late MockClosureRepository mockRepo;
+
+      setUp(() {
+        mockRepo = MockClosureRepository();
+      });
+
+      blocTest<ExpressClosureCubit, ExpressClosureState>(
+        'init queries active streak and monthly count with shopId when repository is provided',
+        build: () {
+          when(() => mockPrefillUseCase(fixedCutoff)).thenAnswer(
+            (_) async => const Success(25000),
+          );
+          when(() => mockRepo.getActiveStreak(referenceDate: fixedCutoff, shopId: 'shop-test')).thenAnswer(
+            (_) async => const Success(5),
+          );
+          when(() => mockRepo.getMonthlyClosuresCount(fixedCutoff, shopId: 'shop-test')).thenAnswer(
+            (_) async => const Success(12),
+          );
+          return ExpressClosureCubit(
+            getClosurePrefillUseCase: mockPrefillUseCase,
+            executeDailyClosureUseCase: mockExecuteUseCase,
+            closureRepository: mockRepo,
+            initialCutoffTimestamp: fixedCutoff,
+          );
+        },
+        act: (cubit) => cubit.init(shopId: 'shop-test'),
+        expect: () => [
+          ExpressClosureState(
+            cutoffTimestamp: fixedCutoff,
+            status: ExpressClosureStatus.loadingPrefill,
+          ),
+          ExpressClosureState(
+            cutoffTimestamp: fixedCutoff,
+            status: ExpressClosureStatus.ready,
+            prefilledSalesAmount: 25000,
+            totalSalesAmount: 25000,
+            activeStreak: 5,
+            monthlyClosuresCount: 12,
+          ),
+        ],
+        verify: (_) {
+          verify(() => mockRepo.getActiveStreak(referenceDate: fixedCutoff, shopId: 'shop-test')).called(1);
+          verify(() => mockRepo.getMonthlyClosuresCount(fixedCutoff, shopId: 'shop-test')).called(1);
+        },
+      );
+
+      blocTest<ExpressClosureCubit, ExpressClosureState>(
+        'submitClosure updates streak from repository',
+        build: () {
+          when(
+            () => mockExecuteUseCase(
+              cutoffTimestamp: fixedCutoff,
+              totalSalesAmount: 25000,
+              totalExpensesAmount: 0,
+              cashCounted: 25000,
+              shopId: 'default-shop',
+            ),
+          ).thenAnswer((_) async => Success(testClosure));
+          when(() => mockRepo.getActiveStreak(referenceDate: fixedCutoff, shopId: 'default-shop')).thenAnswer(
+            (_) async => const Success(6),
+          );
+          when(() => mockRepo.getMonthlyClosuresCount(fixedCutoff, shopId: 'default-shop')).thenAnswer(
+            (_) async => const Success(13),
+          );
+
+          return ExpressClosureCubit(
+            getClosurePrefillUseCase: mockPrefillUseCase,
+            executeDailyClosureUseCase: mockExecuteUseCase,
+            closureRepository: mockRepo,
+            initialCutoffTimestamp: fixedCutoff,
+          );
+        },
+        seed: () => ExpressClosureState(
+          cutoffTimestamp: fixedCutoff,
+          totalSalesAmount: 25000,
+          cashCounted: 25000,
+          status: ExpressClosureStatus.ready,
+          activeStreak: 5,
+          monthlyClosuresCount: 12,
+        ),
+        act: (cubit) => cubit.submitClosure(),
+        expect: () => [
+          ExpressClosureState(
+            cutoffTimestamp: fixedCutoff,
+            totalSalesAmount: 25000,
+            cashCounted: 25000,
+            status: ExpressClosureStatus.submitting,
+            activeStreak: 5,
+            monthlyClosuresCount: 12,
+          ),
+          ExpressClosureState(
+            cutoffTimestamp: fixedCutoff,
+            totalSalesAmount: 25000,
+            cashCounted: 25000,
+            status: ExpressClosureStatus.success,
+            createdClosure: testClosure,
+            activeStreak: 6,
+            monthlyClosuresCount: 13,
+          ),
+        ],
+      );
     });
   });
 }

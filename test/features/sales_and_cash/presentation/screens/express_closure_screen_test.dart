@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:tekki/core/services/audio_service.dart';
 import 'package:tekki/core/theme/app_colors.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/daily_closure_entity.dart';
 import 'package:tekki/features/sales_and_cash/presentation/cubit/express_closure_cubit.dart';
@@ -10,6 +11,8 @@ import 'package:tekki/features/sales_and_cash/presentation/screens/express_closu
 
 class MockExpressClosureCubit extends MockCubit<ExpressClosureState>
     implements ExpressClosureCubit {}
+
+class MockAudioPlayerService extends Mock implements IAudioPlayerService {}
 
 void main() {
   late MockExpressClosureCubit mockCubit;
@@ -20,11 +23,13 @@ void main() {
   });
 
   Widget buildSubject({
+    IAudioPlayerService? audioPlayerService,
     void Function(DailyClosureEntity)? onClosureSuccess,
   }) {
     return MaterialApp(
       home: ExpressClosureScreen(
         cubit: mockCubit,
+        audioPlayerService: audioPlayerService,
         onClosureSuccess: onClosureSuccess,
       ),
     );
@@ -305,6 +310,72 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ExpressClosureScreen), findsNothing);
+    });
+
+    testWidgets('dynamic streak banner displays active streak count and monthly closures',
+        (tester) async {
+      when(() => mockCubit.state).thenReturn(
+        ExpressClosureState(
+          cutoffTimestamp: fixedCutoff,
+          status: ExpressClosureStatus.ready,
+          activeStreak: 7,
+          monthlyClosuresCount: 18,
+        ),
+      );
+
+      await tester.pumpWidget(buildSubject());
+
+      expect(find.byKey(const ValueKey('streak_banner')), findsOneWidget);
+      expect(find.text('Clôture quotidienne · Série active (7 j) !'), findsOneWidget);
+      expect(find.text('7 jours consécutifs · 18 clôtures ce mois-ci'), findsOneWidget);
+      expect(find.textContaining('Ancrage GPS'), findsOneWidget);
+    });
+
+    testWidgets('success state triggers cash drawer sound and haptic feedback safely',
+        (tester) async {
+      final mockAudio = MockAudioPlayerService();
+      when(() => mockAudio.playCashDrawerSound()).thenAnswer((_) async {});
+
+      final testClosure = DailyClosureEntity(
+        id: 'closure-audio-test',
+        shopId: 'shop-1',
+        closureDate: '2026-11-17',
+        cutoffTimestamp: fixedCutoff,
+        totalSalesAmount: 17500,
+      );
+
+      whenListen(
+        mockCubit,
+        Stream.fromIterable([
+          ExpressClosureState(
+            cutoffTimestamp: fixedCutoff,
+            status: ExpressClosureStatus.submitting,
+            activeStreak: 3,
+            monthlyClosuresCount: 10,
+          ),
+          ExpressClosureState(
+            cutoffTimestamp: fixedCutoff,
+            status: ExpressClosureStatus.success,
+            createdClosure: testClosure,
+            activeStreak: 4,
+            monthlyClosuresCount: 11,
+          ),
+        ]),
+        initialState: ExpressClosureState(
+          cutoffTimestamp: fixedCutoff,
+          status: ExpressClosureStatus.submitting,
+          activeStreak: 3,
+          monthlyClosuresCount: 10,
+        ),
+      );
+
+      await tester.pumpWidget(buildSubject(audioPlayerService: mockAudio));
+      await tester.pumpAndSettle();
+
+      verify(() => mockAudio.playCashDrawerSound()).called(1);
+      expect(find.byKey(const ValueKey('closure_success_snackbar')), findsOneWidget);
+      expect(find.textContaining('Série : 4 jours'), findsOneWidget);
+      expect(find.textContaining('11 ce mois'), findsOneWidget);
     });
   });
 }

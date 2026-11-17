@@ -9,6 +9,7 @@ import 'package:tekki/features/sales_and_cash/data/models/daily_closure_model.da
 import 'package:tekki/features/sales_and_cash/domain/entities/daily_closure_entity.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/payment_method.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/sale_entity.dart';
+import 'package:tekki/features/sales_and_cash/domain/entities/shop_entity.dart';
 
 void main() {
   setUpAll(() {
@@ -456,6 +457,115 @@ void main() {
       final page2 = await closureDataSource.getAllClosures(limit: 2, offset: 2);
       expect(page2.length, equals(2));
       expect(page2.first.id, equals('closure-page-3'));
+    });
+
+    test('getMonthlyClosuresCount returns correct count for month', () async {
+      final now = DateTime.utc(2026, 11, 15);
+      await closureDataSource.executeDailyClosure(DailyClosureEntity(
+        id: 'c-nov-1',
+        shopId: 'shop-1',
+        closureDate: '2026-11-10',
+        cutoffTimestamp: now,
+        totalSalesAmount: 5000,
+      ));
+      await closureDataSource.executeDailyClosure(DailyClosureEntity(
+        id: 'c-nov-2',
+        shopId: 'shop-1',
+        closureDate: '2026-11-11',
+        cutoffTimestamp: now,
+        totalSalesAmount: 7000,
+      ));
+      await closureDataSource.executeDailyClosure(DailyClosureEntity(
+        id: 'c-oct-1',
+        shopId: 'shop-1',
+        closureDate: '2026-10-31',
+        cutoffTimestamp: now,
+        totalSalesAmount: 3000,
+      ));
+
+      final novCount = await closureDataSource.getMonthlyClosuresCount(
+        DateTime.utc(2026, 11, 1),
+        shopId: 'shop-1',
+      );
+      expect(novCount, equals(2));
+
+      final octCount = await closureDataSource.getMonthlyClosuresCount(
+        DateTime.utc(2026, 10, 1),
+        shopId: 'shop-1',
+      );
+      expect(octCount, equals(1));
+
+      final decCount = await closureDataSource.getMonthlyClosuresCount(
+        DateTime.utc(2026, 12, 1),
+        shopId: 'shop-1',
+      );
+      expect(decCount, equals(0));
+    });
+
+    test('getActiveStreak calculates consecutive closure days accurately', () async {
+      final ref = DateTime.utc(2026, 11, 17);
+      // Three consecutive days: Nov 15, Nov 16, Nov 17
+      await closureDataSource.executeDailyClosure(DailyClosureEntity(
+        id: 'c-streak-1',
+        shopId: 'shop-streak',
+        closureDate: '2026-11-15',
+        cutoffTimestamp: ref,
+        totalSalesAmount: 5000,
+      ));
+      await closureDataSource.executeDailyClosure(DailyClosureEntity(
+        id: 'c-streak-2',
+        shopId: 'shop-streak',
+        closureDate: '2026-11-16',
+        cutoffTimestamp: ref,
+        totalSalesAmount: 6000,
+      ));
+      await closureDataSource.executeDailyClosure(DailyClosureEntity(
+        id: 'c-streak-3',
+        shopId: 'shop-streak',
+        closureDate: '2026-11-17',
+        cutoffTimestamp: ref,
+        totalSalesAmount: 8000,
+      ));
+
+      final streak = await closureDataSource.getActiveStreak(
+        referenceDate: ref,
+        shopId: 'shop-streak',
+      );
+      expect(streak, equals(3));
+
+      // Before closing today (Nov 17): if today is not closed, streak is 2 (from yesterday)
+      final streakBeforeToday = await closureDataSource.getActiveStreak(
+        referenceDate: DateTime.utc(2026, 11, 18), // Nov 18 not closed yet, Nov 17 was closed
+        shopId: 'shop-streak',
+      );
+      expect(streakBeforeToday, equals(3)); // Nov 17, 16, 15
+
+      // Missing days breaks streak
+      final streakBroken = await closureDataSource.getActiveStreak(
+        referenceDate: DateTime.utc(2026, 11, 20), // Nov 19 & 20 not closed
+        shopId: 'shop-streak',
+      );
+      expect(streakBroken, equals(0));
+    });
+
+    test('getShopById returns shop entity from shops table', () async {
+      final shop = ShopEntity(
+        id: 'shop-anchor-1',
+        name: 'Boutique Plateau',
+        refLatitude: 14.6710,
+        refLongitude: -17.4380,
+        publicKey: 'pk-test',
+        createdAt: DateTime.utc(2026, 1, 1),
+      );
+      await salesDataSource.insertShop(shop);
+
+      final fetched = await closureDataSource.getShopById('shop-anchor-1');
+      expect(fetched, isNotNull);
+      expect(fetched?.id, equals('shop-anchor-1'));
+      expect(fetched?.refLatitude, equals(14.6710));
+
+      final unknown = await closureDataSource.getShopById('non-existent');
+      expect(unknown, isNull);
     });
   });
 }

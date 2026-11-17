@@ -21,12 +21,16 @@ class ExpressClosureState extends Equatable {
     this.currentStep = 1,
     this.errorMessage,
     this.createdClosure,
+    this.activeStreak = 0,
+    this.monthlyClosuresCount = 0,
   });
 
   factory ExpressClosureState.initial([DateTime? cutoffTimestamp]) {
     return ExpressClosureState(
       cutoffTimestamp: (cutoffTimestamp ?? DateTime.now()).toUtc(),
       status: ExpressClosureStatus.initial,
+      activeStreak: 0,
+      monthlyClosuresCount: 0,
     );
   }
 
@@ -39,6 +43,11 @@ class ExpressClosureState extends Equatable {
   final int currentStep;
   final String? errorMessage;
   final DailyClosureEntity? createdClosure;
+  final int activeStreak;
+  final int monthlyClosuresCount;
+
+  /// Passive GPS integrity status from the sealed closure.
+  bool? get isLocationFlagged => createdClosure?.isFlaggedLocation;
 
   int get theoreticalCash => totalSalesAmount - totalExpensesAmount;
 
@@ -62,6 +71,8 @@ class ExpressClosureState extends Equatable {
     String? errorMessage,
     bool clearErrorMessage = false,
     DailyClosureEntity? createdClosure,
+    int? activeStreak,
+    int? monthlyClosuresCount,
   }) {
     return ExpressClosureState(
       cutoffTimestamp: cutoffTimestamp ?? this.cutoffTimestamp,
@@ -74,6 +85,8 @@ class ExpressClosureState extends Equatable {
       errorMessage:
           clearErrorMessage ? null : (errorMessage ?? this.errorMessage),
       createdClosure: createdClosure ?? this.createdClosure,
+      activeStreak: activeStreak ?? this.activeStreak,
+      monthlyClosuresCount: monthlyClosuresCount ?? this.monthlyClosuresCount,
     );
   }
 
@@ -88,5 +101,7 @@ class ExpressClosureState extends Equatable {
         currentStep,
         errorMessage,
         createdClosure,
+        activeStreak,
+        monthlyClosuresCount,
       ];
 }
