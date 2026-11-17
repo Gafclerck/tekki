@@ -6,6 +6,9 @@ import 'package:mocktail/mocktail.dart';
 import 'package:tekki/core/constants/app_constants.dart';
 import 'package:tekki/core/services/brightness_service.dart';
 import 'package:tekki/core/theme/app_colors.dart';
+import 'package:tekki/features/advisor/presentation/cubit/advisor_cubit.dart';
+import 'package:tekki/features/advisor/presentation/cubit/advisor_state.dart';
+import 'package:tekki/features/advisor/presentation/pages/advisor_page.dart';
 import 'package:tekki/features/financial_passport/presentation/bloc/passport_bloc.dart';
 import 'package:tekki/features/financial_passport/presentation/bloc/passport_state.dart';
 import 'package:tekki/features/financial_passport/presentation/pages/passport_overview_page.dart';
@@ -357,6 +360,44 @@ void main() {
       await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.byType(PassportOverviewPage), findsOneWidget);
+    });
+
+    testWidgets('tapping conseiller_card navigates to AdvisorPage', (
+      tester,
+    ) async {
+      when(() => mockBloc.state).thenReturn(
+        const CashDashboardLoaded(summary: CashSummaryEntity.empty()),
+      );
+
+      final mockAdvisorCubit = MockAdvisorCubit();
+      when(() => mockAdvisorCubit.state).thenReturn(const AdvisorLoading());
+      when(
+        () => mockAdvisorCubit.stream,
+      ).thenAnswer((_) => Stream.value(const AdvisorLoading()));
+      when(() => mockAdvisorCubit.close()).thenAnswer((_) async {});
+      when(
+        () => mockAdvisorCubit.loadFinancialHealth(),
+      ).thenAnswer((_) async {});
+
+      if (sl.isRegistered<AdvisorCubit>()) {
+        sl.unregister<AdvisorCubit>();
+      }
+      sl.registerFactory<AdvisorCubit>(() => mockAdvisorCubit);
+
+      await tester.pumpWidget(buildSubject());
+
+      final conseillerCard = find.byKey(const ValueKey('conseiller_card'));
+      expect(conseillerCard, findsOneWidget);
+      expect(find.byKey(const ValueKey('home_advisor_badge')), findsOneWidget);
+
+      await tester.ensureVisible(conseillerCard);
+      await tester.pump();
+
+      await tester.tap(conseillerCard);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      expect(find.byType(AdvisorPage), findsOneWidget);
     });
   });
 }

@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tekki/core/constants/app_constants.dart';
 import 'package:tekki/core/theme/app_colors.dart';
+import 'package:tekki/features/advisor/domain/entities/health_status.dart';
+import 'package:tekki/features/advisor/presentation/cubit/advisor_cubit.dart';
+import 'package:tekki/features/advisor/presentation/pages/advisor_page.dart';
+import 'package:tekki/features/advisor/presentation/widgets/advisor_health_badge.dart';
 import 'package:tekki/features/financial_passport/presentation/bloc/passport_bloc.dart';
 import 'package:tekki/features/financial_passport/presentation/pages/passport_overview_page.dart';
 import 'package:tekki/features/karne_bor/presentation/screens/karne_bor_screen.dart';
@@ -132,14 +136,29 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 12),
 
-                  // Espace réservé: Conseiller Tekki
+                  // Espace: Conseiller Tekki
                   _buildPlaceholderCard(
                     key: const ValueKey('conseiller_card'),
                     icon: Icons.insights_outlined,
                     title: 'Conseiller Tekki',
                     subtitle:
                         'Recommandations & santé financière de votre boutique',
-                    badge: 'Bientôt',
+                    badge: 'Actif',
+                    customBadge: const AdvisorHealthBadge(
+                      key: ValueKey('home_advisor_badge'),
+                      status: HealthStatus.conforme,
+                      compact: true,
+                    ),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => BlocProvider(
+                            create: (_) => sl<AdvisorCubit>(),
+                            child: const AdvisorPage(),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 16), // Padding above bottom CTA
                 ],
@@ -318,6 +337,7 @@ class _HomeScreenState extends State<HomeScreen> {
     required String subtitle,
     required String badge,
     VoidCallback? onTap,
+    Widget? customBadge,
   }) {
     final card = Container(
       key: key,
@@ -361,24 +381,27 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: AppColors.primary,
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 2,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.background,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        badge,
-                        style: const TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.secondary,
+                    if (customBadge != null)
+                      customBadge
+                    else
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.background,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          badge,
+                          style: const TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.secondary,
+                          ),
                         ),
                       ),
-                    ),
                   ],
                 ),
                 const SizedBox(height: 4),

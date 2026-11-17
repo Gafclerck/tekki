@@ -9,6 +9,12 @@ import 'package:tekki/core/services/brightness_service.dart';
 import 'package:tekki/core/services/location_service.dart';
 import 'package:tekki/core/services/share_service.dart';
 import 'package:tekki/core/services/whatsapp_service.dart';
+import 'package:tekki/features/advisor/domain/entities/financial_health_entity.dart';
+import 'package:tekki/features/advisor/domain/entities/health_indicator_entity.dart';
+import 'package:tekki/features/advisor/domain/repositories/advisor_repository.dart';
+import 'package:tekki/features/advisor/domain/usecases/evaluate_financial_health_use_case.dart';
+import 'package:tekki/features/advisor/presentation/cubit/advisor_cubit.dart';
+import 'package:tekki/features/advisor/presentation/cubit/advisor_state.dart';
 import 'package:tekki/features/financial_passport/domain/entities/financial_passport_entity.dart';
 import 'package:tekki/features/financial_passport/domain/entities/score_breakdown_entity.dart';
 import 'package:tekki/features/financial_passport/domain/entities/signed_passport_payload_entity.dart';
@@ -48,6 +54,8 @@ import 'package:uuid/uuid.dart';
 
 // Repositories
 class MockClosureRepository extends Mock implements ClosureRepository {}
+
+class MockAdvisorRepository extends Mock implements AdvisorRepository {}
 
 class MockSalesRepository extends Mock implements SalesRepository {}
 
@@ -131,6 +139,9 @@ class MockKarneBorCubit extends MockCubit<KarneBorState>
 class MockPassportBloc extends MockBloc<PassportEvent, PassportState>
     implements PassportBloc {}
 
+class MockAdvisorCubit extends MockCubit<AdvisorState>
+    implements AdvisorCubit {}
+
 // Services
 class MockShareService extends Mock implements IShareService {}
 
@@ -138,6 +149,9 @@ class MockPdfGeneratorService extends Mock implements IPdfGeneratorService {}
 
 class MockSharePassportPdfUseCase extends Mock
     implements SharePassportPdfUseCase {}
+
+class MockEvaluateFinancialHealthUseCase extends Mock
+    implements EvaluateFinancialHealthUseCase {}
 
 // Fakes for Mocktail registerFallbackValue
 class FakeDailyClosureEntity extends Fake implements DailyClosureEntity {}
@@ -159,3 +173,9 @@ class FakeScoreBreakdownEntity extends Fake implements ScoreBreakdownEntity {}
 class FakePassportEvent extends Fake implements PassportEvent {}
 
 class FakePassportState extends Fake implements PassportState {}
+
+class FakeFinancialHealthEntity extends Fake implements FinancialHealthEntity {}
+
+class FakeHealthIndicatorEntity extends Fake implements HealthIndicatorEntity {}
+
+class FakeAdvisorState extends Fake implements AdvisorState {}

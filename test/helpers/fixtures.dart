@@ -1,3 +1,6 @@
+import 'package:tekki/features/advisor/domain/entities/financial_health_entity.dart';
+import 'package:tekki/features/advisor/domain/entities/health_indicator_entity.dart';
+import 'package:tekki/features/advisor/domain/entities/health_status.dart';
 import 'package:tekki/features/financial_passport/domain/entities/financial_passport_entity.dart';
 import 'package:tekki/features/financial_passport/domain/entities/score_breakdown_entity.dart';
 import 'package:tekki/features/financial_passport/domain/entities/signed_passport_payload_entity.dart';
@@ -214,5 +217,56 @@ SignedPassportPayloadEntity createTestSignedPassportPayload({
     base45Payload: base45Payload,
     visualPin: visualPin,
     isValid: isValid,
+  );
+}
+
+HealthIndicatorEntity createTestHealthIndicator({
+  String id = 'caisse_regularity',
+  String title = 'Régularité de caisse',
+  HealthStatus status = HealthStatus.conforme,
+  String diagnostic = 'Diagnostic de test',
+  String recommendation = 'Recommandation de test',
+  int score = 85,
+}) {
+  return HealthIndicatorEntity(
+    id: id,
+    title: title,
+    status: status,
+    diagnostic: diagnostic,
+    recommendation: recommendation,
+    score: score,
+  );
+}
+
+FinancialHealthEntity createTestFinancialHealth({
+  HealthStatus overallStatus = HealthStatus.conforme,
+  String summary = 'Bilan sain et conforme.',
+  List<HealthIndicatorEntity>? indicators,
+  DateTime? evaluatedAt,
+}) {
+  return FinancialHealthEntity(
+    overallStatus: overallStatus,
+    summary: summary,
+    indicators:
+        indicators ??
+        [
+          createTestHealthIndicator(
+            id: 'caisse_regularity',
+            title: 'Régularité de caisse',
+          ),
+          createTestHealthIndicator(
+            id: 'karne_bor_recovery',
+            title: 'Recouvrement Karné Bor',
+          ),
+          createTestHealthIndicator(
+            id: 'cash_discipline',
+            title: 'Discipline de trésorerie',
+          ),
+          createTestHealthIndicator(
+            id: 'location_stability',
+            title: 'Stabilité d\'ancrage',
+          ),
+        ],
+    evaluatedAt: evaluatedAt ?? DateTime.utc(2026, 11, 17, 12, 0),
   );
 }

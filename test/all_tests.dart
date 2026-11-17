@@ -20,6 +20,14 @@ import 'core/utils/haversine_calculator_test.dart' as haversine_calculator_test;
 import 'core/utils/result_test.dart' as result_test;
 
 // Features - Financial Passport
+import 'features/advisor/data/repositories/advisor_repository_impl_test.dart'
+    as advisor_repository_impl_test;
+import 'features/advisor/domain/usecases/evaluate_financial_health_use_case_test.dart'
+    as evaluate_financial_health_use_case_test;
+import 'features/advisor/presentation/cubit/advisor_cubit_test.dart'
+    as advisor_cubit_test;
+import 'features/advisor/presentation/pages/advisor_page_test.dart'
+    as advisor_page_test;
 import 'features/financial_passport/data/datasources/pdf_generator_service_test.dart'
     as pdf_generator_service_test;
 import 'features/financial_passport/data/models/cbor_passport_payload_test.dart'
@@ -145,6 +153,14 @@ void main() {
       passport_fullscreen_qr_dialog_test.main();
       passport_overview_page_test.main();
       passport_overview_page_share_test.main();
+    });
+
+    // Features - Advisor
+    group('Features: Advisor Tests', () {
+      evaluate_financial_health_use_case_test.main();
+      advisor_repository_impl_test.main();
+      advisor_cubit_test.main();
+      advisor_page_test.main();
     });
 
     // Features - Karne Bor

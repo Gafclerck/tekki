@@ -11,6 +11,10 @@ import 'package:tekki/core/services/geolocator_location_service.dart';
 import 'package:tekki/core/services/location_service.dart';
 import 'package:tekki/core/services/share_service.dart';
 import 'package:tekki/core/services/whatsapp_service.dart';
+import 'package:tekki/features/advisor/data/repositories/advisor_repository_impl.dart';
+import 'package:tekki/features/advisor/domain/repositories/advisor_repository.dart';
+import 'package:tekki/features/advisor/domain/usecases/evaluate_financial_health_use_case.dart';
+import 'package:tekki/features/advisor/presentation/cubit/advisor_cubit.dart';
 import 'package:tekki/features/financial_passport/data/datasources/pdf_generator_service_impl.dart';
 import 'package:tekki/features/financial_passport/data/repositories/passport_repository_impl.dart';
 import 'package:tekki/features/financial_passport/domain/repositories/passport_repository.dart';
@@ -173,6 +177,17 @@ Future<void> initDependencyInjection({
     ),
   );
 
+  // Features: Advisor Repository & Use Cases
+  sl.registerLazySingleton<AdvisorRepository>(
+    () => AdvisorRepositoryImpl(
+      closureRepository: sl<ClosureRepository>(),
+      debtRepository: sl<DebtRepository>(),
+    ),
+  );
+  sl.registerLazySingleton<EvaluateFinancialHealthUseCase>(
+    () => EvaluateFinancialHealthUseCase(repository: sl<AdvisorRepository>()),
+  );
+
   // Features: Presentation Cubits / BLoCs
   sl.registerFactory<QuickSaleCubit>(
     () => QuickSaleCubit(recordQuickSaleUseCase: sl<RecordQuickSaleUseCase>()),
@@ -214,6 +229,11 @@ Future<void> initDependencyInjection({
           sl<CalculateFinancialPassportUseCase>(),
       generateSignedPassportUseCase: sl<GenerateSignedPassportUseCase>(),
       sharePassportPdfUseCase: sl<SharePassportPdfUseCase>(),
+    ),
+  );
+  sl.registerFactory<AdvisorCubit>(
+    () => AdvisorCubit(
+      evaluateFinancialHealthUseCase: sl<EvaluateFinancialHealthUseCase>(),
     ),
   );
 }
