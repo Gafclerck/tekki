@@ -3,6 +3,7 @@ import 'package:tekki/core/errors/failures.dart';
 import 'package:tekki/core/utils/result.dart';
 import 'package:tekki/features/karne_bor/data/datasources/debt_local_data_source.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
+import 'package:tekki/features/karne_bor/domain/entities/debt_payment_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debtor_entity.dart';
 import 'package:tekki/features/karne_bor/domain/repositories/debt_repository.dart';
 
@@ -93,6 +94,38 @@ class DebtRepositoryImpl implements DebtRepository {
       );
       final completeDebt = debt.copyWith(debtor: debtor);
       return Success(completeDebt);
+    } on DatabaseException catch (e) {
+      return Error(DatabaseFailure(message: e.message));
+    } catch (e) {
+      return Error(DatabaseFailure(message: 'Unexpected error: $e'));
+    }
+  }
+
+  @override
+  Future<Result<DebtPaymentEntity, Failure>> recordDebtPayment({
+    required DebtPaymentEntity payment,
+    required DebtEntity updatedDebt,
+  }) async {
+    try {
+      await localDataSource.recordDebtPayment(
+        payment: payment,
+        updatedDebt: updatedDebt,
+      );
+      return Success(payment);
+    } on DatabaseException catch (e) {
+      return Error(DatabaseFailure(message: e.message));
+    } catch (e) {
+      return Error(DatabaseFailure(message: 'Unexpected error: $e'));
+    }
+  }
+
+  @override
+  Future<Result<List<DebtPaymentEntity>, Failure>> getPaymentsByDebt(
+    String debtId,
+  ) async {
+    try {
+      final payments = await localDataSource.getPaymentsByDebt(debtId);
+      return Success(payments);
     } on DatabaseException catch (e) {
       return Error(DatabaseFailure(message: e.message));
     } catch (e) {

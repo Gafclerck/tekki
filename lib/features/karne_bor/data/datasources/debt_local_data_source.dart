@@ -2,8 +2,10 @@ import 'package:drift/drift.dart';
 import 'package:tekki/core/database/app_database.dart';
 import 'package:tekki/core/errors/exceptions.dart';
 import 'package:tekki/features/karne_bor/data/models/debt_model.dart';
+import 'package:tekki/features/karne_bor/data/models/debt_payment_model.dart';
 import 'package:tekki/features/karne_bor/data/models/debtor_model.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
+import 'package:tekki/features/karne_bor/domain/entities/debt_payment_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_status.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debtor_entity.dart';
 
@@ -21,6 +23,12 @@ abstract class DebtLocalDataSource {
     required DebtEntity debt,
     bool isNewDebtor = true,
   });
+
+  Future<void> recordDebtPayment({
+    required DebtPaymentEntity payment,
+    required DebtEntity updatedDebt,
+  });
+  Future<List<DebtPaymentEntity>> getPaymentsByDebt(String debtId);
 
   Future<DebtEntity?> getDebtById(String id);
   Future<List<DebtEntity>> getDebtsByDebtor(String debtorId);
@@ -298,6 +306,49 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
     } catch (e) {
       if (e is ArgumentError) rethrow;
       throw DatabaseException('Failed to watch all debts with debtor: $e');
+    }
+  }
+
+  @override
+  Future<void> recordDebtPayment({
+    required DebtPaymentEntity payment,
+    required DebtEntity updatedDebt,
+  }) async {
+    try {
+      await database.transaction(() async {
+        final paymentCompanion =
+            DebtPaymentModel.fromEntity(payment).toCompanion();
+        await database.into(database.debtPayments).insert(paymentCompanion);
+
+        await (database.update(database.debts)
+              ..where((tbl) => tbl.id.equals(updatedDebt.id)))
+            .write(DebtsCompanion(
+          remainingAmount: Value(updatedDebt.remainingAmount),
+          status: Value(updatedDebt.status.toValue()),
+        ));
+      });
+    } catch (e) {
+      throw DatabaseException('Failed to record debt payment atomically: $e');
+    }
+  }
+
+  @override
+  Future<List<DebtPaymentEntity>> getPaymentsByDebt(String debtId) async {
+    try {
+      final query = database.select(database.debtPayments)
+        ..where((tbl) => tbl.debtId.equals(debtId))
+        ..orderBy([
+          (tbl) => OrderingTerm(
+                expression: tbl.paidAt,
+                mode: OrderingMode.desc,
+              ),
+        ]);
+      final rows = await query.get();
+      return rows
+          .map((r) => DebtPaymentModel.fromDrift(r).toEntity())
+          .toList();
+    } catch (e) {
+      throw DatabaseException('Failed to get payments by debt: $e');
     }
   }
 }

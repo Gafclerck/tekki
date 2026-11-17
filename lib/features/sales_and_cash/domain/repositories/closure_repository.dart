@@ -5,6 +5,9 @@ import 'package:tekki/features/sales_and_cash/domain/entities/shop_entity.dart';
 
 abstract class ClosureRepository {
   Future<Result<int, Failure>> getPrefillSalesAmount(DateTime cutoffTimestamp);
+  Future<Result<int, Failure>> getPrefillDebtCashInflow(
+    DateTime cutoffTimestamp,
+  );
   Future<Result<DailyClosureEntity, Failure>> executeDailyClosure(
     DailyClosureEntity closure,
   );

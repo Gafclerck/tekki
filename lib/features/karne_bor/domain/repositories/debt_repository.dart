@@ -1,6 +1,7 @@
 import 'package:tekki/core/errors/failures.dart';
 import 'package:tekki/core/utils/result.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
+import 'package:tekki/features/karne_bor/domain/entities/debt_payment_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debtor_entity.dart';
 
 abstract class DebtRepository {
@@ -19,6 +20,13 @@ abstract class DebtRepository {
     required DebtEntity debt,
     bool isNewDebtor = true,
   });
+
+  Future<Result<DebtPaymentEntity, Failure>> recordDebtPayment({
+    required DebtPaymentEntity payment,
+    required DebtEntity updatedDebt,
+  });
+
+  Future<Result<List<DebtPaymentEntity>, Failure>> getPaymentsByDebt(String debtId);
 
   Future<Result<DebtEntity?, Failure>> getDebtById(String id);
   Future<Result<List<DebtEntity>, Failure>> getDebtsByDebtor(String debtorId);

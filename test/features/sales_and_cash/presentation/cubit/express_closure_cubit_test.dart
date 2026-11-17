@@ -359,6 +359,8 @@ void main() {
 
       setUp(() {
         mockRepo = MockClosureRepository();
+        when(() => mockRepo.getPrefillDebtCashInflow(any()))
+            .thenAnswer((_) async => const Success(0));
       });
 
       blocTest<ExpressClosureCubit, ExpressClosureState>(

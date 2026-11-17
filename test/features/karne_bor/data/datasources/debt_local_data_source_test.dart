@@ -4,6 +4,7 @@ import 'package:tekki/core/database/connection/open_connection.dart';
 import 'package:tekki/core/errors/exceptions.dart';
 import 'package:tekki/features/karne_bor/data/datasources/debt_local_data_source.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
+import 'package:tekki/features/karne_bor/domain/entities/debt_payment_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_status.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debtor_entity.dart';
 
@@ -222,6 +223,69 @@ void main() {
       final activeDebts = await dataSource.getActiveDebts();
       expect(activeDebts.length, 2);
       expect(activeDebts.map((d) => d.id).toList(), ['stream-debt-overdue', 'stream-debt-soon']);
+    });
+
+    test('records debt payment atomically, reduces remainingAmount and transitions to SETTLED when 0', () async {
+      final debtor = DebtorEntity(
+        id: 'pay-debtor-1',
+        name: 'Samba Diouf',
+        createdAt: testDate,
+      );
+      final debt = DebtEntity(
+        id: 'pay-debt-1',
+        debtorId: 'pay-debtor-1',
+        initialAmount: 10000,
+        remainingAmount: 10000,
+        dueDate: testDate.add(const Duration(days: 7)),
+        status: DebtStatus.active,
+        createdAt: testDate,
+      );
+
+      await dataSource.recordDebtWithDebtor(debtor: debtor, debt: debt);
+
+      // 1. Partial payment: 4 000 FCFA
+      final payment1 = DebtPaymentEntity(
+        id: 'payment-uuid-1',
+        debtId: 'pay-debt-1',
+        paymentAmount: 4000,
+        paymentMethod: 'ESPECES',
+        paidAt: testDate.add(const Duration(hours: 1)),
+      );
+
+      await dataSource.recordDebtPayment(
+        payment: payment1,
+        updatedDebt: debt.copyWith(remainingAmount: 6000),
+      );
+
+      final debtAfterPay1 = await dataSource.getDebtById('pay-debt-1');
+      expect(debtAfterPay1?.remainingAmount, 6000);
+      expect(debtAfterPay1?.status, DebtStatus.active);
+
+      // 2. Full remaining payment: 6 000 FCFA -> SETTLED
+      final payment2 = DebtPaymentEntity(
+        id: 'payment-uuid-2',
+        debtId: 'pay-debt-1',
+        paymentAmount: 6000,
+        paymentMethod: 'ESPECES',
+        paidAt: testDate.add(const Duration(hours: 2)),
+      );
+
+      await dataSource.recordDebtPayment(
+        payment: payment2,
+        updatedDebt: debt.copyWith(remainingAmount: 0, status: DebtStatus.settled),
+      );
+
+      final debtAfterPay2 = await dataSource.getDebtById('pay-debt-1');
+      expect(debtAfterPay2?.remainingAmount, 0);
+      expect(debtAfterPay2?.status, DebtStatus.settled);
+
+      // 3. Query payments history
+      final payments = await dataSource.getPaymentsByDebt('pay-debt-1');
+      expect(payments.length, 2);
+      expect(payments[0].id, 'payment-uuid-2'); // ordered by paidAt desc
+      expect(payments[1].id, 'payment-uuid-1');
+      expect(payments[0].paymentAmount, 6000);
+      expect(payments[1].paymentAmount, 4000);
     });
   });
 }

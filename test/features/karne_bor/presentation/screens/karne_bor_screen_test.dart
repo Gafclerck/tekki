@@ -8,16 +8,19 @@ import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_status.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debtor_entity.dart';
 import 'package:tekki/features/karne_bor/domain/usecases/get_debtors_use_case.dart';
+import 'package:tekki/features/karne_bor/domain/usecases/record_debt_payment_use_case.dart';
 import 'package:tekki/features/karne_bor/domain/usecases/record_debt_use_case.dart';
 import 'package:tekki/features/karne_bor/domain/usecases/watch_active_debts_use_case.dart';
 import 'package:tekki/features/karne_bor/presentation/cubit/karne_bor_cubit.dart';
 import 'package:tekki/features/karne_bor/presentation/cubit/record_debt_cubit.dart';
 import 'package:tekki/features/karne_bor/presentation/screens/karne_bor_screen.dart';
 import 'package:tekki/features/karne_bor/presentation/widgets/debt_card.dart';
+import 'package:tekki/injection_container.dart';
 
 class MockWatchActiveDebtsUseCase extends Mock implements WatchActiveDebtsUseCase {}
 class MockRecordDebtUseCase extends Mock implements RecordDebtUseCase {}
 class MockGetDebtorsUseCase extends Mock implements GetDebtorsUseCase {}
+class MockRecordDebtPaymentUseCase extends Mock implements RecordDebtPaymentUseCase {}
 
 class FakeRecordDebtParams extends Fake implements RecordDebtParams {}
 
@@ -362,6 +365,50 @@ void main() {
       await tester.tap(find.byKey(const ValueKey('karne_bor_back_button')));
       await tester.pumpAndSettle();
       expect(find.byType(KarneBorScreen), findsNothing);
+    });
+
+    testWidgets('tapping collect button on a debt card opens CollectDebtPaymentDialog', (tester) async {
+      final mockRecordPaymentUseCase = MockRecordDebtPaymentUseCase();
+      if (sl.isRegistered<RecordDebtPaymentUseCase>()) {
+        sl.unregister<RecordDebtPaymentUseCase>();
+      }
+      sl.registerSingleton<RecordDebtPaymentUseCase>(mockRecordPaymentUseCase);
+
+      final debt = DebtEntity(
+        id: 'debt-collect-test',
+        debtorId: 'debtor-1',
+        initialAmount: 7000,
+        remainingAmount: 7000,
+        dueDate: now.add(const Duration(days: 3)),
+        status: DebtStatus.active,
+        createdAt: now,
+        debtor: DebtorEntity(
+          id: 'debtor-1',
+          name: 'Moussa Ndiaye',
+          createdAt: now,
+        ),
+      );
+
+      await tester.pumpWidget(createWidgetUnderTest(initialDebts: [debt]));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(ValueKey('debt_card_collect_button_${debt.id}')));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const ValueKey('collect_debt_payment_dialog')), findsOneWidget);
+      expect(find.text('Encaisser un paiement'), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byKey(const ValueKey('collect_debt_payment_dialog')),
+          matching: find.text('Moussa Ndiaye'),
+        ),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.byKey(const ValueKey('close_collect_dialog_button')));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const ValueKey('collect_debt_payment_dialog')), findsNothing);
     });
   });
 }

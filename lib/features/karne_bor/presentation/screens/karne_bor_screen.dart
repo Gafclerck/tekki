@@ -6,6 +6,7 @@ import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
 import 'package:tekki/features/karne_bor/presentation/cubit/karne_bor_cubit.dart';
 import 'package:tekki/features/karne_bor/presentation/cubit/karne_bor_state.dart';
 import 'package:tekki/features/karne_bor/presentation/cubit/record_debt_cubit.dart';
+import 'package:tekki/features/karne_bor/presentation/widgets/collect_debt_payment_dialog.dart';
 import 'package:tekki/features/karne_bor/presentation/widgets/debt_card.dart';
 import 'package:tekki/features/karne_bor/presentation/widgets/record_debt_bottom_sheet.dart';
 import 'package:tekki/injection_container.dart';
@@ -79,6 +80,13 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
     if (widget.recordDebtCubit == null) {
       await debtCubit.close();
     }
+  }
+
+  Future<void> _openCollectPaymentDialog(DebtEntity debt) async {
+    await CollectDebtPaymentDialog.show(
+      context: context,
+      debt: debt,
+    );
   }
 
   @override
@@ -395,6 +403,7 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
         return DebtCard(
           key: ValueKey('debt_card_${debt.id}'),
           debt: debt,
+          onCollect: () => _openCollectPaymentDialog(debt),
         );
       },
     );

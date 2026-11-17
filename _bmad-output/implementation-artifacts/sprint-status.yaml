@@ -45,8 +45,8 @@ development_status:
 
   epic-2: in-progress
   2-1-enregistrement-d-une-dette-client-création-du-débiteur-dans: done
-  2-2-tableau-de-bord-karné-bor-total-argent-dehors-suivi-des-reta: backlog
-  2-3-encaissement-de-remboursement-réconciliation-avec-le-tiroir: backlog
+  2-2-tableau-de-bord-karné-bor-total-argent-dehors-suivi-des-reta: done
+  2-3-encaissement-de-remboursement-réconciliation-avec-le-tiroir: done
   2-4-relance-client-1-clic-via-whatsapp-calcul-de-la-vélocité-de: backlog
   epic-2-retrospective: optional
 
