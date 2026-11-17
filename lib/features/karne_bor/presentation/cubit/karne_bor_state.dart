@@ -20,15 +20,18 @@ final class KarneBorLoaded extends KarneBorState {
   const KarneBorLoaded({
     required this.debts,
     required this.totalDebt,
+    this.overdueCount = 0,
   });
 
   final List<DebtEntity> debts;
   final int totalDebt;
+  final int overdueCount;
 
   bool get isEmpty => debts.isEmpty;
+  bool get hasOverdue => overdueCount > 0;
 
   @override
-  List<Object?> get props => [debts, totalDebt];
+  List<Object?> get props => [debts, totalDebt, overdueCount];
 }
 
 final class KarneBorError extends KarneBorState {

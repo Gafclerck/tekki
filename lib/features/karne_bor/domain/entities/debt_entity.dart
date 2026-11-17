@@ -28,6 +28,7 @@ class DebtEntity {
 
   bool get isOverdue {
     if (status == DebtStatus.settled) return false;
+    if (status == DebtStatus.overdue) return true;
     final now = DateTime.now().toUtc();
     final endOfDueDate = DateTime.utc(
       dueDate.year,

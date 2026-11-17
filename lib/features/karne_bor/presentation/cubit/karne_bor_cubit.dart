@@ -17,11 +17,29 @@ class KarneBorCubit extends Cubit<KarneBorState> {
     _subscription?.cancel();
     _subscription = watchActiveDebtsUseCase().listen(
       (debts) {
+        if (isClosed) return;
         final totalDebt = debts.fold<int>(
           0,
           (sum, d) => sum + d.remainingAmount,
         );
-        emit(KarneBorLoaded(debts: debts, totalDebt: totalDebt));
+        final overdueCount = debts.where((d) => d.isOverdue).length;
+
+        final sortedDebts = List<DebtEntity>.from(debts)
+          ..sort((a, b) {
+            if (a.isOverdue && !b.isOverdue) return -1;
+            if (!a.isOverdue && b.isOverdue) return 1;
+            final dueCmp = a.dueDate.compareTo(b.dueDate);
+            if (dueCmp != 0) return dueCmp;
+            return a.createdAt.compareTo(b.createdAt);
+          });
+
+        emit(
+          KarneBorLoaded(
+            debts: sortedDebts,
+            totalDebt: totalDebt,
+            overdueCount: overdueCount,
+          ),
+        );
       },
       onError: (Object e) {
         emit(KarneBorError(message: 'Impossible de charger le carnet: $e'));

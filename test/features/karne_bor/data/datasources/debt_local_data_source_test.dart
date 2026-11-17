@@ -155,7 +155,7 @@ void main() {
       expect(shouldBeNull, isNull);
     });
 
-    test('watchActiveDebts emits active debts ordered by due_date', () async {
+    test('watchActiveDebts emits active and overdue debts ordered by due_date, excluding settled', () async {
       final debtor = DebtorEntity(
         id: 'stream-debtor-1',
         name: 'Stream Client',
@@ -172,13 +172,22 @@ void main() {
         status: DebtStatus.active,
         createdAt: testDate,
       );
-      final debtLater = DebtEntity(
-        id: 'stream-debt-later',
+      final debtOverdue = DebtEntity(
+        id: 'stream-debt-overdue',
+        debtorId: 'stream-debtor-1',
+        initialAmount: 4000,
+        remainingAmount: 4000,
+        dueDate: testDate.subtract(const Duration(days: 3)),
+        status: DebtStatus.overdue,
+        createdAt: testDate,
+      );
+      final debtSettled = DebtEntity(
+        id: 'stream-debt-settled',
         debtorId: 'stream-debtor-1',
         initialAmount: 5000,
-        remainingAmount: 5000,
-        dueDate: testDate.add(const Duration(days: 10)),
-        status: DebtStatus.active,
+        remainingAmount: 0,
+        dueDate: testDate.subtract(const Duration(days: 1)),
+        status: DebtStatus.settled,
         createdAt: testDate,
       );
 
@@ -186,21 +195,33 @@ void main() {
         dataSource.watchActiveDebts(),
         emitsInOrder([
           isEmpty,
-          hasLength(1),
-          hasLength(2),
+          // After inserting debtOverdue
+          predicate<List<DebtEntity>>((l) => l.length == 1 && l.first.id == 'stream-debt-overdue'),
+          // After inserting debtSettled: still only debtOverdue, length remains 1
+          predicate<List<DebtEntity>>((l) => l.length == 1 && l.first.id == 'stream-debt-overdue'),
+          // After inserting debtSoon: both debtOverdue and debtSoon, excluding debtSettled
+          predicate<List<DebtEntity>>((l) => l.length == 2 && !l.any((d) => d.id == 'stream-debt-settled')),
         ]),
       );
 
       // Allow stream setup
       await Future<void>.delayed(const Duration(milliseconds: 10));
 
-      await dataSource.insertDebt(debtLater);
+      await dataSource.insertDebt(debtOverdue);
+      await Future<void>.delayed(const Duration(milliseconds: 10));
+
+      await dataSource.insertDebt(debtSettled);
       await Future<void>.delayed(const Duration(milliseconds: 10));
 
       await dataSource.insertDebt(debtSoon);
       await Future<void>.delayed(const Duration(milliseconds: 10));
 
       await expectation;
+
+      // getActiveDebts also includes active and overdue, excluding settled
+      final activeDebts = await dataSource.getActiveDebts();
+      expect(activeDebts.length, 2);
+      expect(activeDebts.map((d) => d.id).toList(), ['stream-debt-overdue', 'stream-debt-soon']);
     });
   });
 }

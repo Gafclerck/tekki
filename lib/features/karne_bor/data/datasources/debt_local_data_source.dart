@@ -198,7 +198,12 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
     }
     try {
       final query = database.select(database.debts)
-        ..where((tbl) => tbl.status.equals(DebtStatus.active.toValue()))
+        ..where(
+          (tbl) => tbl.status.isIn([
+            DebtStatus.active.toValue(),
+            DebtStatus.overdue.toValue(),
+          ]),
+        )
         ..orderBy([
           (tbl) => OrderingTerm(
                 expression: tbl.dueDate,
@@ -236,7 +241,12 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
           database.debtors.id.equalsExp(database.debts.debtorId),
         ),
       ])
-        ..where(database.debts.status.equals(DebtStatus.active.toValue()))
+        ..where(
+          database.debts.status.isIn([
+            DebtStatus.active.toValue(),
+            DebtStatus.overdue.toValue(),
+          ]),
+        )
         ..orderBy([
           OrderingTerm(
             expression: database.debts.dueDate,
