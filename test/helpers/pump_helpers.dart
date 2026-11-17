@@ -13,12 +13,8 @@ extension WidgetTesterX on WidgetTester {
     await pumpWidget(
       MaterialApp(
         theme: AppTheme.lightTheme,
-        navigatorObservers: [
-          ?navigatorObserver,
-        ],
-        home: Scaffold(
-          body: widget,
-        ),
+        navigatorObservers: [?navigatorObserver],
+        home: Scaffold(body: widget),
       ),
       duration: duration,
       phase: phase,

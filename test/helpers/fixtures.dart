@@ -1,3 +1,5 @@
+import 'package:tekki/features/financial_passport/domain/entities/financial_passport_entity.dart';
+import 'package:tekki/features/financial_passport/domain/entities/score_breakdown_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_payment_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_status.dart';
@@ -102,10 +104,10 @@ DailyClosureEntity createTestDailyClosure({
   String closureDate = '2026-11-17',
   DateTime? cutoffTimestamp,
   int totalSalesAmount = 15000,
-  int totalCashDebtInflow = 5000,
+  int totalCashDebtInflow = 0,
   int totalCreditSalesAmount = 0,
   int totalExpensesAmount = 0,
-  int cashCounted = 20000,
+  int cashCounted = 15000,
   double? gpsLatitude,
   double? gpsLongitude,
   double? distanceMeters,
@@ -147,5 +149,49 @@ RecoveryVelocityEntity createTestRecoveryVelocity({
     healthStatus: healthStatus,
     healthLevel: healthLevel,
     windowDays: windowDays,
+  );
+}
+
+ScoreBreakdownEntity createTestScoreBreakdown({
+  int closureScore = 100,
+  int debtScore = 85,
+  int gpsScore = 100,
+  int cashScore = 100,
+  double? closureContribution,
+  double? debtContribution,
+  double? gpsContribution,
+  double? cashContribution,
+}) {
+  return ScoreBreakdownEntity(
+    closureScore: closureScore,
+    debtScore: debtScore,
+    gpsScore: gpsScore,
+    cashScore: cashScore,
+    closureContribution: closureContribution,
+    debtContribution: debtContribution,
+    gpsContribution: gpsContribution,
+    cashContribution: cashContribution,
+  );
+}
+
+FinancialPassportEntity createTestFinancialPassport({
+  int overallScore = 85,
+  ScoreBreakdownEntity? breakdown,
+  bool isEligible = true,
+  int totalClosures = 20,
+  int remainingClosures = 0,
+  int streak = 5,
+  String? encouragementMessage,
+  DateTime? calculatedAt,
+}) {
+  return FinancialPassportEntity(
+    overallScore: overallScore,
+    breakdown: breakdown ?? createTestScoreBreakdown(),
+    isEligible: isEligible,
+    totalClosures: totalClosures,
+    remainingClosures: remainingClosures,
+    streak: streak,
+    encouragementMessage: encouragementMessage,
+    calculatedAt: calculatedAt,
   );
 }

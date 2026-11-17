@@ -7,6 +7,9 @@ import 'package:tekki/core/services/audio_service.dart';
 import 'package:tekki/core/services/geolocator_location_service.dart';
 import 'package:tekki/core/services/location_service.dart';
 import 'package:tekki/core/services/whatsapp_service.dart';
+import 'package:tekki/features/financial_passport/data/repositories/passport_repository_impl.dart';
+import 'package:tekki/features/financial_passport/domain/repositories/passport_repository.dart';
+import 'package:tekki/features/financial_passport/domain/usecases/calculate_financial_passport_use_case.dart';
 import 'package:tekki/features/karne_bor/data/datasources/debt_local_data_source.dart';
 import 'package:tekki/features/karne_bor/data/repositories/debt_repository_impl.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
@@ -117,6 +120,20 @@ Future<void> initDependencyInjection({
   );
   sl.registerLazySingleton<CalculateRecoveryVelocityUseCase>(
     () => CalculateRecoveryVelocityUseCase(repository: sl<DebtRepository>()),
+  );
+
+  // Features: Financial Passport Repository
+  sl.registerLazySingleton<PassportRepository>(
+    () => PassportRepositoryImpl(
+      closureRepository: sl<ClosureRepository>(),
+      debtRepository: sl<DebtRepository>(),
+    ),
+  );
+
+  // Features: Financial Passport Use Cases
+  sl.registerLazySingleton<CalculateFinancialPassportUseCase>(
+    () =>
+        CalculateFinancialPassportUseCase(repository: sl<PassportRepository>()),
   );
 
   // Features: Presentation Cubits / BLoCs

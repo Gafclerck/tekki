@@ -5,6 +5,10 @@ import 'package:tekki/core/network/network_info.dart';
 import 'package:tekki/core/services/audio_service.dart';
 import 'package:tekki/core/services/location_service.dart';
 import 'package:tekki/core/services/whatsapp_service.dart';
+import 'package:tekki/features/financial_passport/domain/entities/financial_passport_entity.dart';
+import 'package:tekki/features/financial_passport/domain/entities/score_breakdown_entity.dart';
+import 'package:tekki/features/financial_passport/domain/repositories/passport_repository.dart';
+import 'package:tekki/features/financial_passport/domain/usecases/calculate_financial_passport_use_case.dart';
 import 'package:tekki/features/karne_bor/data/datasources/debt_local_data_source.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debtor_entity.dart';
@@ -32,46 +36,83 @@ import 'package:uuid/uuid.dart';
 
 // Repositories
 class MockClosureRepository extends Mock implements ClosureRepository {}
+
 class MockSalesRepository extends Mock implements SalesRepository {}
+
 class MockDebtRepository extends Mock implements DebtRepository {}
+
+class MockPassportRepository extends Mock implements PassportRepository {}
 
 // Data Sources
 class MockSalesLocalDataSource extends Mock implements SalesLocalDataSource {}
-class MockClosureLocalDataSource extends Mock implements ClosureLocalDataSource {}
+
+class MockClosureLocalDataSource extends Mock
+    implements ClosureLocalDataSource {}
+
 class MockDebtLocalDataSource extends Mock implements DebtLocalDataSource {}
 
 // Services & Core
 class MockLocationService extends Mock implements ILocationService {}
+
 class MockAudioPlayerService extends Mock implements IAudioPlayerService {}
+
 class MockAudioPlayer extends Mock implements AudioPlayer {}
+
 class MockWhatsAppService extends Mock implements IWhatsAppService {}
+
 class MockNetworkInfo extends Mock implements NetworkInfo {}
+
 class MockUuid extends Mock implements Uuid {}
 
 // Use Cases - Karne Bor
-class MockWatchActiveDebtsUseCase extends Mock implements WatchActiveDebtsUseCase {}
+class MockWatchActiveDebtsUseCase extends Mock
+    implements WatchActiveDebtsUseCase {}
+
 class MockRecordDebtUseCase extends Mock implements RecordDebtUseCase {}
+
 class MockGetDebtorsUseCase extends Mock implements GetDebtorsUseCase {}
-class MockRecordDebtPaymentUseCase extends Mock implements RecordDebtPaymentUseCase {}
-class MockCalculateRecoveryVelocityUseCase extends Mock implements CalculateRecoveryVelocityUseCase {}
+
+class MockRecordDebtPaymentUseCase extends Mock
+    implements RecordDebtPaymentUseCase {}
+
+class MockCalculateRecoveryVelocityUseCase extends Mock
+    implements CalculateRecoveryVelocityUseCase {}
 
 // Use Cases - Sales & Cash
-class MockRecordQuickSaleUseCase extends Mock implements RecordQuickSaleUseCase {}
-class MockWatchTodaySalesUseCase extends Mock implements WatchTodaySalesUseCase {}
-class MockExecuteDailyClosureUseCase extends Mock implements ExecuteDailyClosureUseCase {}
-class MockGetClosurePrefillUseCase extends Mock implements GetClosurePrefillUseCase {}
+class MockRecordQuickSaleUseCase extends Mock
+    implements RecordQuickSaleUseCase {}
+
+class MockWatchTodaySalesUseCase extends Mock
+    implements WatchTodaySalesUseCase {}
+
+class MockExecuteDailyClosureUseCase extends Mock
+    implements ExecuteDailyClosureUseCase {}
+
+class MockGetClosurePrefillUseCase extends Mock
+    implements GetClosurePrefillUseCase {}
+
+// Use Cases - Financial Passport
+class MockCalculateFinancialPassportUseCase extends Mock
+    implements CalculateFinancialPassportUseCase {}
 
 // BLoC & Cubits
 class MockCashDashboardBloc
     extends MockBloc<CashDashboardEvent, CashDashboardState>
     implements CashDashboardBloc {}
 
-class MockKarneBorCubit
-    extends MockCubit<KarneBorState>
+class MockKarneBorCubit extends MockCubit<KarneBorState>
     implements KarneBorCubit {}
 
 // Fakes for Mocktail registerFallbackValue
 class FakeDailyClosureEntity extends Fake implements DailyClosureEntity {}
+
 class FakeDebtEntity extends Fake implements DebtEntity {}
+
 class FakeDebtorEntity extends Fake implements DebtorEntity {}
+
 class FakeRecordDebtParams extends Fake implements RecordDebtParams {}
+
+class FakeFinancialPassportEntity extends Fake
+    implements FinancialPassportEntity {}
+
+class FakeScoreBreakdownEntity extends Fake implements ScoreBreakdownEntity {}

@@ -83,7 +83,11 @@ dart format --output=none --set-exit-if-changed .
 
 ### Exécution des Tests
 ```bash
-flutter test
+# Suite complète optimisée (recommandé pour les développeurs et agents, exécution en ~20s) :
+flutter test test/all_tests.dart
+
+# Test unitaire ciblé :
+flutter test test/core/utils/currency_formatter_test.dart
 ```
 
 ### Génération de Code (Drift / Injectable)

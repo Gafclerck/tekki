@@ -44,4 +44,4 @@ jobs:
         run: flutter analyze
 
       - name: Run automated tests
-        run: flutter test --coverage
+        run: flutter test test/all_tests.dart --coverage
