@@ -3,12 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tekki/core/theme/app_colors.dart';
 import 'package:tekki/core/utils/currency_formatter.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
+import 'package:tekki/features/karne_bor/domain/usecases/calculate_recovery_velocity_use_case.dart';
 import 'package:tekki/features/karne_bor/presentation/cubit/karne_bor_cubit.dart';
 import 'package:tekki/features/karne_bor/presentation/cubit/karne_bor_state.dart';
 import 'package:tekki/features/karne_bor/presentation/cubit/record_debt_cubit.dart';
 import 'package:tekki/features/karne_bor/presentation/widgets/collect_debt_payment_dialog.dart';
 import 'package:tekki/features/karne_bor/presentation/widgets/debt_card.dart';
 import 'package:tekki/features/karne_bor/presentation/widgets/record_debt_bottom_sheet.dart';
+import 'package:tekki/features/karne_bor/presentation/widgets/recovery_velocity_gauge.dart';
+import 'package:tekki/features/karne_bor/presentation/widgets/whatsapp_reminder_bottom_sheet.dart';
 import 'package:tekki/injection_container.dart';
 
 class KarneBorScreen extends StatefulWidget {
@@ -34,7 +37,13 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
     _cubit = widget.karneBorCubit ??
         (sl.isRegistered<KarneBorCubit>()
             ? sl<KarneBorCubit>()
-            : KarneBorCubit(watchActiveDebtsUseCase: sl()));
+            : KarneBorCubit(
+                watchActiveDebtsUseCase: sl(),
+                calculateRecoveryVelocityUseCase:
+                    sl.isRegistered<CalculateRecoveryVelocityUseCase>()
+                        ? sl<CalculateRecoveryVelocityUseCase>()
+                        : null,
+              ));
     _cubit.startWatching();
   }
 
@@ -85,6 +94,13 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
   Future<void> _openCollectPaymentDialog(DebtEntity debt) async {
     await CollectDebtPaymentDialog.show(
       context: context,
+      debt: debt,
+    );
+  }
+
+  Future<void> _openReminderSheet(DebtEntity debt) async {
+    await WhatsAppReminderBottomSheet.show(
+      context,
       debt: debt,
     );
   }
@@ -185,10 +201,23 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
                   // Summary Banner: Argent Dehors
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: _buildSummaryCard(
-                      totalDebt: loaded.totalDebt,
-                      debtsCount: loaded.debts.length,
-                      overdueCount: loaded.overdueCount,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _buildSummaryCard(
+                          totalDebt: loaded.totalDebt,
+                          debtsCount: loaded.debts.length,
+                          overdueCount: loaded.overdueCount,
+                          recoveryRate: loaded.recoveryRate,
+                        ),
+                        if (loaded.recoveryVelocity != null) ...[
+                          const SizedBox(height: 10),
+                          RecoveryVelocityGauge(
+                            key: const ValueKey('karne_bor_recovery_gauge'),
+                            velocity: loaded.recoveryVelocity!,
+                          ),
+                        ],
+                      ],
                     ),
                   ),
 
@@ -248,6 +277,7 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
     required int totalDebt,
     required int debtsCount,
     required int overdueCount,
+    required int recoveryRate,
   }) {
     return Container(
       key: const ValueKey('karne_bor_summary_card'),
@@ -290,16 +320,33 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                key: const ValueKey('karne_bor_recovery_badge'),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
                   color: AppColors.secondary.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
+                  'Recouvrement $recoveryRate%',
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.secondary,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 6),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppColors.secondary.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
                   '$debtsCount créance${debtsCount > 1 ? 's' : ''}',
                   style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
                     color: AppColors.secondary,
                   ),
                 ),
@@ -404,6 +451,7 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
           key: ValueKey('debt_card_${debt.id}'),
           debt: debt,
           onCollect: () => _openCollectPaymentDialog(debt),
+          onReminder: () => _openReminderSheet(debt),
         );
       },
     );

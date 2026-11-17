@@ -1,16 +1,21 @@
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:tekki/core/utils/result.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_status.dart';
+import 'package:tekki/features/karne_bor/domain/entities/recovery_velocity_entity.dart';
+import 'package:tekki/features/karne_bor/domain/usecases/calculate_recovery_velocity_use_case.dart';
 import 'package:tekki/features/karne_bor/domain/usecases/watch_active_debts_use_case.dart';
 import 'package:tekki/features/karne_bor/presentation/cubit/karne_bor_cubit.dart';
 import 'package:tekki/features/karne_bor/presentation/cubit/karne_bor_state.dart';
 
 class MockWatchActiveDebtsUseCase extends Mock implements WatchActiveDebtsUseCase {}
+class MockCalculateRecoveryVelocityUseCase extends Mock implements CalculateRecoveryVelocityUseCase {}
 
 void main() {
   late MockWatchActiveDebtsUseCase mockWatchActiveDebtsUseCase;
+  late MockCalculateRecoveryVelocityUseCase mockCalculateRecoveryVelocityUseCase;
   late KarneBorCubit cubit;
   late StreamController<List<DebtEntity>> streamController;
 
@@ -19,6 +24,7 @@ void main() {
 
   setUp(() {
     mockWatchActiveDebtsUseCase = MockWatchActiveDebtsUseCase();
+    mockCalculateRecoveryVelocityUseCase = MockCalculateRecoveryVelocityUseCase();
     streamController = StreamController<List<DebtEntity>>.broadcast();
     when(() => mockWatchActiveDebtsUseCase.call(limit: any(named: 'limit')))
         .thenAnswer((_) => streamController.stream);
@@ -192,6 +198,42 @@ void main() {
           }),
         ),
       );
+    });
+
+    test('emits KarneBorLoaded with calculated recoveryVelocity when CalculateRecoveryVelocityUseCase is provided', () async {
+      const expectedVelocity = RecoveryVelocityEntity(
+        rate: 80,
+        totalDueAmount: 100000,
+        totalRecoveredAmount: 80000,
+        healthStatus: 'Excellente santé financière : vos créances rentrent vite !',
+        healthLevel: RecoveryHealthLevel.excellent,
+      );
+
+      when(() => mockCalculateRecoveryVelocityUseCase.call())
+          .thenAnswer((_) async => const Success(expectedVelocity));
+
+      final cubitWithVelocity = KarneBorCubit(
+        watchActiveDebtsUseCase: mockWatchActiveDebtsUseCase,
+        calculateRecoveryVelocityUseCase: mockCalculateRecoveryVelocityUseCase,
+      );
+
+      final expectation = expectLater(
+        cubitWithVelocity.stream,
+        emitsThrough(
+          predicate<KarneBorState>((state) {
+            if (state is! KarneBorLoaded) return false;
+            expect(state.recoveryRate, 80);
+            expect(state.recoveryVelocity, expectedVelocity);
+            return true;
+          }),
+        ),
+      );
+
+      cubitWithVelocity.startWatching();
+      streamController.add([]);
+
+      await expectation;
+      await cubitWithVelocity.close();
     });
 
     test('startWatching emits Error on stream error', () async {

@@ -3,9 +3,11 @@ import 'package:tekki/core/utils/result.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_payment_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debtor_entity.dart';
+import 'package:tekki/features/karne_bor/domain/entities/recovery_velocity_entity.dart';
 
 abstract class DebtRepository {
   Future<Result<DebtorEntity, Failure>> createDebtor(DebtorEntity debtor);
+  Future<Result<DebtorEntity, Failure>> updateDebtor(DebtorEntity debtor);
   Future<Result<DebtorEntity?, Failure>> getDebtorById(String id);
   Future<Result<DebtorEntity?, Failure>> findDebtorByName(String name);
   Future<Result<List<DebtorEntity>, Failure>> searchDebtors(
@@ -36,4 +38,9 @@ abstract class DebtRepository {
   });
   Stream<List<DebtEntity>> watchActiveDebts({int limit = 50});
   Stream<List<DebtEntity>> watchAllDebtsWithDebtor({int limit = 50});
+
+  Future<Result<RecoveryVelocityEntity, Failure>> getRecoveryVelocity({
+    DateTime? asOf,
+    int windowDays = 30,
+  });
 }

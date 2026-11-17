@@ -43,11 +43,11 @@ development_status:
   1-5-ancrage-géographique-passif-flag-silencieux-d-intégrité: done
   epic-1-retrospective: optional
 
-  epic-2: in-progress
+  epic-2: done
   2-1-enregistrement-d-une-dette-client-création-du-débiteur-dans: done
   2-2-tableau-de-bord-karné-bor-total-argent-dehors-suivi-des-reta: done
   2-3-encaissement-de-remboursement-réconciliation-avec-le-tiroir: done
-  2-4-relance-client-1-clic-via-whatsapp-calcul-de-la-vélocité-de: backlog
+  2-4-relance-client-1-clic-via-whatsapp-calcul-de-la-vélocité-de: done
   epic-2-retrospective: optional
 
   epic-3: backlog

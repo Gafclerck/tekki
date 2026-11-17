@@ -2,11 +2,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:tekki/core/services/whatsapp_service.dart';
 import 'package:tekki/core/theme/app_theme.dart';
 import 'package:tekki/core/utils/result.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_status.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debtor_entity.dart';
+import 'package:tekki/features/karne_bor/domain/entities/recovery_velocity_entity.dart';
+import 'package:tekki/features/karne_bor/domain/repositories/debt_repository.dart';
+import 'package:tekki/features/karne_bor/domain/usecases/calculate_recovery_velocity_use_case.dart';
 import 'package:tekki/features/karne_bor/domain/usecases/get_debtors_use_case.dart';
 import 'package:tekki/features/karne_bor/domain/usecases/record_debt_payment_use_case.dart';
 import 'package:tekki/features/karne_bor/domain/usecases/record_debt_use_case.dart';
@@ -21,6 +25,9 @@ class MockWatchActiveDebtsUseCase extends Mock implements WatchActiveDebtsUseCas
 class MockRecordDebtUseCase extends Mock implements RecordDebtUseCase {}
 class MockGetDebtorsUseCase extends Mock implements GetDebtorsUseCase {}
 class MockRecordDebtPaymentUseCase extends Mock implements RecordDebtPaymentUseCase {}
+class MockCalculateRecoveryVelocityUseCase extends Mock implements CalculateRecoveryVelocityUseCase {}
+class MockWhatsAppService extends Mock implements IWhatsAppService {}
+class MockDebtRepository extends Mock implements DebtRepository {}
 
 class FakeRecordDebtParams extends Fake implements RecordDebtParams {}
 
@@ -46,6 +53,7 @@ void main() {
     List<DebtEntity> initialDebts = const [],
     Stream<List<DebtEntity>>? debtsStream,
     List<DebtorEntity> knownDebtors = const [],
+    CalculateRecoveryVelocityUseCase? calculateRecoveryVelocityUseCase,
   }) {
     when(() => mockWatchActiveDebtsUseCase.call(limit: any(named: 'limit')))
         .thenAnswer((_) => debtsStream ?? Stream.value(initialDebts));
@@ -54,6 +62,7 @@ void main() {
 
     final karneCubit = KarneBorCubit(
       watchActiveDebtsUseCase: mockWatchActiveDebtsUseCase,
+      calculateRecoveryVelocityUseCase: calculateRecoveryVelocityUseCase,
     );
     final debtCubit = RecordDebtCubit(
       recordDebtUseCase: mockRecordDebtUseCase,
@@ -409,6 +418,78 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byKey(const ValueKey('collect_debt_payment_dialog')), findsNothing);
+    });
+
+    testWidgets('renders recovery velocity gauge and recovery badge in summary card', (tester) async {
+      final mockVelocityUseCase = MockCalculateRecoveryVelocityUseCase();
+      const velocity = RecoveryVelocityEntity(
+        rate: 85,
+        totalDueAmount: 100000,
+        totalRecoveredAmount: 85000,
+        healthStatus: 'Excellente santé financière : vos créances rentrent vite !',
+        healthLevel: RecoveryHealthLevel.excellent,
+      );
+
+      when(() => mockVelocityUseCase.call()).thenAnswer((_) async => const Success(velocity));
+
+      await tester.pumpWidget(
+        createWidgetUnderTest(
+          initialDebts: [],
+          calculateRecoveryVelocityUseCase: mockVelocityUseCase,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Summary card contains recovery rate badge
+      expect(find.byKey(const ValueKey('karne_bor_recovery_badge')), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byKey(const ValueKey('karne_bor_recovery_badge')),
+          matching: find.text('Recouvrement 85%'),
+        ),
+        findsOneWidget,
+      );
+
+      // Recovery gauge is rendered
+      expect(find.byKey(const ValueKey('karne_bor_recovery_gauge')), findsOneWidget);
+      expect(find.text('Excellente santé financière : vos créances rentrent vite !'), findsOneWidget);
+      expect(find.byKey(const ValueKey('recovery_velocity_progress_bar')), findsOneWidget);
+    });
+
+    testWidgets('tapping reminder button on debt card opens WhatsAppReminderBottomSheet', (tester) async {
+      final mockWhatsApp = MockWhatsAppService();
+      if (sl.isRegistered<IWhatsAppService>()) {
+        sl.unregister<IWhatsAppService>();
+      }
+      sl.registerSingleton<IWhatsAppService>(mockWhatsApp);
+      when(() => mockWhatsApp.sanitizePhoneNumber(any())).thenAnswer((inv) => '221771234567');
+
+      final debt = DebtEntity(
+        id: 'debt-reminder-test',
+        debtorId: 'debtor-rem',
+        initialAmount: 12000,
+        remainingAmount: 12000,
+        dueDate: now.subtract(const Duration(days: 3)), // Overdue
+        status: DebtStatus.active,
+        createdAt: now,
+        debtor: DebtorEntity(
+          id: 'debtor-rem',
+          name: 'Modou Fall',
+          phoneNumber: '771234567',
+          createdAt: now,
+        ),
+      );
+
+      await tester.pumpWidget(createWidgetUnderTest(initialDebts: [debt]));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(ValueKey('debt_card_reminder_button_${debt.id}')), findsOneWidget);
+      await tester.tap(find.byKey(ValueKey('debt_card_reminder_button_${debt.id}')));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const ValueKey('whatsapp_reminder_bottom_sheet')), findsOneWidget);
+      expect(find.text('Relance WhatsApp 1-Clic'), findsOneWidget);
+      expect(find.textContaining('Modou Fall'), findsWidgets);
     });
   });
 }

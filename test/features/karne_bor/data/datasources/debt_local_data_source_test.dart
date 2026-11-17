@@ -287,5 +287,81 @@ void main() {
       expect(payments[0].paymentAmount, 6000);
       expect(payments[1].paymentAmount, 4000);
     });
+
+    test('updateDebtor updates phone number and persists in SQLite', () async {
+      final debtor = DebtorEntity(
+        id: 'debtor-upd',
+        name: 'Samba Diop',
+        phoneNumber: null,
+        createdAt: testDate,
+      );
+      await dataSource.insertDebtor(debtor);
+
+      final updated = debtor.copyWith(phoneNumber: '221771234567');
+      await dataSource.updateDebtor(updated);
+
+      final reloaded = await dataSource.getDebtorById('debtor-upd');
+      expect(reloaded?.phoneNumber, '221771234567');
+    });
+
+    test('getRecoveryVelocity aggregates debts and payments in 30-day window', () async {
+      // 1. Carnet vierge
+      final emptyVelocity = await dataSource.getRecoveryVelocity(asOf: testDate);
+      expect(emptyVelocity.rate, 100);
+      expect(emptyVelocity.totalDueAmount, 0);
+      expect(emptyVelocity.totalRecoveredAmount, 0);
+
+      // 2. Debts and payments:
+      // Debtor
+      final debtor = DebtorEntity(id: 'debtor-v', name: 'Velocity Client', createdAt: testDate);
+      await dataSource.insertDebtor(debtor);
+
+      // Debt 1: 50 000 F, paid 50 000 F on time -> settled
+      final debt1 = DebtEntity(
+        id: 'debt-v1',
+        debtorId: 'debtor-v',
+        initialAmount: 50000,
+        remainingAmount: 0,
+        dueDate: testDate.subtract(const Duration(days: 5)),
+        status: DebtStatus.settled,
+        createdAt: testDate.subtract(const Duration(days: 10)),
+      );
+      await dataSource.insertDebt(debt1);
+      await dataSource.recordDebtPayment(
+        payment: DebtPaymentEntity(
+          id: 'pay-v1',
+          debtId: 'debt-v1',
+          paymentAmount: 50000,
+          paidAt: testDate.subtract(const Duration(days: 6)),
+        ),
+        updatedDebt: debt1,
+      );
+
+      // Debt 2: 50 000 F, paid 30 000 F on time, 20 000 F remaining
+      final debt2 = DebtEntity(
+        id: 'debt-v2',
+        debtorId: 'debtor-v',
+        initialAmount: 50000,
+        remainingAmount: 20000,
+        dueDate: testDate.subtract(const Duration(days: 2)),
+        status: DebtStatus.active,
+        createdAt: testDate.subtract(const Duration(days: 8)),
+      );
+      await dataSource.insertDebt(debt2);
+      await dataSource.recordDebtPayment(
+        payment: DebtPaymentEntity(
+          id: 'pay-v2',
+          debtId: 'debt-v2',
+          paymentAmount: 30000,
+          paidAt: testDate.subtract(const Duration(days: 3)),
+        ),
+        updatedDebt: debt2,
+      );
+
+      final velocity = await dataSource.getRecoveryVelocity(asOf: testDate, windowDays: 30);
+      expect(velocity.totalDueAmount, 100000);
+      expect(velocity.totalRecoveredAmount, 80000);
+      expect(velocity.rate, 80);
+    });
   });
 }
