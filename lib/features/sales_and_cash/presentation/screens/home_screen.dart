@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tekki/core/constants/app_constants.dart';
 import 'package:tekki/core/theme/app_colors.dart';
+import 'package:tekki/features/financial_passport/presentation/bloc/passport_bloc.dart';
+import 'package:tekki/features/financial_passport/presentation/pages/passport_overview_page.dart';
 import 'package:tekki/features/karne_bor/presentation/screens/karne_bor_screen.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/daily_closure_entity.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/sale_entity.dart';
@@ -11,6 +13,7 @@ import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_s
 import 'package:tekki/features/sales_and_cash/presentation/screens/express_closure_screen.dart';
 import 'package:tekki/features/sales_and_cash/presentation/widgets/cash_card.dart';
 import 'package:tekki/features/sales_and_cash/presentation/widgets/primary_cta_button.dart';
+import 'package:tekki/injection_container.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, this.onCloseCashier});
@@ -102,6 +105,27 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.of(context).push(
                         MaterialPageRoute<void>(
                           builder: (_) => const KarneBorScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Espace: Passeport Financier
+                  _buildPlaceholderCard(
+                    key: const ValueKey('passport_card'),
+                    icon: Icons.verified_user_outlined,
+                    title: 'Passeport Financier',
+                    subtitle:
+                        'Score de solvabilité & attestation D2D certifiée',
+                    badge: 'Actif',
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => BlocProvider(
+                            create: (_) => sl<PassportBloc>(),
+                            child: const PassportOverviewPage(),
+                          ),
                         ),
                       );
                     },

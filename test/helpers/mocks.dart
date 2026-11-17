@@ -5,6 +5,7 @@ import 'package:tekki/core/crypto/crypto_signature_service.dart';
 import 'package:tekki/core/crypto/secure_key_storage.dart';
 import 'package:tekki/core/network/network_info.dart';
 import 'package:tekki/core/services/audio_service.dart';
+import 'package:tekki/core/services/brightness_service.dart';
 import 'package:tekki/core/services/location_service.dart';
 import 'package:tekki/core/services/whatsapp_service.dart';
 import 'package:tekki/features/financial_passport/domain/entities/financial_passport_entity.dart';
@@ -14,6 +15,9 @@ import 'package:tekki/features/financial_passport/domain/repositories/passport_r
 import 'package:tekki/features/financial_passport/domain/usecases/calculate_financial_passport_use_case.dart';
 import 'package:tekki/features/financial_passport/domain/usecases/generate_signed_passport_use_case.dart';
 import 'package:tekki/features/financial_passport/domain/usecases/verify_passport_payload_use_case.dart';
+import 'package:tekki/features/financial_passport/presentation/bloc/passport_bloc.dart';
+import 'package:tekki/features/financial_passport/presentation/bloc/passport_event.dart';
+import 'package:tekki/features/financial_passport/presentation/bloc/passport_state.dart';
 import 'package:tekki/features/karne_bor/data/datasources/debt_local_data_source.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debtor_entity.dart';
@@ -65,6 +69,8 @@ class MockCryptoSignatureService extends Mock
     implements ICryptoSignatureService {}
 
 class MockAudioPlayerService extends Mock implements IAudioPlayerService {}
+
+class MockBrightnessService extends Mock implements IBrightnessService {}
 
 class MockAudioPlayer extends Mock implements AudioPlayer {}
 
@@ -119,6 +125,9 @@ class MockCashDashboardBloc
 class MockKarneBorCubit extends MockCubit<KarneBorState>
     implements KarneBorCubit {}
 
+class MockPassportBloc extends MockBloc<PassportEvent, PassportState>
+    implements PassportBloc {}
+
 // Fakes for Mocktail registerFallbackValue
 class FakeDailyClosureEntity extends Fake implements DailyClosureEntity {}
 
@@ -135,3 +144,7 @@ class FakeSignedPassportPayloadEntity extends Fake
     implements SignedPassportPayloadEntity {}
 
 class FakeScoreBreakdownEntity extends Fake implements ScoreBreakdownEntity {}
+
+class FakePassportEvent extends Fake implements PassportEvent {}
+
+class FakePassportState extends Fake implements PassportState {}

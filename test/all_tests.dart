@@ -10,6 +10,7 @@ import 'core/database/daily_closures_table_test.dart'
     as daily_closures_table_test;
 import 'core/network/network_info_test.dart' as network_info_test;
 import 'core/services/audio_service_test.dart' as audio_service_test;
+import 'core/services/brightness_service_test.dart' as brightness_service_test;
 import 'core/services/location_service_test.dart' as location_service_test;
 import 'core/services/whatsapp_service_test.dart' as whatsapp_service_test;
 import 'core/theme/app_theme_test.dart' as app_theme_test;
@@ -30,6 +31,14 @@ import 'features/financial_passport/domain/usecases/generate_signed_passport_use
     as generate_signed_passport_use_case_test;
 import 'features/financial_passport/domain/usecases/verify_passport_payload_use_case_test.dart'
     as verify_passport_payload_use_case_test;
+import 'features/financial_passport/presentation/bloc/passport_bloc_test.dart'
+    as passport_bloc_test;
+import 'features/financial_passport/presentation/pages/passport_overview_page_test.dart'
+    as passport_overview_page_test;
+import 'features/financial_passport/presentation/widgets/passport_fullscreen_qr_dialog_test.dart'
+    as passport_fullscreen_qr_dialog_test;
+import 'features/financial_passport/presentation/widgets/passport_qr_card_test.dart'
+    as passport_qr_card_test;
 
 // Features - Karne Bor
 import 'features/karne_bor/data/datasources/debt_local_data_source_test.dart'
@@ -101,6 +110,7 @@ void main() {
       daily_closures_table_test.main();
       network_info_test.main();
       audio_service_test.main();
+      brightness_service_test.main();
       location_service_test.main();
       whatsapp_service_test.main();
       app_theme_test.main();
@@ -117,6 +127,10 @@ void main() {
       generate_signed_passport_use_case_test.main();
       passport_repository_impl_test.main();
       verify_passport_payload_use_case_test.main();
+      passport_bloc_test.main();
+      passport_qr_card_test.main();
+      passport_fullscreen_qr_dialog_test.main();
+      passport_overview_page_test.main();
     });
 
     // Features - Karne Bor

@@ -4,7 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:tekki/core/constants/app_constants.dart';
+import 'package:tekki/core/services/brightness_service.dart';
 import 'package:tekki/core/theme/app_colors.dart';
+import 'package:tekki/features/financial_passport/presentation/bloc/passport_bloc.dart';
+import 'package:tekki/features/financial_passport/presentation/bloc/passport_state.dart';
+import 'package:tekki/features/financial_passport/presentation/pages/passport_overview_page.dart';
 import 'package:tekki/features/karne_bor/presentation/cubit/karne_bor_cubit.dart';
 import 'package:tekki/features/karne_bor/presentation/cubit/karne_bor_state.dart';
 import 'package:tekki/features/karne_bor/presentation/screens/karne_bor_screen.dart';
@@ -20,6 +24,7 @@ import 'package:tekki/features/sales_and_cash/presentation/widgets/cash_card.dar
 import 'package:tekki/features/sales_and_cash/presentation/widgets/primary_cta_button.dart';
 import 'package:tekki/features/sales_and_cash/presentation/widgets/quick_sale_button.dart';
 import 'package:tekki/injection_container.dart';
+import '../../../../helpers/mocks.dart';
 
 class MockCashDashboardBloc
     extends MockBloc<CashDashboardEvent, CashDashboardState>
@@ -314,6 +319,44 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(KarneBorScreen), findsOneWidget);
+    });
+
+    testWidgets('tapping passport_card navigates to PassportOverviewPage', (
+      tester,
+    ) async {
+      when(() => mockBloc.state).thenReturn(
+        const CashDashboardLoaded(summary: CashSummaryEntity.empty()),
+      );
+
+      final mockPassportBloc = MockPassportBloc();
+      final mockBrightness = MockBrightnessService();
+      when(() => mockBrightness.setMaxBrightness()).thenAnswer((_) async {});
+      when(() => mockBrightness.restoreBrightness()).thenAnswer((_) async {});
+      when(() => mockPassportBloc.state).thenReturn(const PassportLoading());
+      when(
+        () => mockPassportBloc.stream,
+      ).thenAnswer((_) => Stream.value(const PassportLoading()));
+      when(() => mockPassportBloc.close()).thenAnswer((_) async {});
+
+      if (sl.isRegistered<PassportBloc>()) {
+        sl.unregister<PassportBloc>();
+      }
+      sl.registerFactory<PassportBloc>(() => mockPassportBloc);
+      if (sl.isRegistered<IBrightnessService>()) {
+        sl.unregister<IBrightnessService>();
+      }
+      sl.registerLazySingleton<IBrightnessService>(() => mockBrightness);
+
+      await tester.pumpWidget(buildSubject());
+
+      final passportCard = find.byKey(const ValueKey('passport_card'));
+      expect(passportCard, findsOneWidget);
+
+      await tester.tap(passportCard);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      expect(find.byType(PassportOverviewPage), findsOneWidget);
     });
   });
 }

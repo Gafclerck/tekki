@@ -53,7 +53,7 @@ development_status:
   epic-3: in-progress
   3-1-moteur-de-notation-in-app-du-passeport-financier-4-piliers: done
   3-2-signature-cryptographique-ed25519-sérialisation-cbor-encodag: done
-  3-3-affichage-écran-du-qr-code-passeport-boost-de-luminosité-cod: backlog
+  3-3-affichage-écran-du-qr-code-passeport-boost-de-luminosité-cod: done
   3-4-génération-de-l-attestation-officielle-pdf-certifiée-partage: backlog
   epic-3-retrospective: optional
 
