@@ -35,32 +35,35 @@ void main() {
   const testId = '4f8e0255-7578-43d9-9524-7ef26629ec88';
 
   group('RecordQuickSaleUseCase', () {
-    test('successfully records a quick sale with default cash payment and UTC date', () async {
-      when(() => mockUuid.v4()).thenReturn(testId);
-      when(() => mockRepository.recordSale(any())).thenAnswer(
-        (invocation) async =>
-            Success(invocation.positionalArguments[0] as SaleEntity),
-      );
+    test(
+      'successfully records a quick sale with default cash payment and UTC date',
+      () async {
+        when(() => mockUuid.v4()).thenReturn(testId);
+        when(() => mockRepository.recordSale(any())).thenAnswer(
+          (invocation) async =>
+              Success(invocation.positionalArguments[0] as SaleEntity),
+        );
 
-      final now = DateTime(2026, 11, 17, 10, 30);
-      final result = await useCase(amount: 5000, recordedAt: now);
+        final now = DateTime(2026, 11, 17, 10, 30);
+        final result = await useCase(amount: 5000, recordedAt: now);
 
-      expect(result.isSuccess, isTrue);
-      result.fold(
-        onSuccess: (sale) {
-          expect(sale.id, equals(testId));
-          expect(sale.amount, equals(5000));
-          expect(sale.paymentMethod, equals(PaymentMethod.especes));
-          expect(sale.closureId, isNull);
-          expect(sale.syncStatus, equals('pending'));
-          expect(sale.recordedAt.isUtc, isTrue);
-          expect(sale.recordedAt, equals(now.toUtc()));
-        },
-        onError: (_) => fail('Should not fail'),
-      );
+        expect(result.isSuccess, isTrue);
+        result.fold(
+          onSuccess: (sale) {
+            expect(sale.id, equals(testId));
+            expect(sale.amount, equals(5000));
+            expect(sale.paymentMethod, equals(PaymentMethod.especes));
+            expect(sale.closureId, isNull);
+            expect(sale.syncStatus, equals('pending'));
+            expect(sale.recordedAt.isUtc, isTrue);
+            expect(sale.recordedAt, equals(now.toUtc()));
+          },
+          onError: (_) => fail('Should not fail'),
+        );
 
-      verify(() => mockRepository.recordSale(any())).called(1);
-    });
+        verify(() => mockRepository.recordSale(any())).called(1);
+      },
+    );
 
     test(
       'successfully records a quick sale with Mobile Money payment method',

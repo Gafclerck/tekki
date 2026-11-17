@@ -2912,26 +2912,28 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   ];
 }
 
-typedef $$ShopsTableCreateCompanionBuilder = ShopsCompanion Function({
-  required String id,
-  required String name,
-  required double refLatitude,
-  required double refLongitude,
-  required String publicKey,
-  Value<String> syncStatus,
-  required String createdAt,
-  Value<int> rowid,
-});
-typedef $$ShopsTableUpdateCompanionBuilder = ShopsCompanion Function({
-  Value<String> id,
-  Value<String> name,
-  Value<double> refLatitude,
-  Value<double> refLongitude,
-  Value<String> publicKey,
-  Value<String> syncStatus,
-  Value<String> createdAt,
-  Value<int> rowid,
-});
+typedef $$ShopsTableCreateCompanionBuilder =
+    ShopsCompanion Function({
+      required String id,
+      required String name,
+      required double refLatitude,
+      required double refLongitude,
+      required String publicKey,
+      Value<String> syncStatus,
+      required String createdAt,
+      Value<int> rowid,
+    });
+typedef $$ShopsTableUpdateCompanionBuilder =
+    ShopsCompanion Function({
+      Value<String> id,
+      Value<String> name,
+      Value<double> refLatitude,
+      Value<double> refLongitude,
+      Value<String> publicKey,
+      Value<String> syncStatus,
+      Value<String> createdAt,
+      Value<int> rowid,
+    });
 
 class $$ShopsTableFilterComposer extends Composer<_$AppDatabase, $ShopsTable> {
   $$ShopsTableFilterComposer({
@@ -3147,26 +3149,28 @@ typedef $$ShopsTableProcessedTableManager =
       Shop,
       PrefetchHooks Function()
     >;
-typedef $$SalesTableCreateCompanionBuilder = SalesCompanion Function({
-  required String id,
-  required int amount,
-  required String paymentMethod,
-  required String recordedAt,
-  Value<String?> closureId,
-  Value<String> syncStatus,
-  Value<String?> lastSyncedAt,
-  Value<int> rowid,
-});
-typedef $$SalesTableUpdateCompanionBuilder = SalesCompanion Function({
-  Value<String> id,
-  Value<int> amount,
-  Value<String> paymentMethod,
-  Value<String> recordedAt,
-  Value<String?> closureId,
-  Value<String> syncStatus,
-  Value<String?> lastSyncedAt,
-  Value<int> rowid,
-});
+typedef $$SalesTableCreateCompanionBuilder =
+    SalesCompanion Function({
+      required String id,
+      required int amount,
+      required String paymentMethod,
+      required String recordedAt,
+      Value<String?> closureId,
+      Value<String> syncStatus,
+      Value<String?> lastSyncedAt,
+      Value<int> rowid,
+    });
+typedef $$SalesTableUpdateCompanionBuilder =
+    SalesCompanion Function({
+      Value<String> id,
+      Value<int> amount,
+      Value<String> paymentMethod,
+      Value<String> recordedAt,
+      Value<String?> closureId,
+      Value<String> syncStatus,
+      Value<String?> lastSyncedAt,
+      Value<int> rowid,
+    });
 
 class $$SalesTableFilterComposer extends Composer<_$AppDatabase, $SalesTable> {
   $$SalesTableFilterComposer({
@@ -3819,22 +3823,24 @@ typedef $$DailyClosuresTableProcessedTableManager =
       DailyClosure,
       PrefetchHooks Function()
     >;
-typedef $$DebtorsTableCreateCompanionBuilder = DebtorsCompanion Function({
-  required String id,
-  required String name,
-  Value<String?> phoneNumber,
-  Value<String> syncStatus,
-  required String createdAt,
-  Value<int> rowid,
-});
-typedef $$DebtorsTableUpdateCompanionBuilder = DebtorsCompanion Function({
-  Value<String> id,
-  Value<String> name,
-  Value<String?> phoneNumber,
-  Value<String> syncStatus,
-  Value<String> createdAt,
-  Value<int> rowid,
-});
+typedef $$DebtorsTableCreateCompanionBuilder =
+    DebtorsCompanion Function({
+      required String id,
+      required String name,
+      Value<String?> phoneNumber,
+      Value<String> syncStatus,
+      required String createdAt,
+      Value<int> rowid,
+    });
+typedef $$DebtorsTableUpdateCompanionBuilder =
+    DebtorsCompanion Function({
+      Value<String> id,
+      Value<String> name,
+      Value<String?> phoneNumber,
+      Value<String> syncStatus,
+      Value<String> createdAt,
+      Value<int> rowid,
+    });
 
 final class $$DebtorsTableReferences
     extends BaseReferences<_$AppDatabase, $DebtorsTable, Debtor> {
@@ -4116,30 +4122,32 @@ typedef $$DebtorsTableProcessedTableManager =
       Debtor,
       PrefetchHooks Function({bool debtsRefs})
     >;
-typedef $$DebtsTableCreateCompanionBuilder = DebtsCompanion Function({
-  required String id,
-  required String debtorId,
-  required int initialAmount,
-  required int remainingAmount,
-  required String dueDate,
-  Value<String> status,
-  Value<String> syncStatus,
-  Value<String?> lastSyncedAt,
-  required String createdAt,
-  Value<int> rowid,
-});
-typedef $$DebtsTableUpdateCompanionBuilder = DebtsCompanion Function({
-  Value<String> id,
-  Value<String> debtorId,
-  Value<int> initialAmount,
-  Value<int> remainingAmount,
-  Value<String> dueDate,
-  Value<String> status,
-  Value<String> syncStatus,
-  Value<String?> lastSyncedAt,
-  Value<String> createdAt,
-  Value<int> rowid,
-});
+typedef $$DebtsTableCreateCompanionBuilder =
+    DebtsCompanion Function({
+      required String id,
+      required String debtorId,
+      required int initialAmount,
+      required int remainingAmount,
+      required String dueDate,
+      Value<String> status,
+      Value<String> syncStatus,
+      Value<String?> lastSyncedAt,
+      required String createdAt,
+      Value<int> rowid,
+    });
+typedef $$DebtsTableUpdateCompanionBuilder =
+    DebtsCompanion Function({
+      Value<String> id,
+      Value<String> debtorId,
+      Value<int> initialAmount,
+      Value<int> remainingAmount,
+      Value<String> dueDate,
+      Value<String> status,
+      Value<String> syncStatus,
+      Value<String?> lastSyncedAt,
+      Value<String> createdAt,
+      Value<int> rowid,
+    });
 
 final class $$DebtsTableReferences
     extends BaseReferences<_$AppDatabase, $DebtsTable, Debt> {
@@ -4474,16 +4482,17 @@ class $$DebtsTableTableManager
                     >
                   >(state) {
                     if (debtorId) {
-                      state = state.withJoin(
-                        currentTable: table,
-                        currentColumn: table.debtorId,
-                        referencedTable: $$DebtsTableReferences._debtorIdTable(
-                          db,
-                        ),
-                        referencedColumn: $$DebtsTableReferences
-                            ._debtorIdTable(db)
-                            .id,
-                      ) as T;
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.debtorId,
+                                referencedTable: $$DebtsTableReferences
+                                    ._debtorIdTable(db),
+                                referencedColumn: $$DebtsTableReferences
+                                    ._debtorIdTable(db)
+                                    .id,
+                              )
+                              as T;
                     }
 
                     return state;

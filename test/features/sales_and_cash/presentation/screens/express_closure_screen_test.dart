@@ -207,8 +207,9 @@ void main() {
       when(() => mockCubit.setTotalSales(any())).thenReturn(null);
       when(() => mockCubit.setTotalExpenses(any())).thenReturn(null);
       when(() => mockCubit.setCashCounted(any())).thenReturn(null);
-      when(() => mockCubit.submitClosure(shopId: any(named: 'shopId')))
-          .thenAnswer((_) async {});
+      when(
+        () => mockCubit.submitClosure(shopId: any(named: 'shopId')),
+      ).thenAnswer((_) async {});
 
       await tester.pumpWidget(buildSubject());
 

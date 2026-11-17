@@ -121,7 +121,8 @@ void main() {
       expect: () => [
         const CashDashboardLoading(),
         const CashDashboardError(
-          message: 'Erreur lors de la lecture de la caisse : Database stream failure',
+          message:
+              'Erreur lors de la lecture de la caisse : Database stream failure',
         ),
       ],
     );

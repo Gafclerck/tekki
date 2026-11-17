@@ -109,16 +109,19 @@ void main() {
       },
     );
 
-    test('returns null without prompting interactive permission dialog when status is denied', () async {
-      final service = GeolocatorLocationService(
-        isServiceEnabled: () async => true,
-        checkPermission: () async => LocationPermission.denied,
-        getPosition: ({locationSettings}) async => createPosition(),
-      );
+    test(
+      'returns null without prompting interactive permission dialog when status is denied',
+      () async {
+        final service = GeolocatorLocationService(
+          isServiceEnabled: () async => true,
+          checkPermission: () async => LocationPermission.denied,
+          getPosition: ({locationSettings}) async => createPosition(),
+        );
 
-      final loc = await service.getCurrentLocation();
-      expect(loc, isNull);
-    });
+        final loc = await service.getCurrentLocation();
+        expect(loc, isNull);
+      },
+    );
 
     test('returns null silently when location service is disabled', () async {
       final service = GeolocatorLocationService(

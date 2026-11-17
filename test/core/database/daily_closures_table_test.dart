@@ -164,23 +164,26 @@ void main() {
       );
     });
 
-    test('DailyClosureEntity normalizes timestamps to UTC and computes reconciliation', () {
-      final localCutoff = DateTime(2026, 11, 17, 20, 0);
-      final entity = DailyClosureEntity(
-        id: 'closure-reconcile-test',
-        shopId: 'shop-1',
-        closureDate: '2026-11-17',
-        cutoffTimestamp: localCutoff,
-        totalSalesAmount: 17500,
-        totalExpensesAmount: 2500,
-        cashCounted: 15000,
-      );
+    test(
+      'DailyClosureEntity normalizes timestamps to UTC and computes reconciliation',
+      () {
+        final localCutoff = DateTime(2026, 11, 17, 20, 0);
+        final entity = DailyClosureEntity(
+          id: 'closure-reconcile-test',
+          shopId: 'shop-1',
+          closureDate: '2026-11-17',
+          cutoffTimestamp: localCutoff,
+          totalSalesAmount: 17500,
+          totalExpensesAmount: 2500,
+          cashCounted: 15000,
+        );
 
-      expect(entity.cutoffTimestamp.isUtc, isTrue);
-      expect(entity.createdAt.isUtc, isTrue);
-      expect(entity.theoreticalCash, equals(15000));
-      expect(entity.difference, equals(0));
-    });
+        expect(entity.cutoffTimestamp.isUtc, isTrue);
+        expect(entity.createdAt.isUtc, isTrue);
+        expect(entity.theoreticalCash, equals(15000));
+        expect(entity.difference, equals(0));
+      },
+    );
 
     test('DailyClosureModel conversions are bidirectional and normalized', () {
       final now = DateTime.now().toUtc();
@@ -271,143 +274,152 @@ void main() {
       },
     );
 
-    test('Nominal closure: atomic transaction seals orphan sales and inserts daily_closures', () async {
-      final cutoff = DateTime(2026, 11, 17, 18, 0).toUtc();
+    test(
+      'Nominal closure: atomic transaction seals orphan sales and inserts daily_closures',
+      () async {
+        final cutoff = DateTime(2026, 11, 17, 18, 0).toUtc();
 
-      // Insert 3 orphan sales: 10 000, 5 000, 2 500 = 17 500
-      await salesDataSource.insertSale(
-        SaleEntity(
-          id: 's-nom-1',
-          amount: 10000,
-          paymentMethod: PaymentMethod.especes,
-          recordedAt: DateTime(2026, 11, 17, 14, 0).toUtc(),
-        ),
-      );
-      await salesDataSource.insertSale(
-        SaleEntity(
-          id: 's-nom-2',
-          amount: 5000,
-          paymentMethod: PaymentMethod.mobileMoney,
-          recordedAt: DateTime(2026, 11, 17, 15, 0).toUtc(),
-        ),
-      );
-      await salesDataSource.insertSale(
-        SaleEntity(
-          id: 's-nom-3',
-          amount: 2500,
-          paymentMethod: PaymentMethod.especes,
-          recordedAt: DateTime(2026, 11, 17, 17, 0).toUtc(),
-        ),
-      );
+        // Insert 3 orphan sales: 10 000, 5 000, 2 500 = 17 500
+        await salesDataSource.insertSale(
+          SaleEntity(
+            id: 's-nom-1',
+            amount: 10000,
+            paymentMethod: PaymentMethod.especes,
+            recordedAt: DateTime(2026, 11, 17, 14, 0).toUtc(),
+          ),
+        );
+        await salesDataSource.insertSale(
+          SaleEntity(
+            id: 's-nom-2',
+            amount: 5000,
+            paymentMethod: PaymentMethod.mobileMoney,
+            recordedAt: DateTime(2026, 11, 17, 15, 0).toUtc(),
+          ),
+        );
+        await salesDataSource.insertSale(
+          SaleEntity(
+            id: 's-nom-3',
+            amount: 2500,
+            paymentMethod: PaymentMethod.especes,
+            recordedAt: DateTime(2026, 11, 17, 17, 0).toUtc(),
+          ),
+        );
 
-      final closure = DailyClosureEntity(
-        id: 'closure-nom-1',
-        shopId: 'shop-1',
-        closureDate: '2026-11-17',
-        cutoffTimestamp: cutoff,
-        totalSalesAmount: 17500,
-        totalExpensesAmount: 2500,
-        cashCounted: 15000,
-      );
+        final closure = DailyClosureEntity(
+          id: 'closure-nom-1',
+          shopId: 'shop-1',
+          closureDate: '2026-11-17',
+          cutoffTimestamp: cutoff,
+          totalSalesAmount: 17500,
+          totalExpensesAmount: 2500,
+          cashCounted: 15000,
+        );
 
-      final result = await closureDataSource.executeDailyClosure(closure);
-      expect(result.id, equals('closure-nom-1'));
+        final result = await closureDataSource.executeDailyClosure(closure);
+        expect(result.id, equals('closure-nom-1'));
 
-      // Check daily_closures row in DB
-      final retrievedClosure = await closureDataSource.getClosureById(
-        'closure-nom-1',
-      );
-      expect(retrievedClosure, isNotNull);
-      expect(retrievedClosure!.totalSalesAmount, equals(17500));
-      expect(retrievedClosure.totalExpensesAmount, equals(2500));
-      expect(retrievedClosure.cashCounted, equals(15000));
+        // Check daily_closures row in DB
+        final retrievedClosure = await closureDataSource.getClosureById(
+          'closure-nom-1',
+        );
+        expect(retrievedClosure, isNotNull);
+        expect(retrievedClosure!.totalSalesAmount, equals(17500));
+        expect(retrievedClosure.totalExpensesAmount, equals(2500));
+        expect(retrievedClosure.cashCounted, equals(15000));
 
-      // Verify all 3 sales are now sealed with closure_id
-      final s1 = await salesDataSource.getSaleById('s-nom-1');
-      final s2 = await salesDataSource.getSaleById('s-nom-2');
-      final s3 = await salesDataSource.getSaleById('s-nom-3');
+        // Verify all 3 sales are now sealed with closure_id
+        final s1 = await salesDataSource.getSaleById('s-nom-1');
+        final s2 = await salesDataSource.getSaleById('s-nom-2');
+        final s3 = await salesDataSource.getSaleById('s-nom-3');
 
-      expect(s1!.closureId, equals('closure-nom-1'));
-      expect(s2!.closureId, equals('closure-nom-1'));
-      expect(s3!.closureId, equals('closure-nom-1'));
+        expect(s1!.closureId, equals('closure-nom-1'));
+        expect(s2!.closureId, equals('closure-nom-1'));
+        expect(s3!.closureId, equals('closure-nom-1'));
 
-      // Orphan sales query now returns empty
-      final orphans = await salesDataSource.getOrphanSales();
-      expect(orphans, isEmpty);
-    });
+        // Orphan sales query now returns empty
+        final orphans = await salesDataSource.getOrphanSales();
+        expect(orphans, isEmpty);
+      },
+    );
 
-    test('Concurrent sale post-cutoff remains strictly orphan (isolation temporelle)', () async {
-      final cutoff = DateTime(2026, 11, 17, 18, 0).toUtc();
-      final postCutoffTime = DateTime(2026, 11, 17, 18, 5).toUtc();
+    test(
+      'Concurrent sale post-cutoff remains strictly orphan (isolation temporelle)',
+      () async {
+        final cutoff = DateTime(2026, 11, 17, 18, 0).toUtc();
+        final postCutoffTime = DateTime(2026, 11, 17, 18, 5).toUtc();
 
-      // Sale before cutoff
-      await salesDataSource.insertSale(
-        SaleEntity(
-          id: 's-pre',
-          amount: 8000,
-          paymentMethod: PaymentMethod.especes,
-          recordedAt: DateTime(2026, 11, 17, 17, 50).toUtc(),
-        ),
-      );
+        // Sale before cutoff
+        await salesDataSource.insertSale(
+          SaleEntity(
+            id: 's-pre',
+            amount: 8000,
+            paymentMethod: PaymentMethod.especes,
+            recordedAt: DateTime(2026, 11, 17, 17, 50).toUtc(),
+          ),
+        );
 
-      // Sale after cutoff (arrived while closure was in progress)
-      await salesDataSource.insertSale(
-        SaleEntity(
-          id: 's-post',
-          amount: 5000,
-          paymentMethod: PaymentMethod.especes,
-          recordedAt: postCutoffTime,
-        ),
-      );
+        // Sale after cutoff (arrived while closure was in progress)
+        await salesDataSource.insertSale(
+          SaleEntity(
+            id: 's-post',
+            amount: 5000,
+            paymentMethod: PaymentMethod.especes,
+            recordedAt: postCutoffTime,
+          ),
+        );
 
-      final closure = DailyClosureEntity(
-        id: 'closure-iso-1',
-        shopId: 'shop-1',
-        closureDate: '2026-11-17',
-        cutoffTimestamp: cutoff,
-        totalSalesAmount: 8000,
-        totalExpensesAmount: 0,
-        cashCounted: 8000,
-      );
+        final closure = DailyClosureEntity(
+          id: 'closure-iso-1',
+          shopId: 'shop-1',
+          closureDate: '2026-11-17',
+          cutoffTimestamp: cutoff,
+          totalSalesAmount: 8000,
+          totalExpensesAmount: 0,
+          cashCounted: 8000,
+        );
 
-      await closureDataSource.executeDailyClosure(closure);
+        await closureDataSource.executeDailyClosure(closure);
 
-      // Pre-cutoff sale is sealed
-      final preSale = await salesDataSource.getSaleById('s-pre');
-      expect(preSale!.closureId, equals('closure-iso-1'));
+        // Pre-cutoff sale is sealed
+        final preSale = await salesDataSource.getSaleById('s-pre');
+        expect(preSale!.closureId, equals('closure-iso-1'));
 
-      // Post-cutoff sale remains orphan!
-      final postSale = await salesDataSource.getSaleById('s-post');
-      expect(postSale!.closureId, isNull);
+        // Post-cutoff sale remains orphan!
+        final postSale = await salesDataSource.getSaleById('s-post');
+        expect(postSale!.closureId, isNull);
 
-      final orphans = await salesDataSource.getOrphanSales();
-      expect(orphans.length, equals(1));
-      expect(orphans.first.id, equals('s-post'));
-    });
+        final orphans = await salesDataSource.getOrphanSales();
+        expect(orphans.length, equals(1));
+        expect(orphans.first.id, equals('s-post'));
+      },
+    );
 
-    test('Zero sales day: completes closure without error and without modifying any sales', () async {
-      final cutoff = DateTime(2026, 11, 17, 21, 0).toUtc();
+    test(
+      'Zero sales day: completes closure without error and without modifying any sales',
+      () async {
+        final cutoff = DateTime(2026, 11, 17, 21, 0).toUtc();
 
-      final closure = DailyClosureEntity(
-        id: 'closure-zero-1',
-        shopId: 'shop-1',
-        closureDate: '2026-11-17',
-        cutoffTimestamp: cutoff,
-        totalSalesAmount: 0,
-        totalExpensesAmount: 500,
-        cashCounted: 0,
-      );
+        final closure = DailyClosureEntity(
+          id: 'closure-zero-1',
+          shopId: 'shop-1',
+          closureDate: '2026-11-17',
+          cutoffTimestamp: cutoff,
+          totalSalesAmount: 0,
+          totalExpensesAmount: 500,
+          cashCounted: 0,
+        );
 
-      final result = await closureDataSource.executeDailyClosure(closure);
-      expect(result.id, equals('closure-zero-1'));
+        final result = await closureDataSource.executeDailyClosure(closure);
+        expect(result.id, equals('closure-zero-1'));
 
-      final retrieved = await closureDataSource.getClosureById(
-        'closure-zero-1',
-      );
-      expect(retrieved, isNotNull);
-      expect(retrieved!.totalSalesAmount, equals(0));
-      expect(retrieved.totalExpensesAmount, equals(500));
-    });
+        final retrieved = await closureDataSource.getClosureById(
+          'closure-zero-1',
+        );
+        expect(retrieved, isNotNull);
+        expect(retrieved!.totalSalesAmount, equals(0));
+        expect(retrieved.totalExpensesAmount, equals(500));
+      },
+    );
 
     test(
       'Rollback on failure: database error does not seal any sales',

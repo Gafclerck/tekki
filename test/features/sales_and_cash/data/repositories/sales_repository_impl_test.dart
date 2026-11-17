@@ -29,8 +29,9 @@ void main() {
     test(
       'recordSale returns Success(sale) when data source insertion succeeds',
       () async {
-        when(() => mockDataSource.insertSale(testSale))
-            .thenAnswer((_) async {});
+        when(
+          () => mockDataSource.insertSale(testSale),
+        ).thenAnswer((_) async {});
 
         final result = await repository.recordSale(testSale);
 
@@ -43,25 +44,30 @@ void main() {
       },
     );
 
-    test('recordSale returns DatabaseFailure when data source throws DatabaseException', () async {
-      when(() => mockDataSource.insertSale(testSale))
-          .thenThrow(const DatabaseException('SQLite write error'));
+    test(
+      'recordSale returns DatabaseFailure when data source throws DatabaseException',
+      () async {
+        when(
+          () => mockDataSource.insertSale(testSale),
+        ).thenThrow(const DatabaseException('SQLite write error'));
 
-      final result = await repository.recordSale(testSale);
+        final result = await repository.recordSale(testSale);
 
-      expect(result.isError, isTrue);
-      result.fold(
-        onSuccess: (_) => fail('Should not succeed'),
-        onError: (failure) {
-          expect(failure, isA<DatabaseFailure>());
-          expect(failure.message, equals('SQLite write error'));
-        },
-      );
-    });
+        expect(result.isError, isTrue);
+        result.fold(
+          onSuccess: (_) => fail('Should not succeed'),
+          onError: (failure) {
+            expect(failure, isA<DatabaseFailure>());
+            expect(failure.message, equals('SQLite write error'));
+          },
+        );
+      },
+    );
 
     test('getSaleById returns Success(sale)', () async {
-      when(() => mockDataSource.getSaleById('sale-uuid-1'))
-          .thenAnswer((_) async => testSale);
+      when(
+        () => mockDataSource.getSaleById('sale-uuid-1'),
+      ).thenAnswer((_) async => testSale);
 
       final result = await repository.getSaleById('sale-uuid-1');
 
@@ -73,8 +79,9 @@ void main() {
     });
 
     test('getAllSales returns Success(list)', () async {
-      when(() => mockDataSource.getAllSales(limit: 50, offset: null))
-          .thenAnswer((_) async => [testSale]);
+      when(
+        () => mockDataSource.getAllSales(limit: 50, offset: null),
+      ).thenAnswer((_) async => [testSale]);
 
       final result = await repository.getAllSales();
 
@@ -86,8 +93,9 @@ void main() {
     });
 
     test('getOrphanSales returns Success(list)', () async {
-      when(() => mockDataSource.getOrphanSales())
-          .thenAnswer((_) async => [testSale]);
+      when(
+        () => mockDataSource.getOrphanSales(),
+      ).thenAnswer((_) async => [testSale]);
 
       final result = await repository.getOrphanSales();
 
@@ -99,8 +107,9 @@ void main() {
     });
 
     test('watchOrphanSales delegates directly to data source stream', () {
-      when(() => mockDataSource.watchOrphanSales())
-          .thenAnswer((_) => Stream.value([testSale]));
+      when(
+        () => mockDataSource.watchOrphanSales(),
+      ).thenAnswer((_) => Stream.value([testSale]));
 
       final stream = repository.watchOrphanSales();
 

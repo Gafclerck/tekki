@@ -102,53 +102,56 @@ void main() {
       },
     );
 
-    test('recordDebtWithDebtor rolls back completely when debt insertion fails', () async {
-      // First insert a debt with id 'duplicate-debt-id'
-      final debtor0 = DebtorEntity(
-        id: 'debtor-pre-0',
-        name: 'Existing Debtor',
-        createdAt: testDate,
-      );
-      final debt0 = DebtEntity(
-        id: 'duplicate-debt-id',
-        debtorId: 'debtor-pre-0',
-        initialAmount: 1000,
-        remainingAmount: 1000,
-        dueDate: testDate,
-        createdAt: testDate,
-      );
-      await dataSource.recordDebtWithDebtor(debtor: debtor0, debt: debt0);
+    test(
+      'recordDebtWithDebtor rolls back completely when debt insertion fails',
+      () async {
+        // First insert a debt with id 'duplicate-debt-id'
+        final debtor0 = DebtorEntity(
+          id: 'debtor-pre-0',
+          name: 'Existing Debtor',
+          createdAt: testDate,
+        );
+        final debt0 = DebtEntity(
+          id: 'duplicate-debt-id',
+          debtorId: 'debtor-pre-0',
+          initialAmount: 1000,
+          remainingAmount: 1000,
+          dueDate: testDate,
+          createdAt: testDate,
+        );
+        await dataSource.recordDebtWithDebtor(debtor: debtor0, debt: debt0);
 
-      // Now attempt atomic transaction with a NEW debtor and DUPLICATE debt ID
-      final newDebtor = DebtorEntity(
-        id: 'new-debtor-should-rollback',
-        name: 'Rollback Candidate',
-        createdAt: testDate,
-      );
-      final duplicateDebt = DebtEntity(
-        id: 'duplicate-debt-id', // duplicate PK will trigger failure
-        debtorId: 'new-debtor-should-rollback',
-        initialAmount: 5000,
-        remainingAmount: 5000,
-        dueDate: testDate,
-        createdAt: testDate,
-      );
+        // Now attempt atomic transaction with a NEW debtor and DUPLICATE debt ID
+        final newDebtor = DebtorEntity(
+          id: 'new-debtor-should-rollback',
+          name: 'Rollback Candidate',
+          createdAt: testDate,
+        );
+        final duplicateDebt = DebtEntity(
+          id: 'duplicate-debt-id', // duplicate PK will trigger failure
+          debtorId: 'new-debtor-should-rollback',
+          initialAmount: 5000,
+          remainingAmount: 5000,
+          dueDate: testDate,
+          createdAt: testDate,
+        );
 
-      expect(
-        () => dataSource.recordDebtWithDebtor(
-          debtor: newDebtor,
-          debt: duplicateDebt,
-          isNewDebtor: true,
-        ),
-        throwsA(isA<DatabaseException>()),
-      );
+        expect(
+          () => dataSource.recordDebtWithDebtor(
+            debtor: newDebtor,
+            debt: duplicateDebt,
+            isNewDebtor: true,
+          ),
+          throwsA(isA<DatabaseException>()),
+        );
 
-      // Verify atomicity: newDebtor was NOT persisted!
-      final shouldBeNull = await dataSource.getDebtorById(
-        'new-debtor-should-rollback',
-      );
-      expect(shouldBeNull, isNull);
-    });
+        // Verify atomicity: newDebtor was NOT persisted!
+        final shouldBeNull = await dataSource.getDebtorById(
+          'new-debtor-should-rollback',
+        );
+        expect(shouldBeNull, isNull);
+      },
+    );
 
     test('watchActiveDebts emits active debts ordered by due_date', () async {
       final debtor = DebtorEntity(

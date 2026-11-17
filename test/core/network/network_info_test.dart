@@ -16,8 +16,9 @@ void main() {
 
   group('NetworkInfo', () {
     test('returns true when connectivity is wifi or mobile', () async {
-      when(() => mockConnectivity.checkConnectivity())
-          .thenAnswer((_) async => [ConnectivityResult.wifi]);
+      when(
+        () => mockConnectivity.checkConnectivity(),
+      ).thenAnswer((_) async => [ConnectivityResult.wifi]);
 
       final result = await networkInfo.isConnected;
       expect(result, isTrue);
@@ -25,8 +26,9 @@ void main() {
     });
 
     test('returns false when connectivity is none', () async {
-      when(() => mockConnectivity.checkConnectivity())
-          .thenAnswer((_) async => [ConnectivityResult.none]);
+      when(
+        () => mockConnectivity.checkConnectivity(),
+      ).thenAnswer((_) async => [ConnectivityResult.none]);
 
       final result = await networkInfo.isConnected;
       expect(result, isFalse);

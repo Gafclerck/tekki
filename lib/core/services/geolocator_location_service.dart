@@ -7,9 +7,8 @@ import 'package:tekki/core/services/location_service.dart';
 typedef LocationServiceChecker = Future<bool> Function();
 typedef PermissionChecker = Future<LocationPermission> Function();
 typedef PermissionRequester = Future<LocationPermission> Function();
-typedef PositionGetter = Future<Position> Function({
-  LocationSettings? locationSettings,
-});
+typedef PositionGetter =
+    Future<Position> Function({LocationSettings? locationSettings});
 
 /// Concrete [ILocationService] implementation wrapping the `geolocator` package.
 /// Guarantees a passive, non-blocking capture with a strict 5-second overall timeout

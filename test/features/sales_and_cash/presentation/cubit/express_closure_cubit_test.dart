@@ -68,8 +68,9 @@ void main() {
     blocTest<ExpressClosureCubit, ExpressClosureState>(
       'init loads prefill and emits ready state with sales amount',
       build: () {
-        when(() => mockPrefillUseCase(fixedCutoff))
-            .thenAnswer((_) async => const Success(17500));
+        when(
+          () => mockPrefillUseCase(fixedCutoff),
+        ).thenAnswer((_) async => const Success(17500));
         return ExpressClosureCubit(
           getClosurePrefillUseCase: mockPrefillUseCase,
           executeDailyClosureUseCase: mockExecuteUseCase,
@@ -298,32 +299,37 @@ void main() {
       ],
     );
 
-    test('canSubmit is only true when ready with no error message and valid amounts', () {
-      final readyState = ExpressClosureState(
-        cutoffTimestamp: fixedCutoff,
-        status: ExpressClosureStatus.ready,
-        totalSalesAmount: 1000,
-      );
-      expect(readyState.canSubmit, isTrue);
+    test(
+      'canSubmit is only true when ready with no error message and valid amounts',
+      () {
+        final readyState = ExpressClosureState(
+          cutoffTimestamp: fixedCutoff,
+          status: ExpressClosureStatus.ready,
+          totalSalesAmount: 1000,
+        );
+        expect(readyState.canSubmit, isTrue);
 
-      expect(
-        readyState.copyWith(status: ExpressClosureStatus.success).canSubmit,
-        isFalse,
-      );
-      expect(
-        readyState.copyWith(status: ExpressClosureStatus.failure).canSubmit,
-        isFalse,
-      );
-      expect(
-        readyState.copyWith(status: ExpressClosureStatus.submitting).canSubmit,
-        isFalse,
-      );
-      expect(
-        readyState.copyWith(errorMessage: 'Invalid amount').canSubmit,
-        isFalse,
-      );
-      expect(readyState.copyWith(totalSalesAmount: -1).canSubmit, isFalse);
-    });
+        expect(
+          readyState.copyWith(status: ExpressClosureStatus.success).canSubmit,
+          isFalse,
+        );
+        expect(
+          readyState.copyWith(status: ExpressClosureStatus.failure).canSubmit,
+          isFalse,
+        );
+        expect(
+          readyState
+              .copyWith(status: ExpressClosureStatus.submitting)
+              .canSubmit,
+          isFalse,
+        );
+        expect(
+          readyState.copyWith(errorMessage: 'Invalid amount').canSubmit,
+          isFalse,
+        );
+        expect(readyState.copyWith(totalSalesAmount: -1).canSubmit, isFalse);
+      },
+    );
 
     test('reset reinitializes state to initial', () {
       final cubit = ExpressClosureCubit(
@@ -354,8 +360,9 @@ void main() {
       blocTest<ExpressClosureCubit, ExpressClosureState>(
         'init queries active streak and monthly count with shopId when repository is provided',
         build: () {
-          when(() => mockPrefillUseCase(fixedCutoff))
-              .thenAnswer((_) async => const Success(25000));
+          when(
+            () => mockPrefillUseCase(fixedCutoff),
+          ).thenAnswer((_) async => const Success(25000));
           when(
             () => mockRepo.getActiveStreak(
               referenceDate: fixedCutoff,

@@ -48,8 +48,9 @@ void main() {
       final debtors = [
         DebtorEntity(id: 'd-1', name: 'Fatou', createdAt: testDate),
       ];
-      when(() => mockGetDebtorsUseCase.call())
-          .thenAnswer((_) async => Success(debtors));
+      when(
+        () => mockGetDebtorsUseCase.call(),
+      ).thenAnswer((_) async => Success(debtors));
 
       final expectation = expectLater(
         cubit.stream,
@@ -72,8 +73,9 @@ void main() {
           createdAt: testDate,
         );
 
-        when(() => mockRecordDebtUseCase.call(any()))
-            .thenAnswer((_) async => Success(debt));
+        when(
+          () => mockRecordDebtUseCase.call(any()),
+        ).thenAnswer((_) async => Success(debt));
 
         final expectation = expectLater(
           cubit.stream,

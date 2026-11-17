@@ -64,8 +64,9 @@ class DebtModel extends DebtEntity {
           : null,
       createdAt: DateTime.parse(json['created_at'] as String),
       debtor: json['debtor'] != null
-          ? DebtorModel.fromJson(json['debtor'] as Map<String, dynamic>)
-                .toEntity()
+          ? DebtorModel.fromJson(
+              json['debtor'] as Map<String, dynamic>,
+            ).toEntity()
           : null,
     );
   }

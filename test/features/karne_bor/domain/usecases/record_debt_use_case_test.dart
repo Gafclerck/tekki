@@ -42,8 +42,9 @@ void main() {
     test(
       'Matrix row 1: Nominale - creates debtor and debt atomically',
       () async {
-        when(() => mockRepository.findDebtorByName('Fatou Kiné'))
-            .thenAnswer((_) async => const Success(null));
+        when(
+          () => mockRepository.findDebtorByName('Fatou Kiné'),
+        ).thenAnswer((_) async => const Success(null));
 
         when(
           () => mockRepository.recordDebtWithDebtor(
@@ -109,8 +110,9 @@ void main() {
           createdAt: testDate,
         );
 
-        when(() => mockRepository.getDebtorById('existing-id-123'))
-            .thenAnswer((_) async => Success(existingDebtor));
+        when(
+          () => mockRepository.getDebtorById('existing-id-123'),
+        ).thenAnswer((_) async => Success(existingDebtor));
 
         when(
           () => mockRepository.recordDebtWithDebtor(
@@ -147,8 +149,9 @@ void main() {
     );
 
     test('Matrix row 3: Saisie sans numéro de téléphone', () async {
-      when(() => mockRepository.findDebtorByName('Modou Fall'))
-          .thenAnswer((_) async => const Success(null));
+      when(
+        () => mockRepository.findDebtorByName('Modou Fall'),
+      ).thenAnswer((_) async => const Success(null));
 
       when(
         () => mockRepository.recordDebtWithDebtor(
@@ -216,8 +219,9 @@ void main() {
     test(
       'Matrix row 6: Date d\'échéance par défaut sur J+7 si non fournie',
       () async {
-        when(() => mockRepository.findDebtorByName('Ibrahima'))
-            .thenAnswer((_) async => const Success(null));
+        when(
+          () => mockRepository.findDebtorByName('Ibrahima'),
+        ).thenAnswer((_) async => const Success(null));
 
         when(
           () => mockRepository.recordDebtWithDebtor(
@@ -250,8 +254,9 @@ void main() {
     );
 
     test('Matrix row 7: Défaillance SQLite remonte DatabaseFailure', () async {
-      when(() => mockRepository.findDebtorByName('Khadim'))
-          .thenAnswer((_) async => const Success(null));
+      when(
+        () => mockRepository.findDebtorByName('Khadim'),
+      ).thenAnswer((_) async => const Success(null));
 
       when(
         () => mockRepository.recordDebtWithDebtor(
@@ -284,8 +289,9 @@ void main() {
         createdAt: testDate,
       );
 
-      when(() => mockRepository.findDebtorByName('Moussa Diop'))
-          .thenAnswer((_) async => Success(existing));
+      when(
+        () => mockRepository.findDebtorByName('Moussa Diop'),
+      ).thenAnswer((_) async => Success(existing));
 
       when(
         () => mockRepository.recordDebtWithDebtor(

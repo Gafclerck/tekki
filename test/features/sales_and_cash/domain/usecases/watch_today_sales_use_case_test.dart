@@ -20,8 +20,9 @@ void main() {
   setUp(() {
     mockRepository = MockSalesRepository();
     streamController = StreamController<List<SaleEntity>>.broadcast();
-    when(() => mockRepository.watchOrphanSales())
-        .thenAnswer((_) => streamController.stream);
+    when(
+      () => mockRepository.watchOrphanSales(),
+    ).thenAnswer((_) => streamController.stream);
 
     useCase = WatchTodaySalesUseCase(
       repository: mockRepository,

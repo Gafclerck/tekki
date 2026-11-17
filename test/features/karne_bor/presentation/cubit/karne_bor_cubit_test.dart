@@ -20,8 +20,9 @@ void main() {
   setUp(() {
     mockWatchActiveDebtsUseCase = MockWatchActiveDebtsUseCase();
     streamController = StreamController<List<DebtEntity>>.broadcast();
-    when(() => mockWatchActiveDebtsUseCase.call(limit: any(named: 'limit')))
-        .thenAnswer((_) => streamController.stream);
+    when(
+      () => mockWatchActiveDebtsUseCase.call(limit: any(named: 'limit')),
+    ).thenAnswer((_) => streamController.stream);
 
     cubit = KarneBorCubit(watchActiveDebtsUseCase: mockWatchActiveDebtsUseCase);
   });

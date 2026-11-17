@@ -43,8 +43,9 @@ void main() {
     List<DebtEntity> initialDebts = const [],
     List<DebtorEntity> knownDebtors = const [],
   }) {
-    when(() => mockWatchActiveDebtsUseCase.call(limit: any(named: 'limit')))
-        .thenAnswer((_) => Stream.value(initialDebts));
+    when(
+      () => mockWatchActiveDebtsUseCase.call(limit: any(named: 'limit')),
+    ).thenAnswer((_) => Stream.value(initialDebts));
     when(
       () => mockGetDebtorsUseCase.call(
         query: any(named: 'query'),
@@ -166,8 +167,9 @@ void main() {
         ),
       );
 
-      when(() => mockRecordDebtUseCase.call(any()))
-          .thenAnswer((_) async => Success(recordedDebt));
+      when(
+        () => mockRecordDebtUseCase.call(any()),
+      ).thenAnswer((_) async => Success(recordedDebt));
 
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pumpAndSettle();

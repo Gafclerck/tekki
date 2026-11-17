@@ -196,54 +196,57 @@ void main() {
       );
     });
 
-    test('ShopEntity rejects out-of-range or NaN coordinates and normalizes createdAt to UTC', () {
-      final localDate = DateTime.parse('2026-11-17 10:00:00');
-      final shop = ShopEntity(
-        id: 'shop-valid-utc',
-        name: 'Valid Shop',
-        refLatitude: 14.0,
-        refLongitude: -17.0,
-        publicKey: 'key',
-        createdAt: localDate,
-      );
-      expect(shop.createdAt.isUtc, isTrue);
-
-      expect(
-        () => ShopEntity(
-          id: 'shop-inv-lat',
-          name: 'Shop',
-          refLatitude: 95.0,
-          refLongitude: 0.0,
+    test(
+      'ShopEntity rejects out-of-range or NaN coordinates and normalizes createdAt to UTC',
+      () {
+        final localDate = DateTime.parse('2026-11-17 10:00:00');
+        final shop = ShopEntity(
+          id: 'shop-valid-utc',
+          name: 'Valid Shop',
+          refLatitude: 14.0,
+          refLongitude: -17.0,
           publicKey: 'key',
-          createdAt: DateTime.now(),
-        ),
-        throwsA(isA<ArgumentError>()),
-      );
+          createdAt: localDate,
+        );
+        expect(shop.createdAt.isUtc, isTrue);
 
-      expect(
-        () => ShopEntity(
-          id: 'shop-inv-lat-nan',
-          name: 'Shop',
-          refLatitude: double.nan,
-          refLongitude: 0.0,
-          publicKey: 'key',
-          createdAt: DateTime.now(),
-        ),
-        throwsA(isA<ArgumentError>()),
-      );
+        expect(
+          () => ShopEntity(
+            id: 'shop-inv-lat',
+            name: 'Shop',
+            refLatitude: 95.0,
+            refLongitude: 0.0,
+            publicKey: 'key',
+            createdAt: DateTime.now(),
+          ),
+          throwsA(isA<ArgumentError>()),
+        );
 
-      expect(
-        () => ShopEntity(
-          id: 'shop-inv-lng',
-          name: 'Shop',
-          refLatitude: 0.0,
-          refLongitude: 185.0,
-          publicKey: 'key',
-          createdAt: DateTime.now(),
-        ),
-        throwsA(isA<ArgumentError>()),
-      );
-    });
+        expect(
+          () => ShopEntity(
+            id: 'shop-inv-lat-nan',
+            name: 'Shop',
+            refLatitude: double.nan,
+            refLongitude: 0.0,
+            publicKey: 'key',
+            createdAt: DateTime.now(),
+          ),
+          throwsA(isA<ArgumentError>()),
+        );
+
+        expect(
+          () => ShopEntity(
+            id: 'shop-inv-lng',
+            name: 'Shop',
+            refLatitude: 0.0,
+            refLongitude: 185.0,
+            publicKey: 'key',
+            createdAt: DateTime.now(),
+          ),
+          throwsA(isA<ArgumentError>()),
+        );
+      },
+    );
 
     test('Watch shop emits stream updates reactively', () async {
       final shop = ShopEntity(
@@ -269,59 +272,65 @@ void main() {
       await expectation;
     });
 
-    test('ShopModel.toEntity() produces a genuine ShopEntity with Equatable equality', () {
-      final now = DateTime.now().toUtc();
-      final model = ShopModel(
-        id: 'shop-model-1',
-        name: 'Shop 1',
-        refLatitude: 14.5,
-        refLongitude: -17.2,
-        publicKey: 'key-1',
-        syncStatus: 'pending',
-        createdAt: now,
-      );
+    test(
+      'ShopModel.toEntity() produces a genuine ShopEntity with Equatable equality',
+      () {
+        final now = DateTime.now().toUtc();
+        final model = ShopModel(
+          id: 'shop-model-1',
+          name: 'Shop 1',
+          refLatitude: 14.5,
+          refLongitude: -17.2,
+          publicKey: 'key-1',
+          syncStatus: 'pending',
+          createdAt: now,
+        );
 
-      final entity = model.toEntity();
-      expect(entity.runtimeType, equals(ShopEntity));
-      expect(
-        entity,
-        equals(
-          ShopEntity(
-            id: 'shop-model-1',
-            name: 'Shop 1',
-            refLatitude: 14.5,
-            refLongitude: -17.2,
-            publicKey: 'key-1',
-            syncStatus: 'pending',
-            createdAt: now,
+        final entity = model.toEntity();
+        expect(entity.runtimeType, equals(ShopEntity));
+        expect(
+          entity,
+          equals(
+            ShopEntity(
+              id: 'shop-model-1',
+              name: 'Shop 1',
+              refLatitude: 14.5,
+              refLongitude: -17.2,
+              publicKey: 'key-1',
+              syncStatus: 'pending',
+              createdAt: now,
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   });
 
   group('Sale Operations', () {
-    test('Inserts a quick sale with default closure_id null and sync_status pending', () async {
-      final recordedAt = DateTime.parse('2026-11-17T07:15:00.000Z');
-      final sale = SaleEntity(
-        id: 'sale-uuid-quick-1',
-        amount: 5000,
-        paymentMethod: PaymentMethod.especes,
-        recordedAt: recordedAt,
-      );
+    test(
+      'Inserts a quick sale with default closure_id null and sync_status pending',
+      () async {
+        final recordedAt = DateTime.parse('2026-11-17T07:15:00.000Z');
+        final sale = SaleEntity(
+          id: 'sale-uuid-quick-1',
+          amount: 5000,
+          paymentMethod: PaymentMethod.especes,
+          recordedAt: recordedAt,
+        );
 
-      await dataSource.insertSale(sale);
+        await dataSource.insertSale(sale);
 
-      final retrieved = await dataSource.getSaleById(sale.id);
-      expect(retrieved, isNotNull);
-      expect(retrieved!.id, equals(sale.id));
-      expect(retrieved.amount, equals(5000));
-      expect(retrieved.paymentMethod, equals(PaymentMethod.especes));
-      expect(retrieved.recordedAt, equals(recordedAt));
-      expect(retrieved.closureId, isNull);
-      expect(retrieved.syncStatus, equals('pending'));
-      expect(retrieved.lastSyncedAt, isNull);
-    });
+        final retrieved = await dataSource.getSaleById(sale.id);
+        expect(retrieved, isNotNull);
+        expect(retrieved!.id, equals(sale.id));
+        expect(retrieved.amount, equals(5000));
+        expect(retrieved.paymentMethod, equals(PaymentMethod.especes));
+        expect(retrieved.recordedAt, equals(recordedAt));
+        expect(retrieved.closureId, isNull);
+        expect(retrieved.syncStatus, equals('pending'));
+        expect(retrieved.lastSyncedAt, isNull);
+      },
+    );
 
     test('Rejects invalid or non-positive sale amount at entity level', () {
       expect(
@@ -355,30 +364,33 @@ void main() {
       );
     });
 
-    test('SaleEntity rejects whitespace-only closureId and normalizes timestamps to UTC', () {
-      final localRecordedAt = DateTime.parse('2026-11-17 12:00:00');
-      final localSyncedAt = DateTime.parse('2026-11-17 12:05:00');
-      final sale = SaleEntity(
-        id: 'sale-valid',
-        amount: 1000,
-        paymentMethod: PaymentMethod.especes,
-        recordedAt: localRecordedAt,
-        lastSyncedAt: localSyncedAt,
-      );
-      expect(sale.recordedAt.isUtc, isTrue);
-      expect(sale.lastSyncedAt?.isUtc, isTrue);
-
-      expect(
-        () => SaleEntity(
-          id: 'sale-inv-closure',
+    test(
+      'SaleEntity rejects whitespace-only closureId and normalizes timestamps to UTC',
+      () {
+        final localRecordedAt = DateTime.parse('2026-11-17 12:00:00');
+        final localSyncedAt = DateTime.parse('2026-11-17 12:05:00');
+        final sale = SaleEntity(
+          id: 'sale-valid',
           amount: 1000,
           paymentMethod: PaymentMethod.especes,
-          recordedAt: DateTime.now(),
-          closureId: '   ',
-        ),
-        throwsA(isA<ArgumentError>()),
-      );
-    });
+          recordedAt: localRecordedAt,
+          lastSyncedAt: localSyncedAt,
+        );
+        expect(sale.recordedAt.isUtc, isTrue);
+        expect(sale.lastSyncedAt?.isUtc, isTrue);
+
+        expect(
+          () => SaleEntity(
+            id: 'sale-inv-closure',
+            amount: 1000,
+            paymentMethod: PaymentMethod.especes,
+            recordedAt: DateTime.now(),
+            closureId: '   ',
+          ),
+          throwsA(isA<ArgumentError>()),
+        );
+      },
+    );
 
     test(
       'Filters orphan sales where closure_id IS NULL and uses index in < 50ms',
@@ -425,35 +437,38 @@ void main() {
       },
     );
 
-    test('getAllSales and watchAllSales reject non-positive limit and support pagination', () async {
-      expect(
-        () => dataSource.getAllSales(limit: 0),
-        throwsA(isA<ArgumentError>()),
-      );
-      expect(
-        () => dataSource.getAllSales(limit: -5),
-        throwsA(isA<ArgumentError>()),
-      );
-      expect(
-        () => dataSource.watchAllSales(limit: 0),
-        throwsA(isA<ArgumentError>()),
-      );
-
-      final now = DateTime.now().toUtc();
-      for (var i = 0; i < 5; i++) {
-        await dataSource.insertSale(
-          SaleEntity(
-            id: 'page-sale-$i',
-            amount: (i + 1) * 1000,
-            paymentMethod: PaymentMethod.especes,
-            recordedAt: now.add(Duration(minutes: i)),
-          ),
+    test(
+      'getAllSales and watchAllSales reject non-positive limit and support pagination',
+      () async {
+        expect(
+          () => dataSource.getAllSales(limit: 0),
+          throwsA(isA<ArgumentError>()),
         );
-      }
+        expect(
+          () => dataSource.getAllSales(limit: -5),
+          throwsA(isA<ArgumentError>()),
+        );
+        expect(
+          () => dataSource.watchAllSales(limit: 0),
+          throwsA(isA<ArgumentError>()),
+        );
 
-      final paged = await dataSource.getAllSales(limit: 2, offset: 1);
-      expect(paged.length, equals(2));
-    });
+        final now = DateTime.now().toUtc();
+        for (var i = 0; i < 5; i++) {
+          await dataSource.insertSale(
+            SaleEntity(
+              id: 'page-sale-$i',
+              amount: (i + 1) * 1000,
+              paymentMethod: PaymentMethod.especes,
+              recordedAt: now.add(Duration(minutes: i)),
+            ),
+          );
+        }
+
+        final paged = await dataSource.getAllSales(limit: 2, offset: 1);
+        expect(paged.length, equals(2));
+      },
+    );
 
     test('Watch orphan sales emits reactively on new sale insertion', () async {
       final now = DateTime.now().toUtc();
@@ -507,35 +522,38 @@ void main() {
       },
     );
 
-    test('SaleModel.toEntity() produces a genuine SaleEntity with Equatable equality', () {
-      final now = DateTime.now().toUtc();
-      final model = SaleModel(
-        id: 'sale-model-1',
-        amount: 2500,
-        paymentMethod: PaymentMethod.especes,
-        recordedAt: now,
-        closureId: 'closure-1',
-        syncStatus: 'pending',
-        lastSyncedAt: now,
-      );
+    test(
+      'SaleModel.toEntity() produces a genuine SaleEntity with Equatable equality',
+      () {
+        final now = DateTime.now().toUtc();
+        final model = SaleModel(
+          id: 'sale-model-1',
+          amount: 2500,
+          paymentMethod: PaymentMethod.especes,
+          recordedAt: now,
+          closureId: 'closure-1',
+          syncStatus: 'pending',
+          lastSyncedAt: now,
+        );
 
-      final entity = model.toEntity();
-      expect(entity.runtimeType, equals(SaleEntity));
-      expect(
-        entity,
-        equals(
-          SaleEntity(
-            id: 'sale-model-1',
-            amount: 2500,
-            paymentMethod: PaymentMethod.especes,
-            recordedAt: now,
-            closureId: 'closure-1',
-            syncStatus: 'pending',
-            lastSyncedAt: now,
+        final entity = model.toEntity();
+        expect(entity.runtimeType, equals(SaleEntity));
+        expect(
+          entity,
+          equals(
+            SaleEntity(
+              id: 'sale-model-1',
+              amount: 2500,
+              paymentMethod: PaymentMethod.especes,
+              recordedAt: now,
+              closureId: 'closure-1',
+              syncStatus: 'pending',
+              lastSyncedAt: now,
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
 
     test('SaleModel.fromJson parses amount from num safely', () {
       final json = {

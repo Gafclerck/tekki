@@ -32,8 +32,9 @@ void main() {
   group('ClosureRepositoryImpl', () {
     group('getPrefillSalesAmount', () {
       test('returns Success(amount) when data source succeeds', () async {
-        when(() => mockDataSource.getPrefillSalesAmount(cutoff))
-            .thenAnswer((_) async => 17500);
+        when(
+          () => mockDataSource.getPrefillSalesAmount(cutoff),
+        ).thenAnswer((_) async => 17500);
 
         final result = await repository.getPrefillSalesAmount(cutoff);
 
@@ -48,8 +49,9 @@ void main() {
       test(
         'returns DatabaseFailure when data source throws DatabaseException',
         () async {
-          when(() => mockDataSource.getPrefillSalesAmount(cutoff))
-              .thenThrow(const DatabaseException('SQLite query error'));
+          when(
+            () => mockDataSource.getPrefillSalesAmount(cutoff),
+          ).thenThrow(const DatabaseException('SQLite query error'));
 
           final result = await repository.getPrefillSalesAmount(cutoff);
 
@@ -67,8 +69,9 @@ void main() {
       test(
         'returns DatabaseFailure when an unexpected exception occurs',
         () async {
-          when(() => mockDataSource.getPrefillSalesAmount(cutoff))
-              .thenThrow(Exception('Unexpected crash'));
+          when(
+            () => mockDataSource.getPrefillSalesAmount(cutoff),
+          ).thenThrow(Exception('Unexpected crash'));
 
           final result = await repository.getPrefillSalesAmount(cutoff);
 
@@ -86,8 +89,9 @@ void main() {
 
     group('executeDailyClosure', () {
       test('returns Success(closure) when transaction succeeds', () async {
-        when(() => mockDataSource.executeDailyClosure(testClosure))
-            .thenAnswer((_) async => testClosure);
+        when(
+          () => mockDataSource.executeDailyClosure(testClosure),
+        ).thenAnswer((_) async => testClosure);
 
         final result = await repository.executeDailyClosure(testClosure);
 
@@ -122,8 +126,9 @@ void main() {
       test(
         'returns DatabaseFailure when an unexpected exception occurs',
         () async {
-          when(() => mockDataSource.executeDailyClosure(testClosure))
-              .thenThrow(Exception('Unexpected write error'));
+          when(
+            () => mockDataSource.executeDailyClosure(testClosure),
+          ).thenThrow(Exception('Unexpected write error'));
 
           final result = await repository.executeDailyClosure(testClosure);
 
@@ -141,8 +146,9 @@ void main() {
 
     group('getClosureById', () {
       test('returns Success(closure) when closure is found', () async {
-        when(() => mockDataSource.getClosureById('closure-repo-test-1'))
-            .thenAnswer((_) async => testClosure);
+        when(
+          () => mockDataSource.getClosureById('closure-repo-test-1'),
+        ).thenAnswer((_) async => testClosure);
 
         final result = await repository.getClosureById('closure-repo-test-1');
 
@@ -154,8 +160,9 @@ void main() {
       });
 
       test('returns Success(null) when closure is not found', () async {
-        when(() => mockDataSource.getClosureById('non-existent'))
-            .thenAnswer((_) async => null);
+        when(
+          () => mockDataSource.getClosureById('non-existent'),
+        ).thenAnswer((_) async => null);
 
         final result = await repository.getClosureById('non-existent');
 
@@ -169,8 +176,9 @@ void main() {
       test(
         'returns DatabaseFailure when data source throws DatabaseException',
         () async {
-          when(() => mockDataSource.getClosureById('any-id'))
-              .thenThrow(const DatabaseException('Database read error'));
+          when(
+            () => mockDataSource.getClosureById('any-id'),
+          ).thenThrow(const DatabaseException('Database read error'));
 
           final result = await repository.getClosureById('any-id');
 
@@ -188,8 +196,9 @@ void main() {
 
     group('getAllClosures', () {
       test('returns Success(list) with pagination', () async {
-        when(() => mockDataSource.getAllClosures(limit: 10, offset: 5))
-            .thenAnswer((_) async => [testClosure]);
+        when(
+          () => mockDataSource.getAllClosures(limit: 10, offset: 5),
+        ).thenAnswer((_) async => [testClosure]);
 
         final result = await repository.getAllClosures(limit: 10, offset: 5);
 
@@ -203,8 +212,9 @@ void main() {
       test(
         'returns DatabaseFailure when data source throws DatabaseException',
         () async {
-          when(() => mockDataSource.getAllClosures(limit: 50, offset: null))
-              .thenThrow(const DatabaseException('Pagination error'));
+          when(
+            () => mockDataSource.getAllClosures(limit: 50, offset: null),
+          ).thenThrow(const DatabaseException('Pagination error'));
 
           final result = await repository.getAllClosures();
 

@@ -291,8 +291,9 @@ void main() {
       );
 
       final mockKarneCubit = MockKarneBorCubit();
-      when(() => mockKarneCubit.state)
-          .thenReturn(const KarneBorLoaded(debts: [], totalDebt: 0));
+      when(
+        () => mockKarneCubit.state,
+      ).thenReturn(const KarneBorLoaded(debts: [], totalDebt: 0));
       when(() => mockKarneCubit.startWatching()).thenReturn(null);
       when(() => mockKarneCubit.stream).thenAnswer((_) => const Stream.empty());
       when(() => mockKarneCubit.close()).thenAnswer((_) async {});
