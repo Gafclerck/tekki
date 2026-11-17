@@ -1,0 +1,376 @@
+{
+  "version": 2,
+  "skills": {
+    "bmad": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/core-tools/bmad/SKILL.md",
+      "computedHash": "da40eaaccf08b2f25a04a5510269e44cb8136474b53b74fa2069136d935acb61"
+    },
+    "bmad-advanced-elicitation": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/core-tools/bmad-advanced-elicitation/SKILL.md",
+      "computedHash": "730926f289a13842d1dc3f577ff4eabcbbc80e801a71287248e67921d8bf04cb"
+    },
+    "bmad-agent-analyst": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/method/bmad-agent-analyst/SKILL.md",
+      "computedHash": "a3aa981252fc264e285d9aba94c49fbbfa4357d19eab4cf3749dfc51314acec6"
+    },
+    "bmad-agent-architect": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/method/bmad-agent-architect/SKILL.md",
+      "computedHash": "239b1b466a75c326edfc92163159cf2c91798efa14e23e1476fa63d34fbf0cf7"
+    },
+    "bmad-agent-dev": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/method/bmad-agent-dev/SKILL.md",
+      "computedHash": "388ece75a41ed5d1d812559e19f6110f5e6e38924245016609f8770eacb84f7f"
+    },
+    "bmad-agent-pm": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/method/bmad-agent-pm/SKILL.md",
+      "computedHash": "4ef4dd824b883af0eac13316e9d64e15d0a996d55a4ea1de9a1c2a6cca50be71"
+    },
+    "bmad-agent-po": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/method/bmad-agent-po/SKILL.md",
+      "computedHash": "ecc07def9c9745eee631a84ac5f2278bd3927987f4f0d26d312308428f5cd862"
+    },
+    "bmad-agent-ux-designer": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/method/bmad-agent-ux-designer/SKILL.md",
+      "computedHash": "b8ea1e771de7520d0595c077b3238977c5defa22efb51cbd90ebb8372c021352"
+    },
+    "bmad-architecture": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/method/bmad-architecture/SKILL.md",
+      "computedHash": "2aa275f6fb9709fda578f84d50b516a44507a5a4bb8d03cb079c6215ca1014c0"
+    },
+    "bmad-brainstorming": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/core-tools/bmad-brainstorming/SKILL.md",
+      "computedHash": "8a6adde66a08551ca8afc08e32a2b9096028d58fa01caa8507bbfb832366c7ec"
+    },
+    "bmad-build": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/method/bmad-build/SKILL.md",
+      "computedHash": "baccc60678ad10f44e48858bf6fd27ba7039b70ebd5d58246bae0018e703d3ec"
+    },
+    "bmad-build-auto": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/method/bmad-build-auto/SKILL.md",
+      "computedHash": "206206047992e671dd119e72fc81cb735b5b98fa474dd3a9928bd3066df06b21"
+    },
+    "bmad-code-review": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/method/bmad-code-review/SKILL.md",
+      "computedHash": "ea559d0fc985fab460ef81897bef876853546d9b57bf59a6870e5493a0403290"
+    },
+    "bmad-customize": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/core-tools/bmad-customize/SKILL.md",
+      "computedHash": "277d63086d392cad3d11dba2ac11223261e4fdebff89d93efa2f4fdfd38c11b3"
+    },
+    "bmad-deep-recon": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/core-tools/bmad-deep-recon/SKILL.md",
+      "computedHash": "231bfdf7c8587b66479c4076d50beb5f7aa03eb8c5494cfd53b6d958b3b69a7e"
+    },
+    "bmad-facilitate": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/core-tools/bmad-facilitate/SKILL.md",
+      "computedHash": "1ae3c7ec6a166f1b3a50c35d54195d12550865fdf119bc09de669d2e2ccbfc37"
+    },
+    "bmad-forge-idea": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/core-tools/bmad-forge-idea/SKILL.md",
+      "computedHash": "046de83b908d58b982cfe0f38ae22ad794c525865cda34a658a1fd8598c923d6"
+    },
+    "bmad-ingest": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/core-tools/bmad-ingest/SKILL.md",
+      "computedHash": "06c0d9e6d8a79efdf6f8037376b3cd293f75ef70a76232e16b7fc67f1ed0413c"
+    },
+    "bmad-party-mode": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/core-tools/bmad-party-mode/SKILL.md",
+      "computedHash": "17ce7bf8334f120aeb5c0dac2e64f89547a1220575b3ca97269f080cb70beb4b"
+    },
+    "bmad-project-context": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/method/bmad-project-context/SKILL.md",
+      "computedHash": "91231be20f174f1e4238258277a273acee3f320b6b89fc54fb3dff28d6684afb"
+    },
+    "bmad-qa-generate-e2e-tests": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/method/bmad-qa-generate-e2e-tests/SKILL.md",
+      "computedHash": "94131bb55fd6dca48f8edb34e76e8db79270533b8c1f701db2a8dc9a7dcd6fa3"
+    },
+    "bmad-retrospective": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/method/bmad-retrospective/SKILL.md",
+      "computedHash": "81b5d4ae27d7cb92f3b63e485e8319cd7092df33e0990b41d6c201d1d64564fe"
+    },
+    "bmad-review": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/core-tools/bmad-review/SKILL.md",
+      "computedHash": "eeee3a319ac5b69e7c86c2f6f262c27a82729e7a9c533c3bf848b52ebd7b11ac"
+    },
+    "bmad-shard-pro": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/core-tools/bmad-shard-pro/SKILL.md",
+      "computedHash": "5a1dee2d01e280c7ab530533813e909f602d1adca5a6dda37f5874480e2b0b1d"
+    },
+    "bmad-ux": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/method/bmad-ux/SKILL.md",
+      "computedHash": "affd11a2352b280f37b74fe4285660c13cb8a660255009914f3da4fb25de2b36"
+    },
+    "bmad-walkthrough": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/method/bmad-walkthrough/SKILL.md",
+      "computedHash": "664b1fe7a92b6b14b82c73da5239ddacbd6dbdfa6f57343ea0f36f28f2432598"
+    },
+    "bmod-core-tools": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/core-tools/bmod-core-tools/SKILL.md",
+      "computedHash": "1e1312242cd78a893e788796084dfc4c8783048a952b347dff5a8eff5b0a0cbf"
+    },
+    "bmod-method": {
+      "source": "bmad-code-org/BMAD-METHOD",
+      "commit": "e435a22574fe55722841086e5566420178b98df3",
+      "sourceType": "github",
+      "skillPath": "skills/method/bmod-method/SKILL.md",
+      "computedHash": "2a091d047e64224831003bc6905c599eadff595694b4e9bf199e454271850af2"
+    },
+    "dart-add-unit-test": {
+      "source": "dart-lang/skills",
+      "commit": "f84b16872b5d186f4e877511b49b93c204a1c4ef",
+      "sourceType": "github",
+      "skillPath": "skills/dart-add-unit-test/SKILL.md",
+      "computedHash": "3679f62a634142d81a9f5754eae20356d5fc471e5957e35e18239801bf7a471c"
+    },
+    "dart-build-cli-app": {
+      "source": "dart-lang/skills",
+      "commit": "f84b16872b5d186f4e877511b49b93c204a1c4ef",
+      "sourceType": "github",
+      "skillPath": "skills/dart-build-cli-app/SKILL.md",
+      "computedHash": "ee4104b5cbc46dc60189df9b5109a7357f06ee85c322a76637f5c6d1040a52cd"
+    },
+    "dart-collect-coverage": {
+      "source": "dart-lang/skills",
+      "commit": "f84b16872b5d186f4e877511b49b93c204a1c4ef",
+      "sourceType": "github",
+      "skillPath": "skills/dart-collect-coverage/SKILL.md",
+      "computedHash": "eb267ddc4ae062e7b6f480a6c7d8208cc3a7c77ba4fde28d63e85d355cf0697d"
+    },
+    "dart-fix-runtime-errors": {
+      "source": "dart-lang/skills",
+      "commit": "f84b16872b5d186f4e877511b49b93c204a1c4ef",
+      "sourceType": "github",
+      "skillPath": "skills/dart-fix-runtime-errors/SKILL.md",
+      "computedHash": "af09db2bf2d066537020a45bb5211fb3aa9359106197d9ad1e17831fbc6f2a71"
+    },
+    "dart-generate-test-mocks": {
+      "source": "dart-lang/skills",
+      "commit": "f84b16872b5d186f4e877511b49b93c204a1c4ef",
+      "sourceType": "github",
+      "skillPath": "skills/dart-generate-test-mocks/SKILL.md",
+      "computedHash": "d05e998208c3ce6cb266474d27fc27368428b3d4d633512321f903bfad56f948"
+    },
+    "dart-migrate-to-checks-package": {
+      "source": "dart-lang/skills",
+      "commit": "f84b16872b5d186f4e877511b49b93c204a1c4ef",
+      "sourceType": "github",
+      "skillPath": "skills/dart-migrate-to-checks-package/SKILL.md",
+      "computedHash": "a4033e45c7d8b7ba21a7b2390ee11c9ff98363620ce4a7d1d57c478b233952ec"
+    },
+    "dart-resolve-package-conflicts": {
+      "source": "dart-lang/skills",
+      "commit": "f84b16872b5d186f4e877511b49b93c204a1c4ef",
+      "sourceType": "github",
+      "skillPath": "skills/dart-resolve-package-conflicts/SKILL.md",
+      "computedHash": "0bdf74d7a0d3dfcd1b1f8a7d3014d65ad957c19adb3c2724387e3b7c75464725"
+    },
+    "dart-run-static-analysis": {
+      "source": "dart-lang/skills",
+      "commit": "f84b16872b5d186f4e877511b49b93c204a1c4ef",
+      "sourceType": "github",
+      "skillPath": "skills/dart-run-static-analysis/SKILL.md",
+      "computedHash": "fa93216b2e985fe86cffbc7f9734361205cbe6c7c8d46b21a87beea19bea2066"
+    },
+    "dart-setup-ffi-assets": {
+      "source": "dart-lang/skills",
+      "commit": "f84b16872b5d186f4e877511b49b93c204a1c4ef",
+      "sourceType": "github",
+      "skillPath": "skills/dart-setup-ffi-assets/SKILL.md",
+      "computedHash": "396a0abd000388a06d3547b315743b6d416fb86c074700a790f9f8989c8a32ce"
+    },
+    "dart-use-doc-examples": {
+      "source": "dart-lang/skills",
+      "commit": "f84b16872b5d186f4e877511b49b93c204a1c4ef",
+      "sourceType": "github",
+      "skillPath": "skills/dart-use-doc-examples/SKILL.md",
+      "computedHash": "daf66a018a121fcaf72da87c9bced219c7dc89f1322fb3177eda7fb87da323af"
+    },
+    "dart-use-ffigen": {
+      "source": "dart-lang/skills",
+      "commit": "f84b16872b5d186f4e877511b49b93c204a1c4ef",
+      "sourceType": "github",
+      "skillPath": "skills/dart-use-ffigen/SKILL.md",
+      "computedHash": "6cf19414e11951db1c0bfdf80ca5fa1de235454196a10c50103d734ffe15100b"
+    },
+    "dart-use-path-package": {
+      "source": "dart-lang/skills",
+      "commit": "f84b16872b5d186f4e877511b49b93c204a1c4ef",
+      "sourceType": "github",
+      "skillPath": "skills/dart-use-path-package/SKILL.md",
+      "computedHash": "c6c37a71cd66b8180a625b42facf73679afb0842f8a8b77a6d3f972279178b4d"
+    },
+    "dart-use-pattern-matching": {
+      "source": "dart-lang/skills",
+      "commit": "f84b16872b5d186f4e877511b49b93c204a1c4ef",
+      "sourceType": "github",
+      "skillPath": "skills/dart-use-pattern-matching/SKILL.md",
+      "computedHash": "f04e10a491637ab3ffaa4fa49964090d03e8521c9eff7410f7bd37c7eb3d40a7"
+    },
+    "dart-use-primary-constructors": {
+      "source": "dart-lang/skills",
+      "commit": "f84b16872b5d186f4e877511b49b93c204a1c4ef",
+      "sourceType": "github",
+      "skillPath": "skills/dart-use-primary-constructors/SKILL.md",
+      "computedHash": "c3f9417434d97b846d1b7e02575af550c4656984cdb8d949821be7af4e57440b"
+    },
+    "dart-write-documentation": {
+      "source": "dart-lang/skills",
+      "commit": "f84b16872b5d186f4e877511b49b93c204a1c4ef",
+      "sourceType": "github",
+      "skillPath": "skills/dart-write-documentation/SKILL.md",
+      "computedHash": "672d8e9e5dc290c11eaf58da617a1d07349d0b728f0440cfcf22bf644a50dba6"
+    },
+    "flutter-add-integration-test": {
+      "source": "flutter/agent-plugins",
+      "commit": "17fe9182f4c462d69d6a7963aef01b44b1f7f189",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-add-integration-test/SKILL.md",
+      "computedHash": "ce8c06d4673db956810ffc2380e4c9305e068021eab72c0f3506dacdf0fa4027"
+    },
+    "flutter-add-widget-preview": {
+      "source": "flutter/agent-plugins",
+      "commit": "17fe9182f4c462d69d6a7963aef01b44b1f7f189",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-add-widget-preview/SKILL.md",
+      "computedHash": "a6866e150ae9f804349bf399bb887e8ede45f888657411deb4e8179400633c88"
+    },
+    "flutter-add-widget-test": {
+      "source": "flutter/agent-plugins",
+      "commit": "17fe9182f4c462d69d6a7963aef01b44b1f7f189",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-add-widget-test/SKILL.md",
+      "computedHash": "5cfab5fd20d6b84e28e9b9cc278ac0c3fb2c89a7e850f2b900749b14cb367bbf"
+    },
+    "flutter-apply-architecture-best-practices": {
+      "source": "flutter/agent-plugins",
+      "commit": "17fe9182f4c462d69d6a7963aef01b44b1f7f189",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-apply-architecture-best-practices/SKILL.md",
+      "computedHash": "a41b999109cc3c2dc79ddbc05b5fd5f39ed08d5c6c17dab728a6b926d3a504de"
+    },
+    "flutter-build-responsive-layout": {
+      "source": "flutter/agent-plugins",
+      "commit": "17fe9182f4c462d69d6a7963aef01b44b1f7f189",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-build-responsive-layout/SKILL.md",
+      "computedHash": "bdb7ab7ca812ee719237a718376a5f2e15b659201ff66818f1012c5d13751487"
+    },
+    "flutter-fix-layout-issues": {
+      "source": "flutter/agent-plugins",
+      "commit": "17fe9182f4c462d69d6a7963aef01b44b1f7f189",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-fix-layout-issues/SKILL.md",
+      "computedHash": "66c9d468f894704bfd760c9c6f60651e634fadb099f1977ab9d4e2bf73eb5fc1"
+    },
+    "flutter-implement-json-serialization": {
+      "source": "flutter/agent-plugins",
+      "commit": "17fe9182f4c462d69d6a7963aef01b44b1f7f189",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-implement-json-serialization/SKILL.md",
+      "computedHash": "48727033cb05de551ef14264112e36e8aec015b3cf955fa2115cfdac6094fe69"
+    },
+    "flutter-setup-declarative-routing": {
+      "source": "flutter/agent-plugins",
+      "commit": "17fe9182f4c462d69d6a7963aef01b44b1f7f189",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-setup-declarative-routing/SKILL.md",
+      "computedHash": "566264ee0f746a8b4d571a0dec69d3d3f09c246591a3393d1fb67783661465bf"
+    },
+    "flutter-setup-localization": {
+      "source": "flutter/agent-plugins",
+      "commit": "17fe9182f4c462d69d6a7963aef01b44b1f7f189",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-setup-localization/SKILL.md",
+      "computedHash": "4b4214e30accca0601e7f1d929a44caaa126fe9440d80463198e6ab10e23cdc7"
+    },
+    "flutter-use-http-package": {
+      "source": "flutter/agent-plugins",
+      "commit": "17fe9182f4c462d69d6a7963aef01b44b1f7f189",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-use-http-package/SKILL.md",
+      "computedHash": "a9271fff9ed45b37f908ed57acb5e68012f97d887771b6a5efe088649a1d5ec3"
+    }
+  }
+}

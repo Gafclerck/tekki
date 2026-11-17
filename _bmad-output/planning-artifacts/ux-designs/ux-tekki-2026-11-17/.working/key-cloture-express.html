@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tekki - Écran Clé : Clôture Express du Soir</title>
+  <style>
+    /*
+      Gouverné par DESIGN.md et EXPERIENCE.md (Key Flows: Clôture Express, State Patterns)
+      Palette stricte:
+      primary: #133E59 | secondary: #387387 | tertiary: #8CB8C3
+      accent: #FF7A41 | accent-soft: #FFAE90 | background: #FEECEA | surface: #FFFFFF
+    */
+    :root {
+      --primary: #133E59;
+      --secondary: #387387;
+      --tertiary: #8CB8C3;
+      --accent: #FF7A41;
+      --accent-soft: #FFAE90;
+      --background: #FEECEA;
+      --surface: #FFFFFF;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-family);
+      background-color: #EDE4E0;
+      display: flex;
+      justify-content: center;
+      padding: 30px 10px;
+      color: var(--primary);
+    }
+
+    .phone-container {
+      width: 360px;
+      height: 720px;
+      background: var(--background);
+      border-radius: 40px;
+      border: 10px solid #1E222B;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .status-bar {
+      height: 28px;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .top-bar {
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .back-btn {
+      background: var(--surface);
+      border: 1px solid var(--tertiary);
+      border-radius: 10px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+      color: var(--primary);
+    }
+
+    .top-title h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .top-title span {
+      font-size: 12px;
+      color: var(--secondary);
+    }
+
+    .cloture-content {
+      flex: 1;
+      padding: 12px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow-y: auto;
+    }
+
+    /* BANDEAU REASSURANCE & RAPIDITÉ */
+    .timer-badge {
+      background: var(--surface);
+      border: 1px solid var(--tertiary);
+      border-radius: 12px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--secondary);
+    }
+
+    .timer-badge strong {
+      color: var(--primary);
+    }
+
+    /* CHAMPS DE SAISIE GRAND FORMAT */
+    .input-block {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 14px;
+      border: 1.5px solid var(--tertiary);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .input-field-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    .input-field-row input {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary);
+      border: none;
+      outline: none;
+      background: transparent;
+      width: 75%;
+    }
+
+    .input-currency {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--secondary);
+    }
+
+    .input-hint {
+      font-size: 11px;
+      color: var(--secondary);
+    }
+
+    /* CARTE STREAK & GPS SILENCIEUX */
+    .streak-banner {
+      background: rgba(19, 62, 89, 0.06);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--primary);
+    }
+
+    .streak-fire {
+      font-size: 18px;
+    }
+
+    /* BOUTON FOCAL DE CLÔTURE */
+    .cta-validate-cloture {
+      background: var(--accent);
+      color: #FFFFFF;
+      font-size: 16px;
+      font-weight: 800;
+      border: none;
+      border-radius: 16px;
+      padding: 16px;
+      width: 100%;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(255, 122, 65, 0.35);
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="phone-container">
+    <div class="status-bar">
+      <span>22:58</span>
+      <span>●●● 4G 🔋 78%</span>
+    </div>
+
+    <div class="top-bar">
+      <div class="back-btn">←</div>
+      <div class="top-title">
+        <h2>Clôture de Caisse</h2>
+        <span>Mardi 17 Novembre · Fin de service</span>
+      </div>
+    </div>
+
+    <div class="cloture-content">
+
+      <div class="timer-badge">
+        <span>⏱️ Objectif : <strong>< 30 secondes</strong></span>
+        <span>Étape 1/3</span>
+      </div>
+
+      <!-- CHAMP 1 : TOTAL ENCAISSÉ DU JOUR (PRÉ-REMPLI PAR LES VENTES HYBRIDES) -->
+      <div class="input-block">
+        <div class="input-label">1. Total Encaissé Aujourd'hui</div>
+        <div class="input-field-row">
+          <input type="text" value="108 500" readonly>
+          <span class="input-currency">FCFA</span>
+        </div>
+        <div class="input-hint">Inclut 94 500 F enregistrés au fil de l'eau + 14 000 F cash comptoir</div>
+      </div>
+
+      <!-- CHAMP 2 : DÉPENSES OU SORTIES D'APPROVISIONNEMENT -->
+      <div class="input-block">
+        <div class="input-label">2. Dépenses / Achats du Jour</div>
+        <div class="input-field-row">
+          <input type="text" value="15 000">
+          <span class="input-currency">FCFA</span>
+        </div>
+        <div class="input-hint">Ex: Pain, recharges, glace, petits frais</div>
+      </div>
+
+      <!-- CHAMP 3 : ENCAISSE RESTANTE DÉCLARÉE -->
+      <div class="input-block">
+        <div class="input-label">3. Espèces en Caisse à la Fermeture</div>
+        <div class="input-field-row">
+          <input type="text" value="93 500">
+          <span class="input-currency">FCFA</span>
+        </div>
+        <div class="input-hint">Espèces physiques + solde Wave/Orange Money</div>
+      </div>
+
+      <!-- BANNIÈRE STREAK & SÉCURITÉ -->
+      <div class="streak-banner">
+        <span class="streak-fire">🔥</span>
+        <div>
+          <strong>Clôture n° 22 ce mois-ci !</strong><br>
+          <span style="color: var(--secondary);">Ancrage GPS conforme · Passeport Financier mis à jour.</span>
+        </div>
+      </div>
+
+      <!-- BOUTON D'ACTION FOCALE UNIQUE -->
+      <button class="cta-validate-cloture">
+        <span>✅ Valider et Verrouiller la Caisse</span>
+      </button>
+
+    </div>
+  </div>
+
+</body>
+</html>
