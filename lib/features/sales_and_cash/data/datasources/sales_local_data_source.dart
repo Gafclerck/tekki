@@ -58,10 +58,8 @@ class SalesLocalDataSourceImpl implements SalesLocalDataSource {
     try {
       final query = database.select(database.sales)
         ..orderBy([
-          (tbl) => OrderingTerm(
-                expression: tbl.recordedAt,
-                mode: OrderingMode.desc,
-              ),
+          (tbl) =>
+              OrderingTerm(expression: tbl.recordedAt, mode: OrderingMode.desc),
         ])
         ..limit(limit, offset: offset);
       final rows = await query.get();
@@ -78,10 +76,8 @@ class SalesLocalDataSourceImpl implements SalesLocalDataSource {
       final query = database.select(database.sales)
         ..where((tbl) => tbl.closureId.isNull())
         ..orderBy([
-          (tbl) => OrderingTerm(
-                expression: tbl.recordedAt,
-                mode: OrderingMode.asc,
-              ),
+          (tbl) =>
+              OrderingTerm(expression: tbl.recordedAt, mode: OrderingMode.asc),
         ]);
       final rows = await query.get();
       return rows.map((r) => r.toEntity()).toList();
@@ -96,12 +92,12 @@ class SalesLocalDataSourceImpl implements SalesLocalDataSource {
       final query = database.select(database.sales)
         ..where((tbl) => tbl.closureId.isNull())
         ..orderBy([
-          (tbl) => OrderingTerm(
-                expression: tbl.recordedAt,
-                mode: OrderingMode.asc,
-              ),
+          (tbl) =>
+              OrderingTerm(expression: tbl.recordedAt, mode: OrderingMode.asc),
         ]);
-      return query.watch().map((rows) => rows.map((r) => r.toEntity()).toList());
+      return query.watch().map(
+        (rows) => rows.map((r) => r.toEntity()).toList(),
+      );
     } catch (e) {
       throw DatabaseException('Failed to watch orphan sales: $e');
     }
@@ -118,13 +114,13 @@ class SalesLocalDataSourceImpl implements SalesLocalDataSource {
     try {
       final query = database.select(database.sales)
         ..orderBy([
-          (tbl) => OrderingTerm(
-                expression: tbl.recordedAt,
-                mode: OrderingMode.desc,
-              ),
+          (tbl) =>
+              OrderingTerm(expression: tbl.recordedAt, mode: OrderingMode.desc),
         ])
         ..limit(limit, offset: offset);
-      return query.watch().map((rows) => rows.map((r) => r.toEntity()).toList());
+      return query.watch().map(
+        (rows) => rows.map((r) => r.toEntity()).toList(),
+      );
     } catch (e) {
       if (e is ArgumentError) rethrow;
       throw DatabaseException('Failed to watch all sales: $e');

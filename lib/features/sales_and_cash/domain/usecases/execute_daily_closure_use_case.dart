@@ -70,7 +70,8 @@ class ExecuteDailyClosureUseCase {
     }
 
     final utcCutoff = cutoffTimestamp.toUtc();
-    final dateStr = closureDate ??
+    final dateStr =
+        closureDate ??
         '${utcCutoff.year.toString().padLeft(4, '0')}-${utcCutoff.month.toString().padLeft(2, '0')}-${utcCutoff.day.toString().padLeft(2, '0')}';
 
     // Passive GPS Location Capture & Haversine Geofencing
@@ -133,7 +134,8 @@ class ExecuteDailyClosureUseCase {
           finalIsFlagged = true;
         } else {
           finalDistance = rawDistance;
-          finalIsFlagged = isFlaggedLocation ??
+          finalIsFlagged =
+              isFlaggedLocation ??
               (finalDistance > AppConstants.shopGeofenceRadiusMeters);
         }
       }

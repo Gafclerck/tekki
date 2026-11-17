@@ -33,18 +33,19 @@ class QuickSaleState extends Equatable {
       amount: amount ?? this.amount,
       paymentMethod: paymentMethod ?? this.paymentMethod,
       status: status ?? this.status,
-      errorMessage:
-          clearErrorMessage ? null : (errorMessage ?? this.errorMessage),
+      errorMessage: clearErrorMessage
+          ? null
+          : (errorMessage ?? this.errorMessage),
       createdSale: createdSale ?? this.createdSale,
     );
   }
 
   @override
   List<Object?> get props => [
-        amount,
-        paymentMethod,
-        status,
-        errorMessage,
-        createdSale,
-      ];
+    amount,
+    paymentMethod,
+    status,
+    errorMessage,
+    createdSale,
+  ];
 }

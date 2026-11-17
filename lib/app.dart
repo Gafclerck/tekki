@@ -39,9 +39,7 @@ class TekkiApp extends StatelessWidget {
     // Fallback when DI is not initialized (e.g. in theme-only or isolated tests)
     return const Scaffold(
       backgroundColor: AppColors.background,
-      body: Center(
-        child: Text(AppConstants.appName),
-      ),
+      body: Center(child: Text(AppConstants.appName)),
     );
   }
 }

@@ -82,8 +82,9 @@ class ExpressClosureState extends Equatable {
       totalExpensesAmount: totalExpensesAmount ?? this.totalExpensesAmount,
       cashCounted: cashCounted ?? this.cashCounted,
       currentStep: currentStep ?? this.currentStep,
-      errorMessage:
-          clearErrorMessage ? null : (errorMessage ?? this.errorMessage),
+      errorMessage: clearErrorMessage
+          ? null
+          : (errorMessage ?? this.errorMessage),
       createdClosure: createdClosure ?? this.createdClosure,
       activeStreak: activeStreak ?? this.activeStreak,
       monthlyClosuresCount: monthlyClosuresCount ?? this.monthlyClosuresCount,
@@ -92,16 +93,16 @@ class ExpressClosureState extends Equatable {
 
   @override
   List<Object?> get props => [
-        cutoffTimestamp,
-        status,
-        prefilledSalesAmount,
-        totalSalesAmount,
-        totalExpensesAmount,
-        cashCounted,
-        currentStep,
-        errorMessage,
-        createdClosure,
-        activeStreak,
-        monthlyClosuresCount,
-      ];
+    cutoffTimestamp,
+    status,
+    prefilledSalesAmount,
+    totalSalesAmount,
+    totalExpensesAmount,
+    cashCounted,
+    currentStep,
+    errorMessage,
+    createdClosure,
+    activeStreak,
+    monthlyClosuresCount,
+  ];
 }

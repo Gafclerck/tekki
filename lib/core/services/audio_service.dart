@@ -17,8 +17,7 @@ abstract class IAudioPlayerService {
 /// Guarantees 100% fault tolerance: any hardware absence, missing codec,
 /// or platform exception is caught silently without failing the transaction.
 class JustAudioPlayerService implements IAudioPlayerService {
-  JustAudioPlayerService({AudioPlayer? player})
-      : _customPlayer = player;
+  JustAudioPlayerService({AudioPlayer? player}) : _customPlayer = player;
 
   static const String cashDrawerAsset = 'assets/audio/cash_drawer.mp3';
 

@@ -16,9 +16,9 @@ class CashSummaryEntity extends Equatable {
   }
 
   const CashSummaryEntity.empty()
-      : totalAmount = 0,
-        salesCount = 0,
-        sales = const [];
+    : totalAmount = 0,
+      salesCount = 0,
+      sales = const [];
 
   final int totalAmount;
   final int salesCount;

@@ -43,31 +43,34 @@ void main() {
   });
 
   group('ExpressClosureCubit', () {
-    test('initial state freezes cutoffTimestamp in UTC and sets default amounts', () {
-      final cubit = ExpressClosureCubit(
-        getClosurePrefillUseCase: mockPrefillUseCase,
-        executeDailyClosureUseCase: mockExecuteUseCase,
-        initialCutoffTimestamp: fixedCutoff,
-      );
+    test(
+      'initial state freezes cutoffTimestamp in UTC and sets default amounts',
+      () {
+        final cubit = ExpressClosureCubit(
+          getClosurePrefillUseCase: mockPrefillUseCase,
+          executeDailyClosureUseCase: mockExecuteUseCase,
+          initialCutoffTimestamp: fixedCutoff,
+        );
 
-      expect(cubit.state.cutoffTimestamp, equals(fixedCutoff));
-      expect(cubit.state.cutoffTimestamp.isUtc, isTrue);
-      expect(cubit.state.status, equals(ExpressClosureStatus.initial));
-      expect(cubit.state.totalSalesAmount, equals(0));
-      expect(cubit.state.totalExpensesAmount, equals(0));
-      expect(cubit.state.cashCounted, equals(0));
-      expect(cubit.state.currentStep, equals(1));
-      expect(cubit.state.canSubmit, isFalse);
+        expect(cubit.state.cutoffTimestamp, equals(fixedCutoff));
+        expect(cubit.state.cutoffTimestamp.isUtc, isTrue);
+        expect(cubit.state.status, equals(ExpressClosureStatus.initial));
+        expect(cubit.state.totalSalesAmount, equals(0));
+        expect(cubit.state.totalExpensesAmount, equals(0));
+        expect(cubit.state.cashCounted, equals(0));
+        expect(cubit.state.currentStep, equals(1));
+        expect(cubit.state.canSubmit, isFalse);
 
-      cubit.close();
-    });
+        cubit.close();
+      },
+    );
 
     blocTest<ExpressClosureCubit, ExpressClosureState>(
       'init loads prefill and emits ready state with sales amount',
       build: () {
-        when(() => mockPrefillUseCase(fixedCutoff)).thenAnswer(
-          (_) async => const Success(17500),
-        );
+        when(
+          () => mockPrefillUseCase(fixedCutoff),
+        ).thenAnswer((_) async => const Success(17500));
         return ExpressClosureCubit(
           getClosurePrefillUseCase: mockPrefillUseCase,
           executeDailyClosureUseCase: mockExecuteUseCase,
@@ -129,14 +132,8 @@ void main() {
         cubit.setStep(4); // invalid step ignored
       },
       expect: () => [
-        ExpressClosureState(
-          cutoffTimestamp: fixedCutoff,
-          currentStep: 2,
-        ),
-        ExpressClosureState(
-          cutoffTimestamp: fixedCutoff,
-          currentStep: 3,
-        ),
+        ExpressClosureState(cutoffTimestamp: fixedCutoff, currentStep: 2),
+        ExpressClosureState(cutoffTimestamp: fixedCutoff, currentStep: 3),
       ],
     );
 
@@ -200,10 +197,7 @@ void main() {
         cubit.setCashCounted(-10);
       },
       expect: () => [
-        ExpressClosureState(
-          cutoffTimestamp: fixedCutoff,
-          cashCounted: 93500,
-        ),
+        ExpressClosureState(cutoffTimestamp: fixedCutoff, cashCounted: 93500),
         ExpressClosureState(
           cutoffTimestamp: fixedCutoff,
           cashCounted: 93500,
@@ -305,35 +299,37 @@ void main() {
       ],
     );
 
-    test('canSubmit is only true when ready with no error message and valid amounts', () {
-      final readyState = ExpressClosureState(
-        cutoffTimestamp: fixedCutoff,
-        status: ExpressClosureStatus.ready,
-        totalSalesAmount: 1000,
-      );
-      expect(readyState.canSubmit, isTrue);
+    test(
+      'canSubmit is only true when ready with no error message and valid amounts',
+      () {
+        final readyState = ExpressClosureState(
+          cutoffTimestamp: fixedCutoff,
+          status: ExpressClosureStatus.ready,
+          totalSalesAmount: 1000,
+        );
+        expect(readyState.canSubmit, isTrue);
 
-      expect(
-        readyState.copyWith(status: ExpressClosureStatus.success).canSubmit,
-        isFalse,
-      );
-      expect(
-        readyState.copyWith(status: ExpressClosureStatus.failure).canSubmit,
-        isFalse,
-      );
-      expect(
-        readyState.copyWith(status: ExpressClosureStatus.submitting).canSubmit,
-        isFalse,
-      );
-      expect(
-        readyState.copyWith(errorMessage: 'Invalid amount').canSubmit,
-        isFalse,
-      );
-      expect(
-        readyState.copyWith(totalSalesAmount: -1).canSubmit,
-        isFalse,
-      );
-    });
+        expect(
+          readyState.copyWith(status: ExpressClosureStatus.success).canSubmit,
+          isFalse,
+        );
+        expect(
+          readyState.copyWith(status: ExpressClosureStatus.failure).canSubmit,
+          isFalse,
+        );
+        expect(
+          readyState
+              .copyWith(status: ExpressClosureStatus.submitting)
+              .canSubmit,
+          isFalse,
+        );
+        expect(
+          readyState.copyWith(errorMessage: 'Invalid amount').canSubmit,
+          isFalse,
+        );
+        expect(readyState.copyWith(totalSalesAmount: -1).canSubmit, isFalse);
+      },
+    );
 
     test('reset reinitializes state to initial', () {
       final cubit = ExpressClosureCubit(
@@ -364,15 +360,21 @@ void main() {
       blocTest<ExpressClosureCubit, ExpressClosureState>(
         'init queries active streak and monthly count with shopId when repository is provided',
         build: () {
-          when(() => mockPrefillUseCase(fixedCutoff)).thenAnswer(
-            (_) async => const Success(25000),
-          );
-          when(() => mockRepo.getActiveStreak(referenceDate: fixedCutoff, shopId: 'shop-test')).thenAnswer(
-            (_) async => const Success(5),
-          );
-          when(() => mockRepo.getMonthlyClosuresCount(fixedCutoff, shopId: 'shop-test')).thenAnswer(
-            (_) async => const Success(12),
-          );
+          when(
+            () => mockPrefillUseCase(fixedCutoff),
+          ).thenAnswer((_) async => const Success(25000));
+          when(
+            () => mockRepo.getActiveStreak(
+              referenceDate: fixedCutoff,
+              shopId: 'shop-test',
+            ),
+          ).thenAnswer((_) async => const Success(5));
+          when(
+            () => mockRepo.getMonthlyClosuresCount(
+              fixedCutoff,
+              shopId: 'shop-test',
+            ),
+          ).thenAnswer((_) async => const Success(12));
           return ExpressClosureCubit(
             getClosurePrefillUseCase: mockPrefillUseCase,
             executeDailyClosureUseCase: mockExecuteUseCase,
@@ -396,8 +398,18 @@ void main() {
           ),
         ],
         verify: (_) {
-          verify(() => mockRepo.getActiveStreak(referenceDate: fixedCutoff, shopId: 'shop-test')).called(1);
-          verify(() => mockRepo.getMonthlyClosuresCount(fixedCutoff, shopId: 'shop-test')).called(1);
+          verify(
+            () => mockRepo.getActiveStreak(
+              referenceDate: fixedCutoff,
+              shopId: 'shop-test',
+            ),
+          ).called(1);
+          verify(
+            () => mockRepo.getMonthlyClosuresCount(
+              fixedCutoff,
+              shopId: 'shop-test',
+            ),
+          ).called(1);
         },
       );
 
@@ -413,12 +425,18 @@ void main() {
               shopId: 'default-shop',
             ),
           ).thenAnswer((_) async => Success(testClosure));
-          when(() => mockRepo.getActiveStreak(referenceDate: fixedCutoff, shopId: 'default-shop')).thenAnswer(
-            (_) async => const Success(6),
-          );
-          when(() => mockRepo.getMonthlyClosuresCount(fixedCutoff, shopId: 'default-shop')).thenAnswer(
-            (_) async => const Success(13),
-          );
+          when(
+            () => mockRepo.getActiveStreak(
+              referenceDate: fixedCutoff,
+              shopId: 'default-shop',
+            ),
+          ).thenAnswer((_) async => const Success(6));
+          when(
+            () => mockRepo.getMonthlyClosuresCount(
+              fixedCutoff,
+              shopId: 'default-shop',
+            ),
+          ).thenAnswer((_) async => const Success(13));
 
           return ExpressClosureCubit(
             getClosurePrefillUseCase: mockPrefillUseCase,

@@ -50,11 +50,14 @@ void main() {
       expect(loc?.longitude, equals(-17.4));
     });
 
-    test('returns null when configured to simulate failure/unavailable', () async {
-      final fake = FakeLocationService(nextLocation: null);
-      final loc = await fake.getCurrentLocation();
-      expect(loc, isNull);
-    });
+    test(
+      'returns null when configured to simulate failure/unavailable',
+      () async {
+        final fake = FakeLocationService(nextLocation: null);
+        final loc = await fake.getCurrentLocation();
+        expect(loc, isNull);
+      },
+    );
 
     test('respects timeout when delayed', () async {
       final fake = FakeLocationService(
@@ -89,30 +92,36 @@ void main() {
       );
     }
 
-    test('returns GeoLocation on nominal enabled and permitted capture', () async {
-      final service = GeolocatorLocationService(
-        isServiceEnabled: () async => true,
-        checkPermission: () async => LocationPermission.always,
-        getPosition: ({locationSettings}) async => createPosition(),
-      );
+    test(
+      'returns GeoLocation on nominal enabled and permitted capture',
+      () async {
+        final service = GeolocatorLocationService(
+          isServiceEnabled: () async => true,
+          checkPermission: () async => LocationPermission.always,
+          getPosition: ({locationSettings}) async => createPosition(),
+        );
 
-      final loc = await service.getCurrentLocation();
-      expect(loc, isNotNull);
-      expect(loc?.latitude, equals(14.6937));
-      expect(loc?.longitude, equals(-17.4441));
-      expect(loc?.accuracy, equals(5.0));
-    });
+        final loc = await service.getCurrentLocation();
+        expect(loc, isNotNull);
+        expect(loc?.latitude, equals(14.6937));
+        expect(loc?.longitude, equals(-17.4441));
+        expect(loc?.accuracy, equals(5.0));
+      },
+    );
 
-    test('returns null without prompting interactive permission dialog when status is denied', () async {
-      final service = GeolocatorLocationService(
-        isServiceEnabled: () async => true,
-        checkPermission: () async => LocationPermission.denied,
-        getPosition: ({locationSettings}) async => createPosition(),
-      );
+    test(
+      'returns null without prompting interactive permission dialog when status is denied',
+      () async {
+        final service = GeolocatorLocationService(
+          isServiceEnabled: () async => true,
+          checkPermission: () async => LocationPermission.denied,
+          getPosition: ({locationSettings}) async => createPosition(),
+        );
 
-      final loc = await service.getCurrentLocation();
-      expect(loc, isNull);
-    });
+        final loc = await service.getCurrentLocation();
+        expect(loc, isNull);
+      },
+    );
 
     test('returns null silently when location service is disabled', () async {
       final service = GeolocatorLocationService(
@@ -143,20 +152,23 @@ void main() {
       expect(loc, isNull);
     });
 
-    test('returns null silently when position capture exceeds timeout', () async {
-      final service = GeolocatorLocationService(
-        timeout: const Duration(milliseconds: 30),
-        isServiceEnabled: () async => true,
-        checkPermission: () async => LocationPermission.always,
-        getPosition: ({locationSettings}) async {
-          await Future<void>.delayed(const Duration(milliseconds: 100));
-          return createPosition();
-        },
-      );
+    test(
+      'returns null silently when position capture exceeds timeout',
+      () async {
+        final service = GeolocatorLocationService(
+          timeout: const Duration(milliseconds: 30),
+          isServiceEnabled: () async => true,
+          checkPermission: () async => LocationPermission.always,
+          getPosition: ({locationSettings}) async {
+            await Future<void>.delayed(const Duration(milliseconds: 100));
+            return createPosition();
+          },
+        );
 
-      final loc = await service.getCurrentLocation();
-      expect(loc, isNull);
-    });
+        final loc = await service.getCurrentLocation();
+        expect(loc, isNull);
+      },
+    );
 
     test('returns null silently on platform exception', () async {
       final service = GeolocatorLocationService(

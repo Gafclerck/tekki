@@ -16,8 +16,9 @@ class ClosureRepositoryImpl implements ClosureRepository {
     DateTime cutoffTimestamp,
   ) async {
     try {
-      final amount =
-          await localDataSource.getPrefillSalesAmount(cutoffTimestamp);
+      final amount = await localDataSource.getPrefillSalesAmount(
+        cutoffTimestamp,
+      );
       return Success(amount);
     } on DatabaseException catch (e) {
       return Error(DatabaseFailure(message: e.message));
@@ -52,9 +53,7 @@ class ClosureRepositoryImpl implements ClosureRepository {
     } on DatabaseException catch (e) {
       return Error(DatabaseFailure(message: e.message));
     } catch (e) {
-      return Error(
-        DatabaseFailure(message: 'Erreur inattendue : $e'),
-      );
+      return Error(DatabaseFailure(message: 'Erreur inattendue : $e'));
     }
   }
 
@@ -72,9 +71,7 @@ class ClosureRepositoryImpl implements ClosureRepository {
     } on DatabaseException catch (e) {
       return Error(DatabaseFailure(message: e.message));
     } catch (e) {
-      return Error(
-        DatabaseFailure(message: 'Erreur inattendue : $e'),
-      );
+      return Error(DatabaseFailure(message: 'Erreur inattendue : $e'));
     }
   }
 
@@ -92,9 +89,7 @@ class ClosureRepositoryImpl implements ClosureRepository {
     } on DatabaseException catch (e) {
       return Error(DatabaseFailure(message: e.message));
     } catch (e) {
-      return Error(
-        DatabaseFailure(message: 'Erreur inattendue : $e'),
-      );
+      return Error(DatabaseFailure(message: 'Erreur inattendue : $e'));
     }
   }
 
@@ -112,9 +107,7 @@ class ClosureRepositoryImpl implements ClosureRepository {
     } on DatabaseException catch (e) {
       return Error(DatabaseFailure(message: e.message));
     } catch (e) {
-      return Error(
-        DatabaseFailure(message: 'Erreur inattendue : $e'),
-      );
+      return Error(DatabaseFailure(message: 'Erreur inattendue : $e'));
     }
   }
 
@@ -126,9 +119,7 @@ class ClosureRepositoryImpl implements ClosureRepository {
     } on DatabaseException catch (e) {
       return Error(DatabaseFailure(message: e.message));
     } catch (e) {
-      return Error(
-        DatabaseFailure(message: 'Erreur inattendue : $e'),
-      );
+      return Error(DatabaseFailure(message: 'Erreur inattendue : $e'));
     }
   }
 
@@ -140,9 +131,7 @@ class ClosureRepositoryImpl implements ClosureRepository {
     } on DatabaseException catch (e) {
       return Error(DatabaseFailure(message: e.message));
     } catch (e) {
-      return Error(
-        DatabaseFailure(message: 'Erreur inattendue : $e'),
-      );
+      return Error(DatabaseFailure(message: 'Erreur inattendue : $e'));
     }
   }
 }

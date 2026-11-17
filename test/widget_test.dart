@@ -21,37 +21,36 @@ void main() {
     driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
   });
 
-  testWidgets('TekkiApp renders home screen with app name with mocked bloc',
-      (tester) async {
+  testWidgets('TekkiApp renders home screen with app name with mocked bloc', (
+    tester,
+  ) async {
     final mockBloc = MockCashDashboardBloc();
-    when(() => mockBloc.state).thenReturn(
-      const CashDashboardLoaded(summary: CashSummaryEntity.empty()),
-    );
+    when(
+      () => mockBloc.state,
+    ).thenReturn(const CashDashboardLoaded(summary: CashSummaryEntity.empty()));
 
     await tester.pumpWidget(TekkiApp(cashDashboardBloc: mockBloc));
 
     expect(find.text(AppConstants.appName), findsWidgets);
-    expect(
-      find.text('Point de vente au comptoir'),
-      findsOneWidget,
-    );
+    expect(find.text('Point de vente au comptoir'), findsOneWidget);
   });
 
   testWidgets(
-      'TekkiApp renders HomeScreen with initDependencyInjection inMemoryDatabase',
-      (tester) async {
-    await di.sl.reset();
-    await di.initDependencyInjection(inMemoryDatabase: true);
+    'TekkiApp renders HomeScreen with initDependencyInjection inMemoryDatabase',
+    (tester) async {
+      await di.sl.reset();
+      await di.initDependencyInjection(inMemoryDatabase: true);
 
-    await tester.pumpWidget(const TekkiApp());
-    await tester.pumpAndSettle();
+      await tester.pumpWidget(const TekkiApp());
+      await tester.pumpAndSettle();
 
-    expect(find.byType(HomeScreen), findsOneWidget);
-    expect(find.text(AppConstants.appName), findsWidgets);
-    expect(find.text('Point de vente au comptoir'), findsOneWidget);
+      expect(find.byType(HomeScreen), findsOneWidget);
+      expect(find.text(AppConstants.appName), findsWidgets);
+      expect(find.text('Point de vente au comptoir'), findsOneWidget);
 
-    await tester.pumpWidget(const SizedBox.shrink());
-    await tester.pump(const Duration(milliseconds: 10));
-    await di.sl.reset();
-  });
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pump(const Duration(milliseconds: 10));
+      await di.sl.reset();
+    },
+  );
 }

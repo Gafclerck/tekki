@@ -107,10 +107,7 @@ class _KeypadButton extends StatelessWidget {
             color: AppColors.surface,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
-              side: const BorderSide(
-                color: AppColors.tertiary,
-                width: 1,
-              ),
+              side: const BorderSide(color: AppColors.tertiary, width: 1),
             ),
             child: InkWell(
               onTap: onTap,

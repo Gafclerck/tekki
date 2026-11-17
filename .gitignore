@@ -54,3 +54,7 @@ app.*.map.json
 *.tmp
 *.bak
 *.orig
+
+# Web & Landing dependencies
+node_modules/
+.npm/
