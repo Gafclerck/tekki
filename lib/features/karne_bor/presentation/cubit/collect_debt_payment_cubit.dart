@@ -20,20 +20,19 @@ class CollectDebtPaymentCubit extends Cubit<CollectDebtPaymentState> {
 
   void selectFullPayment() {
     if (state.status == CollectDebtPaymentStatus.submitting) return;
-    emit(state.copyWith(
-      isFullPayment: true,
-      clearErrorMessage: true,
-    ));
+    emit(state.copyWith(isFullPayment: true, clearErrorMessage: true));
   }
 
   void selectCustomPayment([int? initialAmount]) {
     if (state.status == CollectDebtPaymentStatus.submitting) return;
     final amount = initialAmount ?? state.customAmount;
-    emit(state.copyWith(
-      isFullPayment: false,
-      customAmount: amount,
-      clearErrorMessage: true,
-    ));
+    emit(
+      state.copyWith(
+        isFullPayment: false,
+        customAmount: amount,
+        clearErrorMessage: true,
+      ),
+    );
     if (amount > 0) {
       setCustomAmount(amount);
     }
@@ -43,35 +42,38 @@ class CollectDebtPaymentCubit extends Cubit<CollectDebtPaymentState> {
     if (state.status == CollectDebtPaymentStatus.submitting) return;
 
     if (amount < 0) {
-      emit(state.copyWith(
-        customAmount: 0,
-        errorMessage: 'Le montant ne peut pas être négatif.',
-      ));
+      emit(
+        state.copyWith(
+          customAmount: 0,
+          errorMessage: 'Le montant ne peut pas être négatif.',
+        ),
+      );
       return;
     }
 
     if (amount > state.debt.remainingAmount) {
-      emit(state.copyWith(
-        customAmount: amount,
-        errorMessage:
-            'Le montant ne peut pas dépasser le solde restant (${CurrencyFormatter.format(state.debt.remainingAmount)}).',
-      ));
+      emit(
+        state.copyWith(
+          customAmount: amount,
+          errorMessage:
+              'Le montant ne peut pas dépasser le solde restant (${CurrencyFormatter.format(state.debt.remainingAmount)}).',
+        ),
+      );
       return;
     }
 
-    emit(state.copyWith(
-      customAmount: amount,
-      clearErrorMessage: true,
-    ));
+    emit(state.copyWith(customAmount: amount, clearErrorMessage: true));
   }
 
   Future<void> submitPayment() async {
     if (!state.canSubmit) return;
 
-    emit(state.copyWith(
-      status: CollectDebtPaymentStatus.submitting,
-      clearErrorMessage: true,
-    ));
+    emit(
+      state.copyWith(
+        status: CollectDebtPaymentStatus.submitting,
+        clearErrorMessage: true,
+      ),
+    );
 
     final result = await recordDebtPaymentUseCase(
       debt: state.debt,
@@ -96,16 +98,20 @@ class CollectDebtPaymentCubit extends Cubit<CollectDebtPaymentState> {
           }
         } catch (_) {}
 
-        emit(state.copyWith(
-          status: CollectDebtPaymentStatus.success,
-          createdPayment: payment,
-        ));
+        emit(
+          state.copyWith(
+            status: CollectDebtPaymentStatus.success,
+            createdPayment: payment,
+          ),
+        );
       },
       onError: (failure) {
-        emit(state.copyWith(
-          status: CollectDebtPaymentStatus.failure,
-          errorMessage: failure.message,
-        ));
+        emit(
+          state.copyWith(
+            status: CollectDebtPaymentStatus.failure,
+            errorMessage: failure.message,
+          ),
+        );
       },
     );
   }

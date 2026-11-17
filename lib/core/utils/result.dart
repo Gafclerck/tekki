@@ -5,7 +5,8 @@ sealed class Result<T, F extends Failure> extends Equatable {
   const Result();
 
   static Result<T, F> success<T, F extends Failure>(T data) => Success(data);
-  static Result<T, F> failure<T, F extends Failure>(F failure) => Error(failure);
+  static Result<T, F> failure<T, F extends Failure>(F failure) =>
+      Error(failure);
 
   bool get isSuccess => this is Success<T, F>;
   bool get isError => this is Error<T, F>;

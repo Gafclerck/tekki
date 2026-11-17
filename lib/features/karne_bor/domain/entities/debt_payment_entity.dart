@@ -13,8 +13,8 @@ class DebtPaymentEntity extends Equatable {
     this.syncStatus = 'pending',
     DateTime? lastSyncedAt,
     DateTime? paidAt,
-  })  : lastSyncedAt = lastSyncedAt?.toUtc(),
-        paidAt = (paidAt ?? DateTime.now()).toUtc() {
+  }) : lastSyncedAt = lastSyncedAt?.toUtc(),
+       paidAt = (paidAt ?? DateTime.now()).toUtc() {
     if (id.trim().isEmpty) {
       throw ArgumentError('Payment id cannot be empty');
     }
@@ -77,13 +77,13 @@ class DebtPaymentEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        debtId,
-        paymentAmount,
-        paymentMethod,
-        closureId,
-        syncStatus,
-        lastSyncedAt,
-        paidAt,
-      ];
+    id,
+    debtId,
+    paymentAmount,
+    paymentMethod,
+    closureId,
+    syncStatus,
+    lastSyncedAt,
+    paidAt,
+  ];
 }

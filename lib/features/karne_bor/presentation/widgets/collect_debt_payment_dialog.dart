@@ -13,11 +13,7 @@ import 'package:tekki/injection_container.dart';
 /// Dialogue modal permettant d'encaisser un remboursement de dette (en totalité ou partiel)
 /// avec réconciliation immédiate dans le tiroir-caisse.
 class CollectDebtPaymentDialog extends StatelessWidget {
-  const CollectDebtPaymentDialog({
-    super.key,
-    required this.debt,
-    this.cubit,
-  });
+  const CollectDebtPaymentDialog({super.key, required this.debt, this.cubit});
 
   final DebtEntity debt;
   final CollectDebtPaymentCubit? cubit;
@@ -30,10 +26,7 @@ class CollectDebtPaymentDialog extends StatelessWidget {
     return showDialog<DebtPaymentEntity?>(
       context: context,
       barrierDismissible: false,
-      builder: (_) => CollectDebtPaymentDialog(
-        debt: debt,
-        cubit: cubit,
-      ),
+      builder: (_) => CollectDebtPaymentDialog(debt: debt, cubit: cubit),
     );
   }
 
@@ -99,8 +92,8 @@ class _CollectDebtPaymentViewState extends State<_CollectDebtPaymentView> {
     return BlocConsumer<CollectDebtPaymentCubit, CollectDebtPaymentState>(
       listener: (context, state) {
         if (state.status == CollectDebtPaymentStatus.success) {
-          final paidAmount = state.createdPayment?.paymentAmount ??
-              state.effectiveAmount;
+          final paidAmount =
+              state.createdPayment?.paymentAmount ?? state.effectiveAmount;
           ScaffoldMessenger.of(context)
             ..clearSnackBars()
             ..showSnackBar(
@@ -126,8 +119,10 @@ class _CollectDebtPaymentViewState extends State<_CollectDebtPaymentView> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          insetPadding:
-              const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          insetPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 24,
+          ),
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -223,8 +218,9 @@ class _CollectDebtPaymentViewState extends State<_CollectDebtPaymentView> {
                               height: 18,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.white,
+                                ),
                               ),
                             )
                           : const Icon(Icons.check_circle_outline, size: 22),
@@ -325,7 +321,9 @@ class _CollectDebtPaymentViewState extends State<_CollectDebtPaymentView> {
                   },
                 ),
 
-                if (!state.isFullPayment && state.customAmount > 0 && state.errorMessage == null) ...[
+                if (!state.isFullPayment &&
+                    state.customAmount > 0 &&
+                    state.errorMessage == null) ...[
                   const SizedBox(height: 8),
                   Text(
                     'Nouveau solde restant : ${CurrencyFormatter.format(state.remainingAfterPayment)}',
@@ -354,7 +352,8 @@ class _CollectDebtPaymentViewState extends State<_CollectDebtPaymentView> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: isSubmitting ||
+                    onPressed:
+                        isSubmitting ||
                             state.isFullPayment ||
                             state.customAmount <= 0 ||
                             state.errorMessage != null

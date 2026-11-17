@@ -8,10 +8,7 @@ import 'package:tekki/features/karne_bor/presentation/cubit/record_debt_cubit.da
 import 'package:tekki/features/karne_bor/presentation/cubit/record_debt_state.dart';
 
 class RecordDebtBottomSheet extends StatefulWidget {
-  const RecordDebtBottomSheet({
-    super.key,
-    this.onDebtRecorded,
-  });
+  const RecordDebtBottomSheet({super.key, this.onDebtRecorded});
 
   final ValueChanged<DebtEntity>? onDebtRecorded;
 
@@ -25,9 +22,7 @@ class RecordDebtBottomSheet extends StatefulWidget {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (sheetContext) {
-        final content = RecordDebtBottomSheet(
-          onDebtRecorded: onDebtRecorded,
-        );
+        final content = RecordDebtBottomSheet(onDebtRecorded: onDebtRecorded);
         if (cubit != null) {
           return BlocProvider<RecordDebtCubit>.value(
             value: cubit,
@@ -136,14 +131,14 @@ class _RecordDebtBottomSheetState extends State<RecordDebtBottomSheet> {
     }
 
     context.read<RecordDebtCubit>().submit(
-          debtorName: _nameController.text.trim(),
-          debtorPhone: _phoneController.text.trim().isEmpty
-              ? null
-              : _phoneController.text.trim(),
-          amount: amount,
-          dueDate: _dueDate,
-          existingDebtorId: _selectedDebtorId,
-        );
+      debtorName: _nameController.text.trim(),
+      debtorPhone: _phoneController.text.trim().isEmpty
+          ? null
+          : _phoneController.text.trim(),
+      amount: amount,
+      dueDate: _dueDate,
+      existingDebtorId: _selectedDebtorId,
+    );
   }
 
   @override
@@ -255,7 +250,8 @@ class _RecordDebtBottomSheetState extends State<RecordDebtBottomSheet> {
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
                             itemCount: _knownDebtors.length,
-                            separatorBuilder: (_, _) => const SizedBox(width: 8),
+                            separatorBuilder: (_, _) =>
+                                const SizedBox(width: 8),
                             itemBuilder: (context, index) {
                               final debtor = _knownDebtors[index];
                               final isSelected = debtor.id == _selectedDebtorId;
@@ -392,7 +388,9 @@ class _RecordDebtBottomSheetState extends State<RecordDebtBottomSheet> {
                             icon: const Icon(Icons.calendar_month, size: 16),
                             label: Text(
                               dateFormat.format(_dueDate),
-                              style: const TextStyle(fontWeight: FontWeight.w800),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w800,
+                              ),
                             ),
                             onPressed: _pickCustomDate,
                           ),

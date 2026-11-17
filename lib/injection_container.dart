@@ -48,7 +48,9 @@ Future<void> initDependencyInjection({
   // Core: Hardware & Device Services
   sl.registerLazySingleton<ILocationService>(() => GeolocatorLocationService());
   sl.registerLazySingleton<IAudioPlayerService>(() => JustAudioPlayerService());
-  sl.registerLazySingleton<IWhatsAppService>(() => const UrlLauncherWhatsAppService());
+  sl.registerLazySingleton<IWhatsAppService>(
+    () => const UrlLauncherWhatsAppService(),
+  );
 
   // Core: Persistence Drift SQLite
   sl.registerLazySingleton<AppDatabase>(
@@ -130,9 +132,8 @@ Future<void> initDependencyInjection({
     ),
   );
   sl.registerFactory<CashDashboardBloc>(
-    () => CashDashboardBloc(
-      watchTodaySalesUseCase: sl<WatchTodaySalesUseCase>(),
-    ),
+    () =>
+        CashDashboardBloc(watchTodaySalesUseCase: sl<WatchTodaySalesUseCase>()),
   );
   sl.registerFactory<RecordDebtCubit>(
     () => RecordDebtCubit(

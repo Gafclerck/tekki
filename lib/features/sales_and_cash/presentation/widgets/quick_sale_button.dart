@@ -19,10 +19,7 @@ Future<SaleEntity?> showQuickSaleModal(BuildContext context) {
 }
 
 class QuickSaleButton extends StatelessWidget {
-  const QuickSaleButton({
-    super.key,
-    this.onSaleRecorded,
-  });
+  const QuickSaleButton({super.key, this.onSaleRecorded});
 
   final ValueChanged<SaleEntity>? onSaleRecorded;
 

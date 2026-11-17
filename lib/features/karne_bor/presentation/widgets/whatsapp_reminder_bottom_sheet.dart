@@ -65,11 +65,13 @@ class _WhatsAppReminderBottomSheetState
     _phoneController = TextEditingController(
       text: widget.debt.debtor?.phoneNumber ?? '',
     );
-    _whatsAppService = widget.whatsAppService ??
+    _whatsAppService =
+        widget.whatsAppService ??
         (sl.isRegistered<IWhatsAppService>()
             ? sl<IWhatsAppService>()
             : const UrlLauncherWhatsAppService());
-    _debtRepository = widget.debtRepository ??
+    _debtRepository =
+        widget.debtRepository ??
         (sl.isRegistered<DebtRepository>() ? sl<DebtRepository>() : null);
   }
 
@@ -116,10 +118,7 @@ class _WhatsAppReminderBottomSheetState
         var debtor = widget.debt.debtor;
         if (debtor == null) {
           final debtorResult = await repo.getDebtorById(widget.debt.debtorId);
-          debtor = debtorResult.fold(
-            onSuccess: (d) => d,
-            onError: (_) => null,
-          );
+          debtor = debtorResult.fold(onSuccess: (d) => d, onError: (_) => null);
         }
         if (debtor != null && debtor.phoneNumber != sanitizedPhone) {
           final updatedDebtor = debtor.copyWith(phoneNumber: sanitizedPhone);
@@ -181,8 +180,9 @@ class _WhatsAppReminderBottomSheetState
     final debtorName = (widget.debt.debtor?.name.trim().isNotEmpty == true)
         ? widget.debt.debtor!.name.trim()
         : 'Client';
-    final remainingFormatted =
-        CurrencyFormatter.format(widget.debt.remainingAmount);
+    final remainingFormatted = CurrencyFormatter.format(
+      widget.debt.remainingAmount,
+    );
     final isLate = widget.debt.isOverdue;
 
     return Container(
@@ -264,7 +264,10 @@ class _WhatsAppReminderBottomSheetState
               decoration: InputDecoration(
                 labelText: 'Numéro de téléphone WhatsApp',
                 hintText: 'Ex: 77 123 45 67',
-                prefixIcon: const Icon(Icons.phone_outlined, color: AppColors.secondary),
+                prefixIcon: const Icon(
+                  Icons.phone_outlined,
+                  color: AppColors.secondary,
+                ),
                 errorText: _phoneError,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -272,9 +275,15 @@ class _WhatsAppReminderBottomSheetState
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColors.secondary, width: 2),
+                  borderSide: const BorderSide(
+                    color: AppColors.secondary,
+                    width: 2,
+                  ),
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 12,
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -304,7 +313,10 @@ class _WhatsAppReminderBottomSheetState
                   ),
                   onSelected: (selected) {
                     if (selected) {
-                      setState(() => _selectedLanguage = WhatsAppReminderLanguage.wolof);
+                      setState(
+                        () =>
+                            _selectedLanguage = WhatsAppReminderLanguage.wolof,
+                      );
                     }
                   },
                 ),
@@ -312,7 +324,8 @@ class _WhatsAppReminderBottomSheetState
                 ChoiceChip(
                   key: const ValueKey('whatsapp_lang_french'),
                   label: const Text('Français'),
-                  selected: _selectedLanguage == WhatsAppReminderLanguage.french,
+                  selected:
+                      _selectedLanguage == WhatsAppReminderLanguage.french,
                   selectedColor: AppColors.secondary.withValues(alpha: 0.18),
                   labelStyle: TextStyle(
                     fontWeight: FontWeight.w700,
@@ -322,7 +335,10 @@ class _WhatsAppReminderBottomSheetState
                   ),
                   onSelected: (selected) {
                     if (selected) {
-                      setState(() => _selectedLanguage = WhatsAppReminderLanguage.french);
+                      setState(
+                        () =>
+                            _selectedLanguage = WhatsAppReminderLanguage.french,
+                      );
                     }
                   },
                 ),
@@ -365,7 +381,10 @@ class _WhatsAppReminderBottomSheetState
                       const Spacer(),
                       if (isLate)
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: 2,
+                          ),
                           decoration: BoxDecoration(
                             color: AppColors.accentSoft,
                             borderRadius: BorderRadius.circular(4),

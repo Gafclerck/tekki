@@ -10,9 +10,7 @@ abstract class IWhatsAppService {
 }
 
 class UrlLauncherWhatsAppService implements IWhatsAppService {
-  const UrlLauncherWhatsAppService({
-    this.launchUrlFn,
-  });
+  const UrlLauncherWhatsAppService({this.launchUrlFn});
 
   final Future<bool> Function(Uri uri, {LaunchMode? mode})? launchUrlFn;
 
@@ -34,14 +32,9 @@ class UrlLauncherWhatsAppService implements IWhatsAppService {
   }
 
   @override
-  Uri buildWhatsAppUri({
-    required String phoneNumber,
-    required String message,
-  }) {
+  Uri buildWhatsAppUri({required String phoneNumber, required String message}) {
     final cleanPhone = sanitizePhoneNumber(phoneNumber);
-    return Uri.https('wa.me', '/$cleanPhone', {
-      'text': message,
-    });
+    return Uri.https('wa.me', '/$cleanPhone', {'text': message});
   }
 
   @override
@@ -50,18 +43,12 @@ class UrlLauncherWhatsAppService implements IWhatsAppService {
     required String message,
   }) async {
     try {
-      final uri = buildWhatsAppUri(
-        phoneNumber: phoneNumber,
-        message: message,
-      );
+      final uri = buildWhatsAppUri(phoneNumber: phoneNumber, message: message);
       final customLaunch = launchUrlFn;
       if (customLaunch != null) {
         return await customLaunch(uri, mode: LaunchMode.externalApplication);
       }
-      return await launchUrl(
-        uri,
-        mode: LaunchMode.externalApplication,
-      );
+      return await launchUrl(uri, mode: LaunchMode.externalApplication);
     } catch (_) {
       return false;
     }

@@ -39,7 +39,9 @@ class DebtCard extends StatelessWidget {
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: isLate ? AppColors.accent : AppColors.tertiary.withValues(alpha: 0.4),
+          color: isLate
+              ? AppColors.accent
+              : AppColors.tertiary.withValues(alpha: 0.4),
           width: isLate ? 1.5 : 1.0,
         ),
       ),
@@ -116,7 +118,10 @@ class DebtCard extends StatelessWidget {
               ),
               if (isLate)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.accentSoft,
                     borderRadius: BorderRadius.circular(6),
@@ -173,7 +178,9 @@ class DebtCard extends StatelessWidget {
                             ..clearSnackBars()
                             ..showSnackBar(
                               const SnackBar(
-                                content: Text('La relance WhatsApp sera disponible avec la Story 2.4.'),
+                                content: Text(
+                                  'La relance WhatsApp sera disponible avec la Story 2.4.',
+                                ),
                                 duration: Duration(seconds: 2),
                                 behavior: SnackBarBehavior.floating,
                               ),
@@ -182,11 +189,17 @@ class DebtCard extends StatelessWidget {
                       },
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppColors.secondary,
-                        side: const BorderSide(color: AppColors.secondary, width: 1.5),
+                        side: const BorderSide(
+                          color: AppColors.secondary,
+                          width: 1.5,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 12,
+                        ),
                       ),
                       child: const Text(
                         '💬 Relance WhatsApp',
@@ -218,7 +231,9 @@ class DebtCard extends StatelessWidget {
                             ..clearSnackBars()
                             ..showSnackBar(
                               const SnackBar(
-                                content: Text("L'encaissement de créance sera disponible avec la Story 2.3."),
+                                content: Text(
+                                  "L'encaissement de créance sera disponible avec la Story 2.3.",
+                                ),
                                 duration: Duration(seconds: 2),
                                 behavior: SnackBarBehavior.floating,
                               ),
@@ -232,7 +247,10 @@ class DebtCard extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 12,
+                        ),
                       ),
                       child: const Text(
                         '✓ Encaisser',

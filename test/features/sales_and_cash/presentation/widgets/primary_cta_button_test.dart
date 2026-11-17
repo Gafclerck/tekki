@@ -12,10 +12,12 @@ void main() {
   setUp(() {
     methodCalls.clear();
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(SystemChannels.platform, (MethodCall call) async {
-      methodCalls.add(call);
-      return null;
-    });
+        .setMockMethodCallHandler(SystemChannels.platform, (
+          MethodCall call,
+        ) async {
+          methodCalls.add(call);
+          return null;
+        });
   });
 
   tearDown(() {
@@ -43,11 +45,10 @@ void main() {
   }
 
   group('PrimaryCtaButton Widget', () {
-    testWidgets('renders with correct styling, text, and height >= 52dp',
-        (tester) async {
-      await tester.pumpWidget(
-        buildSubject(onPressed: () {}),
-      );
+    testWidgets('renders with correct styling, text, and height >= 52dp', (
+      tester,
+    ) async {
+      await tester.pumpWidget(buildSubject(onPressed: () {}));
 
       final buttonFinder = find.byKey(const ValueKey('button-primary-cta'));
       expect(buttonFinder, findsOneWidget);
@@ -60,18 +61,19 @@ void main() {
       expect(find.text('🔒 Clôturer la caisse'), findsOneWidget);
 
       // Verify ElevatedButton styling
-      final elevatedButton = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+      final elevatedButton = tester.widget<ElevatedButton>(
+        find.byType(ElevatedButton),
+      );
       final style = elevatedButton.style;
       expect(style?.backgroundColor?.resolve({}), equals(AppColors.accent));
       expect(style?.foregroundColor?.resolve({}), equals(Colors.white));
     });
 
-    testWidgets('triggers onPressed and haptic feedback on single tap',
-        (tester) async {
+    testWidgets('triggers onPressed and haptic feedback on single tap', (
+      tester,
+    ) async {
       var tapCount = 0;
-      await tester.pumpWidget(
-        buildSubject(onPressed: () => tapCount++),
-      );
+      await tester.pumpWidget(buildSubject(onPressed: () => tapCount++));
 
       final buttonFinder = find.byKey(const ValueKey('button-primary-cta'));
       await tester.tap(buttonFinder);
@@ -88,12 +90,11 @@ void main() {
       expect(hasHapticCall, isTrue);
     });
 
-    testWidgets('anti-double-click locks immediately and prevents second tap',
-        (tester) async {
+    testWidgets('anti-double-click locks immediately and prevents second tap', (
+      tester,
+    ) async {
       var tapCount = 0;
-      await tester.pumpWidget(
-        buildSubject(onPressed: () => tapCount++),
-      );
+      await tester.pumpWidget(buildSubject(onPressed: () => tapCount++));
 
       final buttonFinder = find.byKey(const ValueKey('button-primary-cta'));
 
@@ -108,7 +109,9 @@ void main() {
       expect(tapCount, equals(1)); // Still 1, not 2
 
       // Verify button is now disabled (onPressed is null)
-      final disabledButton = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+      final disabledButton = tester.widget<ElevatedButton>(
+        find.byType(ElevatedButton),
+      );
       expect(disabledButton.onPressed, isNull);
     });
 
@@ -128,9 +131,7 @@ void main() {
     });
 
     testWidgets('disabled when onPressed is null', (tester) async {
-      await tester.pumpWidget(
-        buildSubject(onPressed: null),
-      );
+      await tester.pumpWidget(buildSubject(onPressed: null));
 
       final buttonFinder = find.byKey(const ValueKey('button-primary-cta'));
       expect(buttonFinder, findsOneWidget);

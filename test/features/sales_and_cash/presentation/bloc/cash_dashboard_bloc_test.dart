@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -85,7 +86,10 @@ void main() {
       },
       expect: () => [
         const CashDashboardLoading(),
-        const CashDashboardLoaded(summary: summaryEmpty, isClosureLocked: false),
+        const CashDashboardLoaded(
+          summary: summaryEmpty,
+          isClosureLocked: false,
+        ),
       ],
     );
 
@@ -117,7 +121,8 @@ void main() {
       expect: () => [
         const CashDashboardLoading(),
         const CashDashboardError(
-          message: 'Erreur lors de la lecture de la caisse : Database stream failure',
+          message:
+              'Erreur lors de la lecture de la caisse : Database stream failure',
         ),
       ],
     );
@@ -125,7 +130,8 @@ void main() {
     blocTest<CashDashboardBloc, CashDashboardState>(
       'handles CloseCashierTapped and locks closure (anti-double-click)',
       build: () => CashDashboardBloc(watchTodaySalesUseCase: mockUseCase),
-      seed: () => CashDashboardLoaded(summary: summary3Sales, isClosureLocked: false),
+      seed: () =>
+          CashDashboardLoaded(summary: summary3Sales, isClosureLocked: false),
       act: (bloc) {
         bloc.add(const CloseCashierTapped());
         // Second tap should be ignored because already locked
@@ -159,7 +165,8 @@ void main() {
     blocTest<CashDashboardBloc, CashDashboardState>(
       'handles ResetClosureLock and unlocks closure when previously locked',
       build: () => CashDashboardBloc(watchTodaySalesUseCase: mockUseCase),
-      seed: () => CashDashboardLoaded(summary: summary3Sales, isClosureLocked: true),
+      seed: () =>
+          CashDashboardLoaded(summary: summary3Sales, isClosureLocked: true),
       act: (bloc) => bloc.add(const ResetClosureLock()),
       expect: () => [
         CashDashboardLoaded(summary: summary3Sales, isClosureLocked: false),

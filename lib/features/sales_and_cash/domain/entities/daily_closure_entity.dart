@@ -18,9 +18,9 @@ class DailyClosureEntity extends Equatable {
     this.syncStatus = 'pending',
     DateTime? lastSyncedAt,
     DateTime? createdAt,
-  })  : cutoffTimestamp = cutoffTimestamp.toUtc(),
-        lastSyncedAt = lastSyncedAt?.toUtc(),
-        createdAt = (createdAt ?? DateTime.now()).toUtc() {
+  }) : cutoffTimestamp = cutoffTimestamp.toUtc(),
+       lastSyncedAt = lastSyncedAt?.toUtc(),
+       createdAt = (createdAt ?? DateTime.now()).toUtc() {
     if (id.trim().isEmpty) {
       throw ArgumentError('Closure id cannot be empty');
     }
@@ -50,7 +50,9 @@ class DailyClosureEntity extends Equatable {
       throw ArgumentError('gpsLatitude must be between -90 and 90');
     }
     if (gpsLongitude != null &&
-        (gpsLongitude!.isNaN || gpsLongitude! < -180.0 || gpsLongitude! > 180.0)) {
+        (gpsLongitude!.isNaN ||
+            gpsLongitude! < -180.0 ||
+            gpsLongitude! > 180.0)) {
       throw ArgumentError('gpsLongitude must be between -180 and 180');
     }
     if (distanceMeters != null &&
@@ -135,12 +137,13 @@ class DailyClosureEntity extends Equatable {
           totalCreditSalesAmount ?? this.totalCreditSalesAmount,
       totalExpensesAmount: totalExpensesAmount ?? this.totalExpensesAmount,
       cashCounted: cashCounted ?? this.cashCounted,
-      gpsLatitude:
-          clearGpsLatitude ? null : (gpsLatitude ?? this.gpsLatitude),
-      gpsLongitude:
-          clearGpsLongitude ? null : (gpsLongitude ?? this.gpsLongitude),
-      distanceMeters:
-          clearDistanceMeters ? null : (distanceMeters ?? this.distanceMeters),
+      gpsLatitude: clearGpsLatitude ? null : (gpsLatitude ?? this.gpsLatitude),
+      gpsLongitude: clearGpsLongitude
+          ? null
+          : (gpsLongitude ?? this.gpsLongitude),
+      distanceMeters: clearDistanceMeters
+          ? null
+          : (distanceMeters ?? this.distanceMeters),
       isFlaggedLocation: isFlaggedLocation ?? this.isFlaggedLocation,
       syncStatus: syncStatus ?? this.syncStatus,
       lastSyncedAt: clearLastSyncedAt
@@ -152,21 +155,21 @@ class DailyClosureEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        shopId,
-        closureDate,
-        cutoffTimestamp,
-        totalSalesAmount,
-        totalCashDebtInflow,
-        totalCreditSalesAmount,
-        totalExpensesAmount,
-        cashCounted,
-        gpsLatitude,
-        gpsLongitude,
-        distanceMeters,
-        isFlaggedLocation,
-        syncStatus,
-        lastSyncedAt,
-        createdAt,
-      ];
+    id,
+    shopId,
+    closureDate,
+    cutoffTimestamp,
+    totalSalesAmount,
+    totalCashDebtInflow,
+    totalCreditSalesAmount,
+    totalExpensesAmount,
+    cashCounted,
+    gpsLatitude,
+    gpsLongitude,
+    distanceMeters,
+    isFlaggedLocation,
+    syncStatus,
+    lastSyncedAt,
+    createdAt,
+  ];
 }

@@ -55,26 +55,28 @@ void main() {
     mockUseCase = MockRecordDebtPaymentUseCase();
     mockAudioService = MockAudioPlayerService();
     hapticTriggered = false;
-    when(() => mockAudioService.playCashDrawerSound())
-        .thenAnswer((_) async {});
+    when(() => mockAudioService.playCashDrawerSound()).thenAnswer((_) async {});
   });
 
   group('CollectDebtPaymentCubit', () {
-    test('initial state has isFullPayment: true, canSubmit: true and correct effective amount', () {
-      final cubit = CollectDebtPaymentCubit(
-        debt: tDebt,
-        recordDebtPaymentUseCase: mockUseCase,
-        audioPlayerService: mockAudioService,
-      );
+    test(
+      'initial state has isFullPayment: true, canSubmit: true and correct effective amount',
+      () {
+        final cubit = CollectDebtPaymentCubit(
+          debt: tDebt,
+          recordDebtPaymentUseCase: mockUseCase,
+          audioPlayerService: mockAudioService,
+        );
 
-      expect(cubit.state.debt, tDebt);
-      expect(cubit.state.status, CollectDebtPaymentStatus.initial);
-      expect(cubit.state.isFullPayment, isTrue);
-      expect(cubit.state.effectiveAmount, 8000);
-      expect(cubit.state.remainingAfterPayment, 0);
-      expect(cubit.state.canSubmit, isTrue);
-      cubit.close();
-    });
+        expect(cubit.state.debt, tDebt);
+        expect(cubit.state.status, CollectDebtPaymentStatus.initial);
+        expect(cubit.state.isFullPayment, isTrue);
+        expect(cubit.state.effectiveAmount, 8000);
+        expect(cubit.state.remainingAfterPayment, 0);
+        expect(cubit.state.canSubmit, isTrue);
+        cubit.close();
+      },
+    );
 
     blocTest<CollectDebtPaymentCubit, CollectDebtPaymentState>(
       'selectCustomPayment switches isFullPayment to false and initializes customAmount',

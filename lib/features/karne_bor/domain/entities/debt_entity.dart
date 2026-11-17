@@ -85,17 +85,17 @@ class DebtEntity {
 
   @override
   int get hashCode => Object.hash(
-        id,
-        debtorId,
-        initialAmount,
-        remainingAmount,
-        dueDate,
-        status,
-        syncStatus,
-        lastSyncedAt,
-        createdAt,
-        debtor,
-      );
+    id,
+    debtorId,
+    initialAmount,
+    remainingAmount,
+    dueDate,
+    status,
+    syncStatus,
+    lastSyncedAt,
+    createdAt,
+    debtor,
+  );
 
   @override
   String toString() {

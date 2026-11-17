@@ -28,7 +28,9 @@ abstract class DebtRepository {
     required DebtEntity updatedDebt,
   });
 
-  Future<Result<List<DebtPaymentEntity>, Failure>> getPaymentsByDebt(String debtId);
+  Future<Result<List<DebtPaymentEntity>, Failure>> getPaymentsByDebt(
+    String debtId,
+  );
 
   Future<Result<DebtEntity?, Failure>> getDebtById(String id);
   Future<Result<List<DebtEntity>, Failure>> getDebtsByDebtor(String debtorId);

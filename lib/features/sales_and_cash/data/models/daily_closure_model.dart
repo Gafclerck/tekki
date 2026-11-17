@@ -59,8 +59,9 @@ class DailyClosureModel extends DailyClosureEntity {
       distanceMeters: row.distanceMeters,
       isFlaggedLocation: row.isFlaggedLocation,
       syncStatus: row.syncStatus,
-      lastSyncedAt:
-          row.lastSyncedAt != null ? DateTime.parse(row.lastSyncedAt!) : null,
+      lastSyncedAt: row.lastSyncedAt != null
+          ? DateTime.parse(row.lastSyncedAt!)
+          : null,
       createdAt: DateTime.parse(row.createdAt),
     );
   }
@@ -76,7 +77,8 @@ class DailyClosureModel extends DailyClosureEntity {
           (json['total_cash_debt_inflow'] as num?)?.toInt() ?? 0,
       totalCreditSalesAmount:
           (json['total_credit_sales_amount'] as num?)?.toInt() ?? 0,
-      totalExpensesAmount: (json['total_expenses_amount'] as num?)?.toInt() ?? 0,
+      totalExpensesAmount:
+          (json['total_expenses_amount'] as num?)?.toInt() ?? 0,
       cashCounted: (json['cash_counted'] as num?)?.toInt() ?? 0,
       gpsLatitude: (json['gps_latitude'] as num?)?.toDouble(),
       gpsLongitude: (json['gps_longitude'] as num?)?.toDouble(),

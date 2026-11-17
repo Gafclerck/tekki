@@ -10,6 +10,7 @@ import 'package:tekki/features/karne_bor/presentation/cubit/record_debt_cubit.da
 import 'package:tekki/features/karne_bor/presentation/cubit/record_debt_state.dart';
 
 class MockRecordDebtUseCase extends Mock implements RecordDebtUseCase {}
+
 class MockGetDebtorsUseCase extends Mock implements GetDebtorsUseCase {}
 
 class FakeRecordDebtParams extends Fake implements RecordDebtParams {}
@@ -45,15 +46,11 @@ void main() {
 
     test('loadDebtors updates RecordDebtInitial with debtors', () async {
       final debtors = [
-        DebtorEntity(
-          id: 'd-1',
-          name: 'Fatou',
-          createdAt: testDate,
-        ),
+        DebtorEntity(id: 'd-1', name: 'Fatou', createdAt: testDate),
       ];
-      when(() => mockGetDebtorsUseCase.call()).thenAnswer(
-        (_) async => Success(debtors),
-      );
+      when(
+        () => mockGetDebtorsUseCase.call(),
+      ).thenAnswer((_) async => Success(debtors));
 
       final expectation = expectLater(
         cubit.stream,
@@ -64,34 +61,34 @@ void main() {
       await expectation;
     });
 
-    test('submit emits Submitting then Success on successful creation', () async {
-      final debt = DebtEntity(
-        id: 'debt-1',
-        debtorId: 'debtor-1',
-        initialAmount: 5000,
-        remainingAmount: 5000,
-        dueDate: testDate.add(const Duration(days: 7)),
-        createdAt: testDate,
-      );
+    test(
+      'submit emits Submitting then Success on successful creation',
+      () async {
+        final debt = DebtEntity(
+          id: 'debt-1',
+          debtorId: 'debtor-1',
+          initialAmount: 5000,
+          remainingAmount: 5000,
+          dueDate: testDate.add(const Duration(days: 7)),
+          createdAt: testDate,
+        );
 
-      when(() => mockRecordDebtUseCase.call(any())).thenAnswer(
-        (_) async => Success(debt),
-      );
+        when(
+          () => mockRecordDebtUseCase.call(any()),
+        ).thenAnswer((_) async => Success(debt));
 
-      final expectation = expectLater(
-        cubit.stream,
-        emitsInOrder([
-          const RecordDebtSubmitting(),
-          RecordDebtSuccess(debt: debt),
-        ]),
-      );
+        final expectation = expectLater(
+          cubit.stream,
+          emitsInOrder([
+            const RecordDebtSubmitting(),
+            RecordDebtSuccess(debt: debt),
+          ]),
+        );
 
-      await cubit.submit(
-        debtorName: 'Fatou Kiné',
-        amount: 5000,
-      );
-      await expectation;
-    });
+        await cubit.submit(debtorName: 'Fatou Kiné', amount: 5000);
+        await expectation;
+      },
+    );
 
     test('submit emits Submitting then Failure on error', () async {
       when(() => mockRecordDebtUseCase.call(any())).thenAnswer(
@@ -104,14 +101,13 @@ void main() {
         cubit.stream,
         emitsInOrder([
           const RecordDebtSubmitting(),
-          const RecordDebtFailure(message: 'Le montant doit être supérieur à zéro.'),
+          const RecordDebtFailure(
+            message: 'Le montant doit être supérieur à zéro.',
+          ),
         ]),
       );
 
-      await cubit.submit(
-        debtorName: 'Fatou Kiné',
-        amount: 0,
-      );
+      await cubit.submit(debtorName: 'Fatou Kiné', amount: 0);
       await expectation;
     });
   });

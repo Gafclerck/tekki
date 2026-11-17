@@ -1,10 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:tekki/core/utils/currency_formatter.dart';
 
-enum WhatsAppReminderLanguage {
-  wolof,
-  french,
-}
+enum WhatsAppReminderLanguage { wolof, french }
 
 abstract final class WhatsAppReminderTemplate {
   static final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');

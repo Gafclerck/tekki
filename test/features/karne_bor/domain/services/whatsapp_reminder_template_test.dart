@@ -38,17 +38,20 @@ void main() {
         expect(message, contains('soutoura'));
       });
 
-      test('uses fallback salutation when debtorName is empty or whitespace in Wolof', () {
-        final message = WhatsAppReminderTemplate.generate(
-          debtorName: '   ',
-          remainingAmount: 2500,
-          dueDate: dueDate,
-          language: WhatsAppReminderLanguage.wolof,
-          isOverdue: false,
-        );
+      test(
+        'uses fallback salutation when debtorName is empty or whitespace in Wolof',
+        () {
+          final message = WhatsAppReminderTemplate.generate(
+            debtorName: '   ',
+            remainingAmount: 2500,
+            dueDate: dueDate,
+            language: WhatsAppReminderLanguage.wolof,
+            isOverdue: false,
+          );
 
-        expect(message, contains('Salamalekum sama xarit'));
-      });
+          expect(message, contains('Salamalekum sama xarit'));
+        },
+      );
     });
 
     group('French', () {
@@ -68,39 +71,45 @@ void main() {
         expect(message, contains('confiance'));
       });
 
-      test('generates benevolent French message for overdue debt without aggressive words', () {
-        final message = WhatsAppReminderTemplate.generate(
-          debtorName: 'Awa Diop',
-          remainingAmount: 12000,
-          dueDate: dueDate,
-          language: WhatsAppReminderLanguage.french,
-          isOverdue: true,
-        );
+      test(
+        'generates benevolent French message for overdue debt without aggressive words',
+        () {
+          final message = WhatsAppReminderTemplate.generate(
+            debtorName: 'Awa Diop',
+            remainingAmount: 12000,
+            dueDate: dueDate,
+            language: WhatsAppReminderLanguage.french,
+            isOverdue: true,
+          );
 
-        expect(message, contains('Bonjour Awa Diop'));
-        expect(message, contains('12 000 FCFA'));
-        expect(message, contains('rappel'));
-        expect(message, contains('bienveillance'));
-        expect(message, contains('respect et la confiance mutuelle'));
+          expect(message, contains('Bonjour Awa Diop'));
+          expect(message, contains('12 000 FCFA'));
+          expect(message, contains('rappel'));
+          expect(message, contains('bienveillance'));
+          expect(message, contains('respect et la confiance mutuelle'));
 
-        // Never aggressive
-        expect(message.toLowerCase(), isNot(contains('pénalité')));
-        expect(message.toLowerCase(), isNot(contains('amende')));
-        expect(message.toLowerCase(), isNot(contains('avocat')));
-        expect(message.toLowerCase(), isNot(contains('menace')));
-      });
+          // Never aggressive
+          expect(message.toLowerCase(), isNot(contains('pénalité')));
+          expect(message.toLowerCase(), isNot(contains('amende')));
+          expect(message.toLowerCase(), isNot(contains('avocat')));
+          expect(message.toLowerCase(), isNot(contains('menace')));
+        },
+      );
 
-      test('uses fallback salutation when debtorName is empty or whitespace in French', () {
-        final message = WhatsAppReminderTemplate.generate(
-          debtorName: '',
-          remainingAmount: 3000,
-          dueDate: dueDate,
-          language: WhatsAppReminderLanguage.french,
-          isOverdue: true,
-        );
+      test(
+        'uses fallback salutation when debtorName is empty or whitespace in French',
+        () {
+          final message = WhatsAppReminderTemplate.generate(
+            debtorName: '',
+            remainingAmount: 3000,
+            dueDate: dueDate,
+            language: WhatsAppReminderLanguage.french,
+            isOverdue: true,
+          );
 
-        expect(message, contains('Bonjour cher client'));
-      });
+          expect(message, contains('Bonjour cher client'));
+        },
+      );
     });
   });
 }

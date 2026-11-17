@@ -21,10 +21,7 @@ class CalculateRecoveryVelocityUseCase {
     DateTime? asOf,
     int windowDays = 30,
   }) {
-    return repository.getRecoveryVelocity(
-      asOf: asOf,
-      windowDays: windowDays,
-    );
+    return repository.getRecoveryVelocity(asOf: asOf, windowDays: windowDays);
   }
 
   /// Calcul pur Dart de la vélocité à partir d'une liste de créances et de leurs paiements éventuels.
@@ -52,7 +49,8 @@ class CalculateRecoveryVelocityUseCase {
       );
 
       // Une créance est dans la fenêtre si son échéance ou sa date de création est >= windowStart
-      final isInWindow = endOfDueDate.isAfter(windowStart) ||
+      final isInWindow =
+          endOfDueDate.isAfter(windowStart) ||
           endOfDueDate.isAtSameMomentAs(windowStart) ||
           debt.createdAt.isAfter(windowStart) ||
           debt.createdAt.isAtSameMomentAs(windowStart);
@@ -62,7 +60,8 @@ class CalculateRecoveryVelocityUseCase {
       }
 
       // Une créance est exigible si son échéance est échue/arrivée à la date de référence, ou si elle a été soldée
-      final isDueOrOverdue = endOfDueDate.isBefore(referenceDate) ||
+      final isDueOrOverdue =
+          endOfDueDate.isBefore(referenceDate) ||
           endOfDueDate.isAtSameMomentAs(referenceDate);
       final isSettled = debt.status == DebtStatus.settled;
 
@@ -81,7 +80,8 @@ class CalculateRecoveryVelocityUseCase {
         int debtRecoveredOnTime = 0;
         for (final p in payments) {
           // Paiement dans les délais : paidAt <= endOfDueDate
-          if (p.paidAt.isBefore(endOfDueDate) || p.paidAt.isAtSameMomentAs(endOfDueDate)) {
+          if (p.paidAt.isBefore(endOfDueDate) ||
+              p.paidAt.isAtSameMomentAs(endOfDueDate)) {
             debtRecoveredOnTime += p.paymentAmount;
           }
         }
@@ -118,24 +118,29 @@ class CalculateRecoveryVelocityUseCase {
         rate: 100,
         totalDueAmount: 0,
         totalRecoveredAmount: 0,
-        healthStatus: 'Excellente santé financière : aucun impayé sur les $windowDays derniers jours !',
+        healthStatus:
+            'Excellente santé financière : aucun impayé sur les $windowDays derniers jours !',
         healthLevel: RecoveryHealthLevel.excellent,
         windowDays: windowDays,
       );
     }
 
     final safeRecovered = totalRecoveredAmount.clamp(0, totalDueAmount);
-    final calculatedRate = ((safeRecovered / totalDueAmount) * 100).round().clamp(0, 100);
+    final calculatedRate = ((safeRecovered / totalDueAmount) * 100)
+        .round()
+        .clamp(0, 100);
 
     final RecoveryHealthLevel healthLevel;
     final String healthStatus;
 
     if (calculatedRate >= 80) {
       healthLevel = RecoveryHealthLevel.excellent;
-      healthStatus = 'Excellente santé financière : vos créances rentrent vite !';
+      healthStatus =
+          'Excellente santé financière : vos créances rentrent vite !';
     } else if (calculatedRate >= 50) {
       healthLevel = RecoveryHealthLevel.moderate;
-      healthStatus = 'Santé financière modérée : pensez à relancer les retards.';
+      healthStatus =
+          'Santé financière modérée : pensez à relancer les retards.';
     } else {
       healthLevel = RecoveryHealthLevel.critical;
       healthStatus = 'Attention requise : accélérez vos relances clients.';

@@ -35,8 +35,9 @@ class DebtPaymentModel extends DebtPaymentEntity {
       paymentMethod: row.paymentMethod,
       closureId: row.closureId,
       syncStatus: row.syncStatus,
-      lastSyncedAt:
-          row.lastSyncedAt != null ? DateTime.parse(row.lastSyncedAt!) : null,
+      lastSyncedAt: row.lastSyncedAt != null
+          ? DateTime.parse(row.lastSyncedAt!)
+          : null,
       paidAt: DateTime.parse(row.paidAt),
     );
   }

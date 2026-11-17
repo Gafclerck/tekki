@@ -17,7 +17,13 @@ class GeoLocation extends Equatable {
   final DateTime? timestamp;
 
   @override
-  List<Object?> get props => [latitude, longitude, accuracy, altitude, timestamp];
+  List<Object?> get props => [
+    latitude,
+    longitude,
+    accuracy,
+    altitude,
+    timestamp,
+  ];
 }
 
 /// Abstract contract for location acquisition (DIP / LSP).

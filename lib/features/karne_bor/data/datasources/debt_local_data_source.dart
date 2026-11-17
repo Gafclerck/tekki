@@ -64,9 +64,9 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
   Future<void> updateDebtor(DebtorEntity debtor) async {
     try {
       final companion = debtor.toCompanion();
-      final updatedRows = await (database.update(database.debtors)
-            ..where((tbl) => tbl.id.equals(debtor.id)))
-          .write(companion);
+      final updatedRows = await (database.update(
+        database.debtors,
+      )..where((tbl) => tbl.id.equals(debtor.id))).write(companion);
       if (updatedRows == 0) {
         throw DatabaseException('Debtor not found with id: ${debtor.id}');
       }
@@ -103,7 +103,10 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
   }
 
   @override
-  Future<List<DebtorEntity>> searchDebtors(String query, {int limit = 20}) async {
+  Future<List<DebtorEntity>> searchDebtors(
+    String query, {
+    int limit = 20,
+  }) async {
     if (limit <= 0) {
       throw ArgumentError('Limit must be strictly positive');
     }
@@ -147,7 +150,9 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
       final query = database.select(database.debtors)
         ..orderBy([(tbl) => OrderingTerm(expression: tbl.name)])
         ..limit(limit);
-      return query.watch().map((rows) => rows.map((r) => r.toEntity()).toList());
+      return query.watch().map(
+        (rows) => rows.map((r) => r.toEntity()).toList(),
+      );
     } catch (e) {
       if (e is ArgumentError) rethrow;
       throw DatabaseException('Failed to watch all debtors: $e');
@@ -180,7 +185,9 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
         await database.into(database.debts).insert(debtCompanion);
       });
     } catch (e) {
-      throw DatabaseException('Failed to record debt with debtor atomically: $e');
+      throw DatabaseException(
+        'Failed to record debt with debtor atomically: $e',
+      );
     }
   }
 
@@ -193,7 +200,11 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
       if (row == null) return null;
 
       final debtor = await getDebtorById(row.debtorId);
-      return row.toEntity(debtor: debtor != null ? DebtorModel.fromEntity(debtor).toDrift() : null);
+      return row.toEntity(
+        debtor: debtor != null
+            ? DebtorModel.fromEntity(debtor).toDrift()
+            : null,
+      );
     } catch (e) {
       throw DatabaseException('Failed to get debt by id: $e');
     }
@@ -203,15 +214,15 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
   Future<List<DebtEntity>> getDebtsByDebtor(String debtorId) async {
     try {
       final debtor = await getDebtorById(debtorId);
-      final debtorDrift = debtor != null ? DebtorModel.fromEntity(debtor).toDrift() : null;
+      final debtorDrift = debtor != null
+          ? DebtorModel.fromEntity(debtor).toDrift()
+          : null;
 
       final query = database.select(database.debts)
         ..where((tbl) => tbl.debtorId.equals(debtorId))
         ..orderBy([
-          (tbl) => OrderingTerm(
-                expression: tbl.createdAt,
-                mode: OrderingMode.desc,
-              ),
+          (tbl) =>
+              OrderingTerm(expression: tbl.createdAt, mode: OrderingMode.desc),
         ]);
       final rows = await query.get();
       return rows.map((r) => r.toEntity(debtor: debtorDrift)).toList();
@@ -237,10 +248,8 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
           ]),
         )
         ..orderBy([
-          (tbl) => OrderingTerm(
-                expression: tbl.dueDate,
-                mode: OrderingMode.asc,
-              ),
+          (tbl) =>
+              OrderingTerm(expression: tbl.dueDate, mode: OrderingMode.asc),
         ])
         ..limit(limit, offset: offset);
       final rows = await query.get();
@@ -250,7 +259,9 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
         final debtor = await getDebtorById(row.debtorId);
         result.add(
           row.toEntity(
-            debtor: debtor != null ? DebtorModel.fromEntity(debtor).toDrift() : null,
+            debtor: debtor != null
+                ? DebtorModel.fromEntity(debtor).toDrift()
+                : null,
           ),
         );
       }
@@ -267,25 +278,26 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
       throw ArgumentError('Limit must be strictly positive');
     }
     try {
-      final query = database.select(database.debts).join([
-        innerJoin(
-          database.debtors,
-          database.debtors.id.equalsExp(database.debts.debtorId),
-        ),
-      ])
-        ..where(
-          database.debts.status.isIn([
-            DebtStatus.active.toValue(),
-            DebtStatus.overdue.toValue(),
-          ]),
-        )
-        ..orderBy([
-          OrderingTerm(
-            expression: database.debts.dueDate,
-            mode: OrderingMode.asc,
-          ),
-        ])
-        ..limit(limit);
+      final query =
+          database.select(database.debts).join([
+              innerJoin(
+                database.debtors,
+                database.debtors.id.equalsExp(database.debts.debtorId),
+              ),
+            ])
+            ..where(
+              database.debts.status.isIn([
+                DebtStatus.active.toValue(),
+                DebtStatus.overdue.toValue(),
+              ]),
+            )
+            ..orderBy([
+              OrderingTerm(
+                expression: database.debts.dueDate,
+                mode: OrderingMode.asc,
+              ),
+            ])
+            ..limit(limit);
 
       return query.watch().map((rows) {
         return rows.map((row) {
@@ -306,19 +318,20 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
       throw ArgumentError('Limit must be strictly positive');
     }
     try {
-      final query = database.select(database.debts).join([
-        innerJoin(
-          database.debtors,
-          database.debtors.id.equalsExp(database.debts.debtorId),
-        ),
-      ])
-        ..orderBy([
-          OrderingTerm(
-            expression: database.debts.createdAt,
-            mode: OrderingMode.desc,
-          ),
-        ])
-        ..limit(limit);
+      final query =
+          database.select(database.debts).join([
+              innerJoin(
+                database.debtors,
+                database.debtors.id.equalsExp(database.debts.debtorId),
+              ),
+            ])
+            ..orderBy([
+              OrderingTerm(
+                expression: database.debts.createdAt,
+                mode: OrderingMode.desc,
+              ),
+            ])
+            ..limit(limit);
 
       return query.watch().map((rows) {
         return rows.map((row) {
@@ -340,16 +353,19 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
   }) async {
     try {
       await database.transaction(() async {
-        final paymentCompanion =
-            DebtPaymentModel.fromEntity(payment).toCompanion();
+        final paymentCompanion = DebtPaymentModel.fromEntity(
+          payment,
+        ).toCompanion();
         await database.into(database.debtPayments).insert(paymentCompanion);
 
-        await (database.update(database.debts)
-              ..where((tbl) => tbl.id.equals(updatedDebt.id)))
-            .write(DebtsCompanion(
-          remainingAmount: Value(updatedDebt.remainingAmount),
-          status: Value(updatedDebt.status.toValue()),
-        ));
+        await (database.update(
+          database.debts,
+        )..where((tbl) => tbl.id.equals(updatedDebt.id))).write(
+          DebtsCompanion(
+            remainingAmount: Value(updatedDebt.remainingAmount),
+            status: Value(updatedDebt.status.toValue()),
+          ),
+        );
       });
     } catch (e) {
       throw DatabaseException('Failed to record debt payment atomically: $e');
@@ -362,15 +378,11 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
       final query = database.select(database.debtPayments)
         ..where((tbl) => tbl.debtId.equals(debtId))
         ..orderBy([
-          (tbl) => OrderingTerm(
-                expression: tbl.paidAt,
-                mode: OrderingMode.desc,
-              ),
+          (tbl) =>
+              OrderingTerm(expression: tbl.paidAt, mode: OrderingMode.desc),
         ]);
       final rows = await query.get();
-      return rows
-          .map((r) => DebtPaymentModel.fromDrift(r).toEntity())
-          .toList();
+      return rows.map((r) => DebtPaymentModel.fromDrift(r).toEntity()).toList();
     } catch (e) {
       throw DatabaseException('Failed to get payments by debt: $e');
     }

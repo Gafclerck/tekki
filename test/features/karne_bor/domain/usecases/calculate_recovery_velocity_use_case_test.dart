@@ -23,30 +23,34 @@ void main() {
 
   group('CalculateRecoveryVelocityUseCase', () {
     group('call', () {
-      test('delegates to repository getRecoveryVelocity with asOf and windowDays', () async {
-        const expectedVelocity = RecoveryVelocityEntity(
-          rate: 85,
-          totalDueAmount: 100000,
-          totalRecoveredAmount: 85000,
-          healthStatus: 'Excellente santé financière : vos créances rentrent vite !',
-          healthLevel: RecoveryHealthLevel.excellent,
-        );
+      test(
+        'delegates to repository getRecoveryVelocity with asOf and windowDays',
+        () async {
+          const expectedVelocity = RecoveryVelocityEntity(
+            rate: 85,
+            totalDueAmount: 100000,
+            totalRecoveredAmount: 85000,
+            healthStatus:
+                'Excellente santé financière : vos créances rentrent vite !',
+            healthLevel: RecoveryHealthLevel.excellent,
+          );
 
-        when(
-          () => mockRepository.getRecoveryVelocity(
-            asOf: any(named: 'asOf'),
-            windowDays: any(named: 'windowDays'),
-          ),
-        ).thenAnswer((_) async => const Success(expectedVelocity));
+          when(
+            () => mockRepository.getRecoveryVelocity(
+              asOf: any(named: 'asOf'),
+              windowDays: any(named: 'windowDays'),
+            ),
+          ).thenAnswer((_) async => const Success(expectedVelocity));
 
-        final result = await useCase(asOf: now, windowDays: 30);
+          final result = await useCase(asOf: now, windowDays: 30);
 
-        expect(result.isSuccess, isTrue);
-        expect(result, const Success(expectedVelocity));
-        verify(
-          () => mockRepository.getRecoveryVelocity(asOf: now, windowDays: 30),
-        ).called(1);
-      });
+          expect(result.isSuccess, isTrue);
+          expect(result, const Success(expectedVelocity));
+          verify(
+            () => mockRepository.getRecoveryVelocity(asOf: now, windowDays: 30),
+          ).called(1);
+        },
+      );
     });
 
     group('calculatePure', () {
@@ -63,18 +67,21 @@ void main() {
         expect(result.healthStatus, contains('aucun impayé'));
       });
 
-      test('80 000 F recovered on 100 000 F due yields 80% velocity and excellent health', () {
-        final result = CalculateRecoveryVelocityUseCase.calculatePure(
-          totalDueAmount: 100000,
-          totalRecoveredAmount: 80000,
-        );
+      test(
+        '80 000 F recovered on 100 000 F due yields 80% velocity and excellent health',
+        () {
+          final result = CalculateRecoveryVelocityUseCase.calculatePure(
+            totalDueAmount: 100000,
+            totalRecoveredAmount: 80000,
+          );
 
-        expect(result.rate, 80);
-        expect(result.totalDueAmount, 100000);
-        expect(result.totalRecoveredAmount, 80000);
-        expect(result.healthLevel, RecoveryHealthLevel.excellent);
-        expect(result.healthStatus, contains('Excellente santé financière'));
-      });
+          expect(result.rate, 80);
+          expect(result.totalDueAmount, 100000);
+          expect(result.totalRecoveredAmount, 80000);
+          expect(result.healthLevel, RecoveryHealthLevel.excellent);
+          expect(result.healthStatus, contains('Excellente santé financière'));
+        },
+      );
 
       test('100% impayés yields 0% velocity and critical health', () {
         final result = CalculateRecoveryVelocityUseCase.calculatePure(
@@ -100,87 +107,95 @@ void main() {
     });
 
     group('computeFromDebts', () {
-      test('computes velocity correctly on 30-day rolling window with payments', () {
-        // Debt 1: 50 000 F due 5 days ago, paid 50 000 F 6 days ago (on time)
-        final debt1 = DebtEntity(
-          id: 'd1',
-          debtorId: 'debtor1',
-          initialAmount: 50000,
-          remainingAmount: 0,
-          dueDate: now.subtract(const Duration(days: 5)),
-          status: DebtStatus.settled,
-          createdAt: now.subtract(const Duration(days: 15)),
-        );
-        final payment1 = DebtPaymentEntity(
-          id: 'p1',
-          debtId: 'd1',
-          paymentAmount: 50000,
-          paidAt: now.subtract(const Duration(days: 6)), // Before dueDate!
-        );
+      test(
+        'computes velocity correctly on 30-day rolling window with payments',
+        () {
+          // Debt 1: 50 000 F due 5 days ago, paid 50 000 F 6 days ago (on time)
+          final debt1 = DebtEntity(
+            id: 'd1',
+            debtorId: 'debtor1',
+            initialAmount: 50000,
+            remainingAmount: 0,
+            dueDate: now.subtract(const Duration(days: 5)),
+            status: DebtStatus.settled,
+            createdAt: now.subtract(const Duration(days: 15)),
+          );
+          final payment1 = DebtPaymentEntity(
+            id: 'p1',
+            debtId: 'd1',
+            paymentAmount: 50000,
+            paidAt: now.subtract(const Duration(days: 6)), // Before dueDate!
+          );
 
-        // Debt 2: 50 000 F due 3 days ago, paid 30 000 F on time, 20 000 F overdue
-        final debt2 = DebtEntity(
-          id: 'd2',
-          debtorId: 'debtor2',
-          initialAmount: 50000,
-          remainingAmount: 20000,
-          dueDate: now.subtract(const Duration(days: 3)),
-          status: DebtStatus.active,
-          createdAt: now.subtract(const Duration(days: 10)),
-        );
-        final payment2 = DebtPaymentEntity(
-          id: 'p2',
-          debtId: 'd2',
-          paymentAmount: 30000,
-          paidAt: now.subtract(const Duration(days: 4)), // On time!
-        );
+          // Debt 2: 50 000 F due 3 days ago, paid 30 000 F on time, 20 000 F overdue
+          final debt2 = DebtEntity(
+            id: 'd2',
+            debtorId: 'debtor2',
+            initialAmount: 50000,
+            remainingAmount: 20000,
+            dueDate: now.subtract(const Duration(days: 3)),
+            status: DebtStatus.active,
+            createdAt: now.subtract(const Duration(days: 10)),
+          );
+          final payment2 = DebtPaymentEntity(
+            id: 'p2',
+            debtId: 'd2',
+            paymentAmount: 30000,
+            paidAt: now.subtract(const Duration(days: 4)), // On time!
+          );
 
-        final result = CalculateRecoveryVelocityUseCase.computeFromDebts(
-          debts: [debt1, debt2],
-          paymentsByDebtId: {
-            'd1': [payment1],
-            'd2': [payment2],
-          },
-          asOf: now,
-          windowDays: 30,
-        );
+          final result = CalculateRecoveryVelocityUseCase.computeFromDebts(
+            debts: [debt1, debt2],
+            paymentsByDebtId: {
+              'd1': [payment1],
+              'd2': [payment2],
+            },
+            asOf: now,
+            windowDays: 30,
+          );
 
-        expect(result.totalDueAmount, 100000); // 50 000 + 50 000
-        expect(result.totalRecoveredAmount, 80000); // 50 000 + 30 000
-        expect(result.rate, 80);
-      });
+          expect(result.totalDueAmount, 100000); // 50 000 + 50 000
+          expect(result.totalRecoveredAmount, 80000); // 50 000 + 30 000
+          expect(result.rate, 80);
+        },
+      );
 
-      test('payment made AFTER dueDate is excluded from on-time recovered amount', () {
-        // Debt: 60 000 F due 10 days ago, payment made 2 days ago (late)
-        final debt = DebtEntity(
-          id: 'd-late',
-          debtorId: 'debtor1',
-          initialAmount: 60000,
-          remainingAmount: 0,
-          dueDate: now.subtract(const Duration(days: 10)),
-          status: DebtStatus.settled,
-          createdAt: now.subtract(const Duration(days: 20)),
-        );
-        final paymentLate = DebtPaymentEntity(
-          id: 'p-late',
-          debtId: 'd-late',
-          paymentAmount: 60000,
-          paidAt: now.subtract(const Duration(days: 2)), // 8 days after dueDate!
-        );
+      test(
+        'payment made AFTER dueDate is excluded from on-time recovered amount',
+        () {
+          // Debt: 60 000 F due 10 days ago, payment made 2 days ago (late)
+          final debt = DebtEntity(
+            id: 'd-late',
+            debtorId: 'debtor1',
+            initialAmount: 60000,
+            remainingAmount: 0,
+            dueDate: now.subtract(const Duration(days: 10)),
+            status: DebtStatus.settled,
+            createdAt: now.subtract(const Duration(days: 20)),
+          );
+          final paymentLate = DebtPaymentEntity(
+            id: 'p-late',
+            debtId: 'd-late',
+            paymentAmount: 60000,
+            paidAt: now.subtract(
+              const Duration(days: 2),
+            ), // 8 days after dueDate!
+          );
 
-        final result = CalculateRecoveryVelocityUseCase.computeFromDebts(
-          debts: [debt],
-          paymentsByDebtId: {
-            'd-late': [paymentLate],
-          },
-          asOf: now,
-          windowDays: 30,
-        );
+          final result = CalculateRecoveryVelocityUseCase.computeFromDebts(
+            debts: [debt],
+            paymentsByDebtId: {
+              'd-late': [paymentLate],
+            },
+            asOf: now,
+            windowDays: 30,
+          );
 
-        expect(result.totalDueAmount, 60000);
-        expect(result.totalRecoveredAmount, 0); // Excluded because late
-        expect(result.rate, 0);
-      });
+          expect(result.totalDueAmount, 60000);
+          expect(result.totalRecoveredAmount, 0); // Excluded because late
+          expect(result.rate, 0);
+        },
+      );
 
       test('debts with dueDate outside the 30-day window are ignored', () {
         final oldDebt = DebtEntity(

@@ -11,6 +11,7 @@ import 'package:tekki/features/karne_bor/domain/usecases/record_debt_payment_use
 import 'package:uuid/uuid.dart';
 
 class MockDebtRepository extends Mock implements DebtRepository {}
+
 class MockUuid extends Mock implements Uuid {}
 
 void main() {
@@ -76,95 +77,104 @@ void main() {
       verifyZeroInteractions(mockRepository);
     });
 
-    test('rejects payment amount exceeding remainingAmount with ValidationFailure', () async {
-      final result = await useCase(
-        debt: tActiveDebt,
-        paymentAmount: 15000,
-      );
-      expect(result.isError, isTrue);
-      final failure = (result as Error<DebtPaymentEntity, Failure>).failure;
-      expect(failure, isA<ValidationFailure>());
-      expect(failure.message, contains('ne peut pas dépasser le solde restant'));
-      verifyZeroInteractions(mockRepository);
-    });
+    test(
+      'rejects payment amount exceeding remainingAmount with ValidationFailure',
+      () async {
+        final result = await useCase(debt: tActiveDebt, paymentAmount: 15000);
+        expect(result.isError, isTrue);
+        final failure = (result as Error<DebtPaymentEntity, Failure>).failure;
+        expect(failure, isA<ValidationFailure>());
+        expect(
+          failure.message,
+          contains('ne peut pas dépasser le solde restant'),
+        );
+        verifyZeroInteractions(mockRepository);
+      },
+    );
 
-    test('records full payment, sets remainingAmount to 0 and status to SETTLED', () async {
-      final expectedPayment = DebtPaymentEntity(
-        id: 'generated-payment-uuid',
-        debtId: 'debt-1',
-        paymentAmount: 10000,
-        paymentMethod: 'ESPECES',
-        paidAt: DateTime.utc(2026, 11, 17),
-      );
+    test(
+      'records full payment, sets remainingAmount to 0 and status to SETTLED',
+      () async {
+        final expectedPayment = DebtPaymentEntity(
+          id: 'generated-payment-uuid',
+          debtId: 'debt-1',
+          paymentAmount: 10000,
+          paymentMethod: 'ESPECES',
+          paidAt: DateTime.utc(2026, 11, 17),
+        );
 
-      when(
-        () => mockRepository.recordDebtPayment(
-          payment: any(named: 'payment'),
-          updatedDebt: any(named: 'updatedDebt'),
-        ),
-      ).thenAnswer((_) async => Success(expectedPayment));
+        when(
+          () => mockRepository.recordDebtPayment(
+            payment: any(named: 'payment'),
+            updatedDebt: any(named: 'updatedDebt'),
+          ),
+        ).thenAnswer((_) async => Success(expectedPayment));
 
-      final result = await useCase(
-        debt: tActiveDebt,
-        paymentAmount: 10000,
-        paidAt: DateTime.utc(2026, 11, 17),
-      );
+        final result = await useCase(
+          debt: tActiveDebt,
+          paymentAmount: 10000,
+          paidAt: DateTime.utc(2026, 11, 17),
+        );
 
-      expect(result.isSuccess, isTrue);
-      final recorded = (result as Success<DebtPaymentEntity, Failure>).data;
-      expect(recorded.id, 'generated-payment-uuid');
-      expect(recorded.paymentAmount, 10000);
-      expect(recorded.paymentMethod, 'ESPECES');
+        expect(result.isSuccess, isTrue);
+        final recorded = (result as Success<DebtPaymentEntity, Failure>).data;
+        expect(recorded.id, 'generated-payment-uuid');
+        expect(recorded.paymentAmount, 10000);
+        expect(recorded.paymentMethod, 'ESPECES');
 
-      final captured = verify(
-        () => mockRepository.recordDebtPayment(
-          payment: captureAny(named: 'payment'),
-          updatedDebt: captureAny(named: 'updatedDebt'),
-        ),
-      ).captured;
+        final captured = verify(
+          () => mockRepository.recordDebtPayment(
+            payment: captureAny(named: 'payment'),
+            updatedDebt: captureAny(named: 'updatedDebt'),
+          ),
+        ).captured;
 
-      final capturedPayment = captured[0] as DebtPaymentEntity;
-      final capturedDebt = captured[1] as DebtEntity;
+        final capturedPayment = captured[0] as DebtPaymentEntity;
+        final capturedDebt = captured[1] as DebtEntity;
 
-      expect(capturedPayment.paymentAmount, 10000);
-      expect(capturedDebt.remainingAmount, 0);
-      expect(capturedDebt.status, DebtStatus.settled);
-    });
+        expect(capturedPayment.paymentAmount, 10000);
+        expect(capturedDebt.remainingAmount, 0);
+        expect(capturedDebt.status, DebtStatus.settled);
+      },
+    );
 
-    test('records partial payment (acompte), reduces remainingAmount and preserves status', () async {
-      final expectedPayment = DebtPaymentEntity(
-        id: 'generated-payment-uuid',
-        debtId: 'debt-1',
-        paymentAmount: 4000,
-        paymentMethod: 'ESPECES',
-        paidAt: DateTime.utc(2026, 11, 17),
-      );
+    test(
+      'records partial payment (acompte), reduces remainingAmount and preserves status',
+      () async {
+        final expectedPayment = DebtPaymentEntity(
+          id: 'generated-payment-uuid',
+          debtId: 'debt-1',
+          paymentAmount: 4000,
+          paymentMethod: 'ESPECES',
+          paidAt: DateTime.utc(2026, 11, 17),
+        );
 
-      when(
-        () => mockRepository.recordDebtPayment(
-          payment: any(named: 'payment'),
-          updatedDebt: any(named: 'updatedDebt'),
-        ),
-      ).thenAnswer((_) async => Success(expectedPayment));
+        when(
+          () => mockRepository.recordDebtPayment(
+            payment: any(named: 'payment'),
+            updatedDebt: any(named: 'updatedDebt'),
+          ),
+        ).thenAnswer((_) async => Success(expectedPayment));
 
-      final result = await useCase(
-        debt: tActiveDebt,
-        paymentAmount: 4000,
-        paidAt: DateTime.utc(2026, 11, 17),
-      );
+        final result = await useCase(
+          debt: tActiveDebt,
+          paymentAmount: 4000,
+          paidAt: DateTime.utc(2026, 11, 17),
+        );
 
-      expect(result.isSuccess, isTrue);
+        expect(result.isSuccess, isTrue);
 
-      final captured = verify(
-        () => mockRepository.recordDebtPayment(
-          payment: captureAny(named: 'payment'),
-          updatedDebt: captureAny(named: 'updatedDebt'),
-        ),
-      ).captured;
+        final captured = verify(
+          () => mockRepository.recordDebtPayment(
+            payment: captureAny(named: 'payment'),
+            updatedDebt: captureAny(named: 'updatedDebt'),
+          ),
+        ).captured;
 
-      final capturedDebt = captured[1] as DebtEntity;
-      expect(capturedDebt.remainingAmount, 6000);
-      expect(capturedDebt.status, DebtStatus.active);
-    });
+        final capturedDebt = captured[1] as DebtEntity;
+        expect(capturedDebt.remainingAmount, 6000);
+        expect(capturedDebt.status, DebtStatus.active);
+      },
+    );
   });
 }

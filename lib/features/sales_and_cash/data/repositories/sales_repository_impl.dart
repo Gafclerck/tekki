@@ -18,7 +18,9 @@ class SalesRepositoryImpl implements SalesRepository {
     } on DatabaseException catch (e) {
       return Error(DatabaseFailure(message: e.message));
     } catch (e) {
-      return Error(DatabaseFailure(message: 'Erreur inattendue de base de données : $e'));
+      return Error(
+        DatabaseFailure(message: 'Erreur inattendue de base de données : $e'),
+      );
     }
   }
 

@@ -81,17 +81,31 @@ void main() {
       await tester.tap(find.text('Open Dialog'));
       await tester.pumpAndSettle();
 
-      expect(find.byKey(const ValueKey('collect_debt_payment_dialog')), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('collect_debt_payment_dialog')),
+        findsOneWidget,
+      );
       expect(find.text('Encaisser un paiement'), findsOneWidget);
       expect(find.text('Aminata Ba'), findsOneWidget);
       expect(find.text('6 000 FCFA'), findsAtLeastNWidgets(1));
-      expect(find.byKey(const ValueKey('collect_full_payment_button')), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('collect_full_payment_button')),
+        findsOneWidget,
+      );
       expect(find.byKey(const ValueKey('custom_amount_field')), findsOneWidget);
-      expect(find.byKey(const ValueKey('collect_custom_payment_button')), findsOneWidget);
-      expect(find.byKey(const ValueKey('close_collect_dialog_button')), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('collect_custom_payment_button')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('close_collect_dialog_button')),
+        findsOneWidget,
+      );
     });
 
-    testWidgets('tapping 1-click full payment button submits full settlement', (tester) async {
+    testWidgets('tapping 1-click full payment button submits full settlement', (
+      tester,
+    ) async {
       when(
         () => mockUseCase(
           debt: tDebt,
@@ -109,7 +123,9 @@ void main() {
       await tester.tap(find.text('Open Dialog'));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(const ValueKey('collect_full_payment_button')));
+      await tester.tap(
+        find.byKey(const ValueKey('collect_full_payment_button')),
+      );
       await tester.pumpAndSettle();
 
       verify(
@@ -121,11 +137,19 @@ void main() {
       ).called(1);
 
       // Dialog should be popped and SnackBar shown
-      expect(find.byKey(const ValueKey('collect_debt_payment_dialog')), findsNothing);
-      expect(find.byKey(const ValueKey('collect_payment_success_snackbar')), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('collect_debt_payment_dialog')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const ValueKey('collect_payment_success_snackbar')),
+        findsOneWidget,
+      );
     });
 
-    testWidgets('entering partial payment amount and submitting', (tester) async {
+    testWidgets('entering partial payment amount and submitting', (
+      tester,
+    ) async {
       final partialPayment = DebtPaymentEntity(
         id: 'pay-part',
         debtId: 'debt-5',
@@ -159,7 +183,9 @@ void main() {
 
       expect(find.text('Nouveau solde restant : 3 500 FCFA'), findsOneWidget);
 
-      await tester.tap(find.byKey(const ValueKey('collect_custom_payment_button')));
+      await tester.tap(
+        find.byKey(const ValueKey('collect_custom_payment_button')),
+      );
       await tester.pumpAndSettle();
 
       verify(
@@ -171,7 +197,42 @@ void main() {
       ).called(1);
     });
 
-    testWidgets('entering amount exceeding balance shows validation error and disables submit', (tester) async {
+    testWidgets(
+      'entering amount exceeding balance shows validation error and disables submit',
+      (tester) async {
+        final cubit = CollectDebtPaymentCubit(
+          debt: tDebt,
+          recordDebtPaymentUseCase: mockUseCase,
+        );
+
+        await tester.pumpWidget(buildTestableWidget(cubit: cubit));
+        await tester.tap(find.text('Open Dialog'));
+        await tester.pumpAndSettle();
+
+        await tester.enterText(
+          find.byKey(const ValueKey('custom_amount_field')),
+          '10000',
+        );
+        await tester.pumpAndSettle();
+
+        expect(
+          find.text(
+            'Le montant ne peut pas dépasser le solde restant (6 000 FCFA).',
+          ),
+          findsOneWidget,
+        );
+
+        // Verify custom button is disabled
+        final button = tester.widget<OutlinedButton>(
+          find.byKey(const ValueKey('collect_custom_payment_button')),
+        );
+        expect(button.onPressed, isNull);
+      },
+    );
+
+    testWidgets('tapping close button dismisses dialog without submission', (
+      tester,
+    ) async {
       final cubit = CollectDebtPaymentCubit(
         debt: tDebt,
         recordDebtPaymentUseCase: mockUseCase,
@@ -181,38 +242,15 @@ void main() {
       await tester.tap(find.text('Open Dialog'));
       await tester.pumpAndSettle();
 
-      await tester.enterText(
-        find.byKey(const ValueKey('custom_amount_field')),
-        '10000',
+      await tester.tap(
+        find.byKey(const ValueKey('close_collect_dialog_button')),
       );
       await tester.pumpAndSettle();
 
       expect(
-        find.text('Le montant ne peut pas dépasser le solde restant (6 000 FCFA).'),
-        findsOneWidget,
+        find.byKey(const ValueKey('collect_debt_payment_dialog')),
+        findsNothing,
       );
-
-      // Verify custom button is disabled
-      final button = tester.widget<OutlinedButton>(
-        find.byKey(const ValueKey('collect_custom_payment_button')),
-      );
-      expect(button.onPressed, isNull);
-    });
-
-    testWidgets('tapping close button dismisses dialog without submission', (tester) async {
-      final cubit = CollectDebtPaymentCubit(
-        debt: tDebt,
-        recordDebtPaymentUseCase: mockUseCase,
-      );
-
-      await tester.pumpWidget(buildTestableWidget(cubit: cubit));
-      await tester.tap(find.text('Open Dialog'));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.byKey(const ValueKey('close_collect_dialog_button')));
-      await tester.pumpAndSettle();
-
-      expect(find.byKey(const ValueKey('collect_debt_payment_dialog')), findsNothing);
       verifyZeroInteractions(mockUseCase);
     });
   });

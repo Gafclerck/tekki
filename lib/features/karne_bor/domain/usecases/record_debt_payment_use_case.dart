@@ -41,8 +41,9 @@ class RecordDebtPaymentUseCase {
     }
 
     final newRemainingAmount = debt.remainingAmount - paymentAmount;
-    final newStatus =
-        newRemainingAmount == 0 ? DebtStatus.settled : debt.status;
+    final newStatus = newRemainingAmount == 0
+        ? DebtStatus.settled
+        : debt.status;
 
     final updatedDebt = debt.copyWith(
       remainingAmount: newRemainingAmount,

@@ -59,7 +59,9 @@ class ClosureLocalDataSourceImpl implements ClosureLocalDataSource {
       final result = await query.getSingle();
       return result.read(sumColumn) ?? 0;
     } catch (e) {
-      throw DatabaseException('Failed to calculate prefill debt cash inflow: $e');
+      throw DatabaseException(
+        'Failed to calculate prefill debt cash inflow: $e',
+      );
     }
   }
 
@@ -76,21 +78,19 @@ class ClosureLocalDataSourceImpl implements ClosureLocalDataSource {
             .insert(closure.toCompanion());
 
         // 2. Seal orphan sales created at or before cutoffTimestamp
-        await (database.update(database.sales)
-              ..where(
-                (tbl) =>
-                    tbl.closureId.isNull() &
-                    tbl.recordedAt.isSmallerOrEqualValue(cutoffIso),
-              ))
+        await (database.update(database.sales)..where(
+              (tbl) =>
+                  tbl.closureId.isNull() &
+                  tbl.recordedAt.isSmallerOrEqualValue(cutoffIso),
+            ))
             .write(SalesCompanion(closureId: Value(closure.id)));
 
         // 3. Seal orphan cash debt payments created at or before cutoffTimestamp
-        await (database.update(database.debtPayments)
-              ..where(
-                (tbl) =>
-                    tbl.closureId.isNull() &
-                    tbl.paidAt.isSmallerOrEqualValue(cutoffIso),
-              ))
+        await (database.update(database.debtPayments)..where(
+              (tbl) =>
+                  tbl.closureId.isNull() &
+                  tbl.paidAt.isSmallerOrEqualValue(cutoffIso),
+            ))
             .write(DebtPaymentsCompanion(closureId: Value(closure.id)));
       });
       return closure;
@@ -125,10 +125,8 @@ class ClosureLocalDataSourceImpl implements ClosureLocalDataSource {
     try {
       final query = database.select(database.dailyClosures)
         ..orderBy([
-          (tbl) => OrderingTerm(
-                expression: tbl.createdAt,
-                mode: OrderingMode.desc,
-              ),
+          (tbl) =>
+              OrderingTerm(expression: tbl.createdAt, mode: OrderingMode.desc),
         ])
         ..limit(limit, offset: offset);
       final rows = await query.get();
@@ -147,8 +145,9 @@ class ClosureLocalDataSourceImpl implements ClosureLocalDataSource {
       final prefix = '$yearStr-$monthStr';
 
       final countColumn = database.dailyClosures.id.count();
-      Expression<bool> predicate =
-          database.dailyClosures.closureDate.like('$prefix%');
+      Expression<bool> predicate = database.dailyClosures.closureDate.like(
+        '$prefix%',
+      );
       if (shopId != null && shopId.isNotEmpty) {
         predicate = predicate & database.dailyClosures.shopId.equals(shopId);
       }

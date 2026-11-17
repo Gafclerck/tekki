@@ -37,12 +37,12 @@ final class KarneBorLoaded extends KarneBorState {
 
   @override
   List<Object?> get props => [
-        debts,
-        totalDebt,
-        overdueCount,
-        recoveryVelocity,
-        recoveryRate,
-      ];
+    debts,
+    totalDebt,
+    overdueCount,
+    recoveryVelocity,
+    recoveryRate,
+  ];
 }
 
 final class KarneBorError extends KarneBorState {

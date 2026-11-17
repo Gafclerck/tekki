@@ -1,10 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-enum RecoveryHealthLevel {
-  excellent,
-  moderate,
-  critical,
-}
+enum RecoveryHealthLevel { excellent, moderate, critical }
 
 /// Entité métier représentant la vélocité de recouvrement des créances.
 ///
@@ -39,13 +35,13 @@ class RecoveryVelocityEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        rate,
-        totalDueAmount,
-        totalRecoveredAmount,
-        healthStatus,
-        healthLevel,
-        windowDays,
-      ];
+    rate,
+    totalDueAmount,
+    totalRecoveredAmount,
+    healthStatus,
+    healthLevel,
+    windowDays,
+  ];
 
   @override
   String toString() {

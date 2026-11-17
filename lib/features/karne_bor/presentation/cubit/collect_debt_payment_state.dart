@@ -2,12 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_payment_entity.dart';
 
-enum CollectDebtPaymentStatus {
-  initial,
-  submitting,
-  success,
-  failure,
-}
+enum CollectDebtPaymentStatus { initial, submitting, success, failure }
 
 class CollectDebtPaymentState extends Equatable {
   const CollectDebtPaymentState({
@@ -54,19 +49,20 @@ class CollectDebtPaymentState extends Equatable {
       status: status ?? this.status,
       isFullPayment: isFullPayment ?? this.isFullPayment,
       customAmount: customAmount ?? this.customAmount,
-      errorMessage:
-          clearErrorMessage ? null : (errorMessage ?? this.errorMessage),
+      errorMessage: clearErrorMessage
+          ? null
+          : (errorMessage ?? this.errorMessage),
       createdPayment: createdPayment ?? this.createdPayment,
     );
   }
 
   @override
   List<Object?> get props => [
-        debt,
-        status,
-        isFullPayment,
-        customAmount,
-        errorMessage,
-        createdPayment,
-      ];
+    debt,
+    status,
+    isFullPayment,
+    customAmount,
+    errorMessage,
+    createdPayment,
+  ];
 }

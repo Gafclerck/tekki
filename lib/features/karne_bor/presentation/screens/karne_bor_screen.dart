@@ -15,11 +15,7 @@ import 'package:tekki/features/karne_bor/presentation/widgets/whatsapp_reminder_
 import 'package:tekki/injection_container.dart';
 
 class KarneBorScreen extends StatefulWidget {
-  const KarneBorScreen({
-    super.key,
-    this.karneBorCubit,
-    this.recordDebtCubit,
-  });
+  const KarneBorScreen({super.key, this.karneBorCubit, this.recordDebtCubit});
 
   final KarneBorCubit? karneBorCubit;
   final RecordDebtCubit? recordDebtCubit;
@@ -34,15 +30,16 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
   @override
   void initState() {
     super.initState();
-    _cubit = widget.karneBorCubit ??
+    _cubit =
+        widget.karneBorCubit ??
         (sl.isRegistered<KarneBorCubit>()
             ? sl<KarneBorCubit>()
             : KarneBorCubit(
                 watchActiveDebtsUseCase: sl(),
                 calculateRecoveryVelocityUseCase:
                     sl.isRegistered<CalculateRecoveryVelocityUseCase>()
-                        ? sl<CalculateRecoveryVelocityUseCase>()
-                        : null,
+                    ? sl<CalculateRecoveryVelocityUseCase>()
+                    : null,
               ));
     _cubit.startWatching();
   }
@@ -92,17 +89,11 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
   }
 
   Future<void> _openCollectPaymentDialog(DebtEntity debt) async {
-    await CollectDebtPaymentDialog.show(
-      context: context,
-      debt: debt,
-    );
+    await CollectDebtPaymentDialog.show(context: context, debt: debt);
   }
 
   Future<void> _openReminderSheet(DebtEntity debt) async {
-    await WhatsAppReminderBottomSheet.show(
-      context,
-      debt: debt,
-    );
+    await WhatsAppReminderBottomSheet.show(context, debt: debt);
   }
 
   @override
@@ -200,7 +191,10 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
                 children: [
                   // Summary Banner: Argent Dehors
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -251,10 +245,7 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
                 icon: const Icon(Icons.add_circle_outline, size: 20),
                 label: const Text(
                   '+ Noter une Dette Client',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.accent,
@@ -321,7 +312,10 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
             children: [
               Container(
                 key: const ValueKey('karne_bor_recovery_badge'),
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.secondary.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(12),
@@ -337,7 +331,10 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
               ),
               const SizedBox(height: 6),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.secondary.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(12),
@@ -355,7 +352,10 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
                 const SizedBox(height: 6),
                 Container(
                   key: const ValueKey('karne_bor_overdue_badge'),
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.accentSoft,
                     borderRadius: BorderRadius.circular(12),

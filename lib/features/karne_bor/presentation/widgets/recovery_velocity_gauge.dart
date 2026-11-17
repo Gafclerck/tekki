@@ -10,10 +10,7 @@ import 'package:tekki/features/karne_bor/domain/entities/recovery_velocity_entit
 /// - Indicateur de progression coloré selon le niveau de santé
 /// - Badge de taux de recouvrement et message motivationnel bienveillant
 class RecoveryVelocityGauge extends StatelessWidget {
-  const RecoveryVelocityGauge({
-    super.key,
-    required this.velocity,
-  });
+  const RecoveryVelocityGauge({super.key, required this.velocity});
 
   final RecoveryVelocityEntity velocity;
 
@@ -35,15 +32,14 @@ class RecoveryVelocityGauge extends StatelessWidget {
 
     return Semantics(
       container: true,
-      label: 'Santé du recouvrement : ${velocity.rate} pour cent. ${velocity.healthStatus}',
+      label:
+          'Santé du recouvrement : ${velocity.rate} pour cent. ${velocity.healthStatus}',
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: AppColors.tertiary.withValues(alpha: 0.4),
-          ),
+          border: Border.all(color: AppColors.tertiary.withValues(alpha: 0.4)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -72,7 +68,10 @@ class RecoveryVelocityGauge extends StatelessWidget {
                 ),
                 Container(
                   key: const ValueKey('recovery_velocity_badge'),
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: statusColor.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(12),
@@ -107,8 +106,8 @@ class RecoveryVelocityGauge extends StatelessWidget {
                   velocity.healthLevel == RecoveryHealthLevel.critical
                       ? Icons.warning_amber_rounded
                       : (velocity.healthLevel == RecoveryHealthLevel.moderate
-                          ? Icons.info_outline_rounded
-                          : Icons.check_circle_outline_rounded),
+                            ? Icons.info_outline_rounded
+                            : Icons.check_circle_outline_rounded),
                   size: 14,
                   color: statusColor,
                 ),

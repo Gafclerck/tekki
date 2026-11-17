@@ -10,8 +10,8 @@ class SaleEntity extends Equatable {
     this.closureId,
     this.syncStatus = 'pending',
     DateTime? lastSyncedAt,
-  })  : recordedAt = recordedAt.toUtc(),
-        lastSyncedAt = lastSyncedAt?.toUtc() {
+  }) : recordedAt = recordedAt.toUtc(),
+       lastSyncedAt = lastSyncedAt?.toUtc() {
     if (id.trim().isEmpty) {
       throw ArgumentError('Sale id cannot be empty');
     }
@@ -59,7 +59,9 @@ class SaleEntity extends Equatable {
       recordedAt: recordedAt ?? this.recordedAt,
       closureId: clearClosureId ? null : (closureId ?? this.closureId),
       syncStatus: syncStatus ?? this.syncStatus,
-      lastSyncedAt: clearLastSyncedAt ? null : (lastSyncedAt ?? this.lastSyncedAt),
+      lastSyncedAt: clearLastSyncedAt
+          ? null
+          : (lastSyncedAt ?? this.lastSyncedAt),
     );
   }
 

@@ -22,14 +22,16 @@ class RecordQuickSaleUseCase {
     if (amount <= 0) {
       return const Error(
         ValidationFailure(
-          message: 'Le montant de la vente doit être strictement supérieur à zéro.',
+          message:
+              'Le montant de la vente doit être strictement supérieur à zéro.',
         ),
       );
     }
     if (amount > 999999999) {
       return const Error(
         ValidationFailure(
-          message: 'Le montant de la vente dépasse le plafond autorisé (999 999 999 FCFA).',
+          message:
+              'Le montant de la vente dépasse le plafond autorisé (999 999 999 FCFA).',
         ),
       );
     }

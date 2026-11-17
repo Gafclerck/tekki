@@ -13,10 +13,7 @@ import 'package:tekki/features/sales_and_cash/presentation/widgets/cash_card.dar
 import 'package:tekki/features/sales_and_cash/presentation/widgets/primary_cta_button.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({
-    super.key,
-    this.onCloseCashier,
-  });
+  const HomeScreen({super.key, this.onCloseCashier});
 
   final VoidCallback? onCloseCashier;
 
@@ -38,8 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<CashDashboardBloc, CashDashboardState>(
       listenWhen: (previous, current) {
-        final wasLocked = previous is CashDashboardLoaded && previous.isClosureLocked;
-        final isLocked = current is CashDashboardLoaded && current.isClosureLocked;
+        final wasLocked =
+            previous is CashDashboardLoaded && previous.isClosureLocked;
+        final isLocked =
+            current is CashDashboardLoaded && current.isClosureLocked;
         return !wasLocked && isLocked;
       },
       listener: (context, state) async {
@@ -114,7 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     key: const ValueKey('conseiller_card'),
                     icon: Icons.insights_outlined,
                     title: 'Conseiller Tekki',
-                    subtitle: 'Recommandations & santé financière de votre boutique',
+                    subtitle:
+                        'Recommandations & santé financière de votre boutique',
                     badge: 'Bientôt',
                   ),
                   const SizedBox(height: 16), // Padding above bottom CTA
@@ -139,9 +139,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 isLocked: isClosureLocked,
                 onPressed: canClose
                     ? () {
-                        context
-                            .read<CashDashboardBloc>()
-                            .add(const CloseCashierTapped());
+                        context.read<CashDashboardBloc>().add(
+                          const CloseCashierTapped(),
+                        );
                       }
                     : null,
               ),
