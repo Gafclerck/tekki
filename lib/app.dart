@@ -22,9 +22,7 @@ class _TekkiHomePlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(AppConstants.appName),
-      ),
+      appBar: AppBar(title: const Text(AppConstants.appName)),
       body: const SafeArea(
         child: Center(
           child: Padding(
@@ -52,10 +50,7 @@ class _TekkiHomePlaceholder extends StatelessWidget {
                     Text(
                       'Gestion de caisse et passeport financier pour commercants',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black54,
-                      ),
+                      style: TextStyle(fontSize: 14, color: Colors.black54),
                     ),
                   ],
                 ),
