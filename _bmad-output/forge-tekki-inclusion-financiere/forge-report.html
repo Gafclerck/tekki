@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificat de Décès d'Idée - Tekki Inclusion Financière</title>
+    <style>
+        :root {
+            --bg: #0f1117;
+            --card-bg: #1a1d26;
+            --border: #2d3343;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --accent-red: #da3633;
+            --accent-red-glow: rgba(218, 54, 51, 0.15);
+            --gold: #d29922;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 860px;
+            width: 100%;
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 48px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 20%;
+            right: 5%;
+            transform: rotate(-15deg);
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0.9;
+        }
+
+        header {
+            border-bottom: 2px dashed var(--border);
+            padding-bottom: 24px;
+            margin-bottom: 32px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--accent-red-glow);
+            color: #f85149;
+            border: 1px solid var(--accent-red);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .timestamp {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-family: monospace;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            color: #ffffff;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-left: 4px solid var(--accent-red);
+            padding-left: 12px;
+        }
+
+        .summary-box {
+            background: #14161f;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .summary-box p {
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .summary-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            background: #14161f;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: #1f2430;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-dead {
+            background: rgba(218, 54, 51, 0.2);
+            color: #f85149;
+            border: 1px solid rgba(218, 54, 51, 0.4);
+        }
+
+        .personas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .persona-card {
+            background: #14161f;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .persona-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .persona-icon {
+            font-size: 1.4rem;
+        }
+
+        .persona-name {
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 0.95rem;
+        }
+
+        .persona-role {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .persona-quote {
+            font-size: 0.85rem;
+            color: #c9d1d9;
+            font-style: italic;
+            border-left: 2px solid var(--border);
+            padding-left: 8px;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .signature {
+            font-style: italic;
+            color: #c9d1d9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- SVG STAMP KILLED -->
+        <div class="watermark">
+            <svg width="240" height="120" viewBox="0 0 240 120" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="5" width="230" height="110" rx="8" fill="none" stroke="#da3633" stroke-width="6" stroke-dasharray="10 4" />
+                <rect x="12" y="12" width="216" height="96" rx="4" fill="rgba(218, 54, 51, 0.08)" stroke="#da3633" stroke-width="2" />
+                <text x="120" y="58" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="34" fill="#da3633" text-anchor="middle" letter-spacing="4">KILLED</text>
+                <text x="120" y="86" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="12" fill="#f85149" text-anchor="middle" letter-spacing="1">BMAD FORGE OUTCOME</text>
+            </svg>
+        </div>
+
+        <header>
+            <div class="header-top">
+                <span class="badge">Idea Death Certificate</span>
+                <span class="timestamp">Session ID: forge-tekki-inclusion-financiere</span>
+            </div>
+            <h1>Inclusion Financière des Commerçants Informels</h1>
+            <div class="subtitle">Projet : Tekki (Sénégal) • Objectif initial : « Test whether it holds up »</div>
+        </header>
+
+        <div class="section">
+            <h2>Verdict & Constat</h2>
+            <div class="summary-box">
+                <p><strong>Verdict de la Forge :</strong> <span class="status-pill status-dead">MORT EN L'ÉTAT (KILLED)</span></p>
+                <p><strong>Cause du décès :</strong> L'idée ne tient pas ses fondations dans sa modélisation actuelle. Les quatre piliers indispensables à la viabilité du concept (intégrité anti-fraude, couverture du risque de crédit, adoption face au papier et modèle économique) se sont effondrés sous l'épreuve sans qu'aucune ligne de défense ni aucun pivot n'aient été engagés.</p>
+                <p><strong>Bénéfice immédiat :</strong> Arrêt net avant allocation de ressources, capital de développement ou exposition réglementaire.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Autopsie des 4 Piliers Critiques</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pilier Testé</th>
+                        <th>Faiblesse Mortelle</th>
+                        <th>Arbitrage Utilisateur</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1. Intégrité & Anti-Fraude</strong></td>
+                        <td>30 jours de saisie purement déclarative ouvrant 50 000 FCFA d'avance sans flux bancarisé. Modèle vulnérable au siphonnage délibéré par cartes SIM jetables.</td>
+                        <td><span class="status-pill status-dead">Rejet des filtres</span> (« on laisse comme ça »)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2. Risque de Prêt & BCEAO</strong></td>
+                        <td>Aucun porteur de risque défini (Tekki vs IMF). Prêt direct illégal sans agrément bancaire, ou impossibilité pour une IMF de prêter sans garantie de première perte.</td>
+                        <td><span class="status-pill status-dead">Non résolu</span> (« on continue comme ça »)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3. Adoption Terrain (*Sutura*)</strong></td>
+                        <td>30 secondes sur smartphone en pleine heure de pointe contre 1,5s au crayon sur cahier, doublé de la peur de violer la discrétion sociale de la dette locale.</td>
+                        <td><span class="status-pill status-dead">Esquivé</span> (« on passe on continue »)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4. Modèle de Revenus</strong></td>
+                        <td>Zéro flux de monétisation. Pas de marge Mobile Money, pas de SaaS boutiquier, pas de commission IMF. Coûts réels pour chiffre d'affaires nul.</td>
+                        <td><span class="status-pill status-dead">Inexistant</span> (« on passe »)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Options de Sauvetage Rejetées</h2>
+            <div class="summary-box">
+                <p>• <strong>Paiement direct en nature au grossiste partenaire :</strong> Rejeté. Le crédit reste conçu comme un déboursement direct de cash.</p>
+                <p>• <strong>Caution par épargne liquide bloquée (Natt) :</strong> Rejeté. Aucun nantissement préalable exigé du commerçant.</p>
+                <p>• <strong>Validation croisée par tiers obligatoires :</strong> Rejeté. La saisie déclarative isolée a été maintenue comme seul critère d'éligibilité.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Personas & Voix Ayant Participé à l'Épreuve</h2>
+            <div class="personas-grid">
+                <div class="persona-card">
+                    <div class="persona-header">
+                        <span class="persona-icon">📋</span>
+                        <div>
+                            <div class="persona-name">John</div>
+                            <div class="persona-role">Product Manager (BMad)</div>
+                        </div>
+                    </div>
+                    <div class="persona-quote">« 30 jours de saisie pour 50k FCFA sans preuve de flux réel, ce n'est pas un filtre de solvabilité, c'est un tutoriel de fraude. »</div>
+                </div>
+
+                <div class="persona-card">
+                    <div class="persona-header">
+                        <span class="persona-icon">🏦</span>
+                        <div>
+                            <div class="persona-name">Ousmane Diop</div>
+                            <div class="persona-role">Directeur des Risques IMF (Dakar)</div>
+                        </div>
+                    </div>
+                    <div class="persona-quote">« Aucune institution régulée n'inscrira ces créances à son bilan sans couverture de première perte à 100 %. »</div>
+                </div>
+
+                <div class="persona-card">
+                    <div class="persona-header">
+                        <span class="persona-icon">🎨</span>
+                        <div>
+                            <div class="persona-name">Sally</div>
+                            <div class="persona-role">UX Designer (BMad)</div>
+                        </div>
+                    </div>
+                    <div class="persona-quote">« Face au rush de 19h30 au comptoir et à la vitesse du bic, l'application est abandonnée dès le troisième jour. »</div>
+                </div>
+
+                <div class="persona-card">
+                    <div class="persona-header">
+                        <span class="persona-icon">🏪</span>
+                        <div>
+                            <div class="persona-name">Moussa Ba</div>
+                            <div class="persona-role">Boutiquier (Gueule Tapée)</div>
+                        </div>
+                    </div>
+                    <div class="persona-quote">« La dette de mon voisin, c'est la sutura. Je ne mettrai jamais ses dettes dans un smartphone visible par des banques. »</div>
+                </div>
+
+                <div class="persona-card">
+                    <div class="persona-header">
+                        <span class="persona-icon">⚖️</span>
+                        <div>
+                            <div class="persona-name">Me Fatou Kiné Ndiaye</div>
+                            <div class="persona-role">Juriste Régulation BCEAO</div>
+                        </div>
+                    </div>
+                    <div class="persona-quote">« Distribuer du crédit à titre habituel sur fonds propres sans agrément bancaire est illégal dans l'espace UMOA. »</div>
+                </div>
+
+                <div class="persona-card">
+                    <div class="persona-header">
+                        <span class="persona-icon">💼</span>
+                        <div>
+                            <div class="persona-name">Cheikh Tidiane Sy</div>
+                            <div class="persona-role">VC FinTech Afrique de l'Ouest</div>
+                        </div>
+                    </div>
+                    <div class="persona-quote">« La donnée déclarative informelle a une valeur marchande nulle. Sans flux de revenus, le burn-rate est mortel. »</div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div>Généré par <strong>BMad Forge Idea</strong></div>
+            <div class="signature">Session clôturée & archivée</div>
+        </footer>
+    </div>
+</body>
+</html>

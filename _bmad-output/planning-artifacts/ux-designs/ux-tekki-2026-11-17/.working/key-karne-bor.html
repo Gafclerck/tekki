@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tekki - Écran Clé : Karné Bor (Dettes)</title>
+  <style>
+    /*
+      Gouverné par DESIGN.md et EXPERIENCE.md (Surface Karné Bor, Key Flows: Dettes)
+      Palette stricte:
+      primary: #133E59 | secondary: #387387 | tertiary: #8CB8C3
+      accent: #FF7A41 | accent-soft: #FFAE90 | background: #FEECEA | surface: #FFFFFF
+    */
+    :root {
+      --primary: #133E59;
+      --secondary: #387387;
+      --tertiary: #8CB8C3;
+      --accent: #FF7A41;
+      --accent-soft: #FFAE90;
+      --background: #FEECEA;
+      --surface: #FFFFFF;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-family);
+      background-color: #EDE4E0;
+      display: flex;
+      justify-content: center;
+      padding: 30px 10px;
+      color: var(--primary);
+    }
+
+    .phone-container {
+      width: 360px;
+      height: 720px;
+      background: var(--background);
+      border-radius: 40px;
+      border: 10px solid #1E222B;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .status-bar {
+      height: 28px;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .app-header {
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .app-header h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .app-header span {
+      font-size: 12px;
+      color: var(--secondary);
+    }
+
+    .content-scroll {
+      flex: 1;
+      padding: 10px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+    }
+
+    /* BANDEAU SYNTHÈSE CRÉANCES */
+    .summary-card {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 14px 18px;
+      border: 1px solid var(--tertiary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .summary-val {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .summary-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--secondary);
+      text-transform: uppercase;
+    }
+
+    .recovery-rate {
+      background: rgba(56, 115, 135, 0.12);
+      color: var(--secondary);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 12px;
+    }
+
+    /* LISTE DES CRÉANCES CLIENTS */
+    .debt-item {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 12px 14px;
+      border: 1px solid var(--tertiary);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .debt-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .customer-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .debt-amount {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .debt-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--secondary);
+    }
+
+    .badge-late {
+      background: var(--accent-soft);
+      color: var(--primary);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .debt-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .btn-relance-wa {
+      flex: 1;
+      background: var(--surface);
+      border: 1.5px solid var(--secondary);
+      color: var(--secondary);
+      border-radius: 8px;
+      padding: 7px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-encaisser {
+      flex: 1;
+      background: var(--secondary);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 8px;
+      padding: 7px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* BOUTON FOCAL AJOUTER DETTE */
+    .cta-add-debt {
+      background: var(--accent);
+      color: #FFFFFF;
+      font-size: 15px;
+      font-weight: 800;
+      border: none;
+      border-radius: 16px;
+      padding: 15px;
+      width: 100%;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(255, 122, 65, 0.35);
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .bottom-nav {
+      height: 60px;
+      background: var(--surface);
+      border-top: 1px solid var(--tertiary);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--secondary);
+      text-decoration: none;
+    }
+
+    .nav-item.active {
+      color: var(--primary);
+    }
+
+    .nav-item.active .nav-icon {
+      background: var(--accent-soft);
+      padding: 2px 14px;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="phone-container">
+    <div class="status-bar">
+      <span>16:20</span>
+      <span>●●● 4G 🔋 88%</span>
+    </div>
+
+    <div class="app-header">
+      <div>
+        <span>Carnet Numérique</span>
+        <h2>Karné Bor</h2>
+      </div>
+      <div style="font-size: 12px; font-weight: 700; color: var(--secondary);">4 débiteurs</div>
+    </div>
+
+    <div class="content-scroll">
+
+      <div class="summary-card">
+        <div>
+          <div class="summary-label">Argent dehors</div>
+          <div class="summary-val">38 000 FCFA</div>
+        </div>
+        <div class="recovery-rate">Recouvrement 92%</div>
+      </div>
+
+      <!-- CARTE CRÉANCE 1 : URGENTE (RETARD) -->
+      <div class="debt-item" style="border-left: 4px solid var(--accent);">
+        <div class="debt-top">
+          <span class="customer-name">Modou Fall (Tailleur)</span>
+          <span class="debt-amount">15 000 F</span>
+        </div>
+        <div class="debt-meta">
+          <span>Échéance dépassée de 4 jours</span>
+          <span class="badge-late">⚠️ Retard</span>
+        </div>
+        <div class="debt-actions">
+          <button class="btn-relance-wa">💬 Relance WhatsApp</button>
+          <button class="btn-encaisser">✓ Encaisser</button>
+        </div>
+      </div>
+
+      <!-- CARTE CRÉANCE 2 : EN COURS NORMALE -->
+      <div class="debt-item">
+        <div class="debt-top">
+          <span class="customer-name">Fatou Kiné</span>
+          <span class="debt-amount">5 000 F</span>
+        </div>
+        <div class="debt-meta">
+          <span>Échéance : Vendredi prochain</span>
+          <span style="color: var(--secondary);">À jour</span>
+        </div>
+        <div class="debt-actions">
+          <button class="btn-relance-wa">💬 Message</button>
+          <button class="btn-encaisser">✓ Encaisser</button>
+        </div>
+      </div>
+
+      <!-- CARTE CRÉANCE 3 : PETIT CRÉDIT DU JOUR -->
+      <div class="debt-item">
+        <div class="debt-top">
+          <span class="customer-name">Ibrahima Ndiaye</span>
+          <span class="debt-amount">2 500 F</span>
+        </div>
+        <div class="debt-meta">
+          <span>Créé ce matin · Sucre et thé</span>
+          <span style="color: var(--secondary);">À jour</span>
+        </div>
+        <div class="debt-actions">
+          <button class="btn-relance-wa">💬 Message</button>
+          <button class="btn-encaisser">✓ Encaisser</button>
+        </div>
+      </div>
+
+      <!-- BOUTON FOCAL AJOUTER DETTE CLIENT -->
+      <button class="cta-add-debt">
+        <span>+ Noter une Dette Client</span>
+      </button>
+
+    </div>
+
+    <nav class="bottom-nav">
+      <a href="#" class="nav-item">
+        <span class="nav-icon">🏠</span>
+        <span>Caisse</span>
+      </a>
+      <a href="#" class="nav-item active">
+        <span class="nav-icon">📖</span>
+        <span>Karné Bor</span>
+      </a>
+      <a href="#" class="nav-item">
+        <span class="nav-icon">🛡️</span>
+        <span>Passeport</span>
+      </a>
+      <a href="#" class="nav-item">
+        <span class="nav-icon">🎧</span>
+        <span>Conseils</span>
+      </a>
+    </nav>
+  </div>
+
+</body>
+</html>

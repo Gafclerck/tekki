@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tekki UX - Directions de Design Visuel (Palette Stricte)</title>
+  <style>
+    /*
+      PALETTE STRICTE:
+      --primary: #133E59
+      --secondary: #387387
+      --tertiary: #8CB8C3
+      --accent: #FF7A41
+      --accent-soft: #FFAE90
+      --background: #FEECEA
+      --surface: #FFFFFF
+    */
+    :root {
+      --primary: #133E59;
+      --secondary: #387387;
+      --tertiary: #8CB8C3;
+      --accent: #FF7A41;
+      --accent-soft: #FFAE90;
+      --background: #FEECEA;
+      --surface: #FFFFFF;
+      --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-stack);
+      background-color: #EDE4E0;
+      color: var(--primary);
+      padding: 30px 20px;
+    }
+
+    header.meta-header {
+      max-width: 900px;
+      margin: 0 auto 30px auto;
+      text-align: center;
+    }
+
+    header.meta-header h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    header.meta-header p {
+      font-size: 15px;
+      color: var(--secondary);
+    }
+
+    .palette-strip {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    .swatch {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #FFFFFF;
+      padding: 6px 10px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .swatch-color {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 30px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .direction-card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(19, 62, 89, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .direction-info {
+      width: 100%;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .direction-badge {
+      display: inline-block;
+      background: var(--background);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+      border: 1px solid var(--tertiary);
+    }
+
+    .direction-info h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .direction-info p {
+      font-size: 13px;
+      color: var(--secondary);
+      line-height: 1.4;
+    }
+
+    /* MOCKUP DU SMARTPHONE (Cadre mobile Android) */
+    .phone-frame {
+      width: 320px;
+      height: 640px;
+      background: var(--background);
+      border-radius: 36px;
+      border: 8px solid #2B2F3A;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* BARRE D'ÉTAT ANDROID */
+    .status-bar {
+      height: 24px;
+      padding: 0 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--primary);
+      background: transparent;
+    }
+
+    /* CONTENU DE L'ÉCRAN */
+    .screen-content {
+      flex: 1;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+    }
+
+    /* NAVIGATION BAS DE PAGE */
+    .bottom-nav {
+      height: 56px;
+      background: var(--surface);
+      border-top: 1px solid var(--tertiary);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 6px;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--secondary);
+      text-decoration: none;
+    }
+
+    .nav-item.active {
+      color: var(--primary);
+    }
+
+    .nav-item.active .nav-icon {
+      background: var(--accent-soft);
+      border-radius: 12px;
+      padding: 3px 12px;
+    }
+
+    .nav-icon {
+      font-size: 16px;
+    }
+
+    /* COMPOSANTS UI DE LA DIRECTION A (Aérée & Amicale) */
+    .header-greeting {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .greeting-text h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .greeting-text span {
+      font-size: 12px;
+      color: var(--secondary);
+    }
+
+    .avatar-btn {
+      width: 38px;
+      height: 38px;
+      background: var(--surface);
+      border: 1.5px solid var(--tertiary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--primary);
+    }
+
+    /* BANNIÈRE CONSEILLER AUDIO */
+    .audio-capsule-card {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 2px 6px rgba(19,62,89,0.05);
+    }
+
+    .play-btn {
+      width: 36px;
+      height: 36px;
+      background: var(--accent);
+      color: #FFFFFF;
+      border-radius: 50%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .capsule-texts {
+      flex: 1;
+    }
+
+    .capsule-badge {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .capsule-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .capsule-lang {
+      font-size: 10px;
+      color: var(--secondary);
+    }
+
+    /* CARTE PASSEPORT TEASER */
+    .passport-card {
+      background: var(--primary);
+      color: #FFFFFF;
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(19, 62, 89, 0.2);
+    }
+
+    .passport-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--tertiary);
+    }
+
+    .passport-score-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    .score-big {
+      font-size: 26px;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+
+    .score-status {
+      background: rgba(140, 184, 195, 0.25);
+      color: #FFFFFF;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 10px;
+      border: 1px solid var(--tertiary);
+    }
+
+    .passport-detail {
+      font-size: 11px;
+      color: var(--background);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ACTION PRINCIPALE FOCALE UNIQUE (BOUTON ORANGE ACCENT) */
+    .cta-hero-btn {
+      background: var(--accent);
+      color: #FFFFFF;
+      font-size: 15px;
+      font-weight: 800;
+      border: none;
+      border-radius: 14px;
+      padding: 14px 18px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 10px rgba(255, 122, 65, 0.35);
+      cursor: pointer;
+    }
+
+    /* GRILLE SIMPLIFIÉE À FAIBLE DENSITÉ */
+    .action-tiles-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .tile-card {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 12px;
+      border: 1px solid var(--tertiary);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .tile-icon {
+      font-size: 20px;
+      color: var(--secondary);
+    }
+
+    .tile-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .tile-value {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .tile-sub {
+      font-size: 10px;
+      color: var(--secondary);
+    }
+
+    /* DIRECTION B : VARIANTE SURFACES & BOUTONS ÉPURÉS */
+    .direction-b .phone-frame {
+      background: #FFFFFF;
+    }
+
+    .direction-b .hero-card-navy {
+      background: var(--background);
+      border: 1.5px solid var(--tertiary);
+      border-radius: 16px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .direction-b .hero-card-navy .amount {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 4px 0;
+    }
+
+    .direction-b .sub-label {
+      font-size: 11px;
+      color: var(--secondary);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="meta-header">
+    <h1>Tekki — Directions d'Expérience & Design Visuel</h1>
+    <p>Validation ergonomique du support mobile Android, de la faible densité cognitive et de la palette stricte.</p>
+    
+    <div class="palette-strip">
+      <div class="swatch"><div class="swatch-color" style="background: #133E59;"></div> primary (#133E59)</div>
+      <div class="swatch"><div class="swatch-color" style="background: #387387;"></div> secondary (#387387)</div>
+      <div class="swatch"><div class="swatch-color" style="background: #8CB8C3;"></div> tertiary (#8CB8C3)</div>
+      <div class="swatch"><div class="swatch-color" style="background: #FF7A41;"></div> accent (#FF7A41)</div>
+      <div class="swatch"><div class="swatch-color" style="background: #FFAE90;"></div> accent-soft (#FFAE90)</div>
+      <div class="swatch"><div class="swatch-color" style="background: #FEECEA;"></div> background (#FEECEA)</div>
+      <div class="swatch"><div class="swatch-color" style="background: #FFFFFF;"></div> surface (#FFFFFF)</div>
+    </div>
+  </header>
+
+  <main class="comparison-grid">
+
+    <!-- DIRECTION A : Chaleureuse & Guidée (Fond Blush #FEECEA) -->
+    <div class="direction-card">
+      <div class="direction-info">
+        <span class="direction-badge">Direction A · Chaleureuse & Guidée</span>
+        <h2>Ambiance Sérénité & Clarté</h2>
+        <p>Fond d'application chaleureux (blush), cartes blanches aérées, bouton CTA focal orange unique pour la clôture express, et capsule audio en tête.</p>
+      </div>
+
+      <div class="phone-frame">
+        <div class="status-bar">
+          <span>19:42</span>
+          <span>●●● 4G 🔋 85%</span>
+        </div>
+
+        <div class="screen-content">
+          <!-- Entête profil & Salutation -->
+          <div class="header-greeting">
+            <div class="greeting-text">
+              <span>Dalal ak jàmm,</span>
+              <h3>Moussa Diop</h3>
+            </div>
+            <div class="avatar-btn">MD</div>
+          </div>
+
+          <!-- Capsule Audio Conseiller Tekki -->
+          <div class="audio-capsule-card">
+            <button class="play-btn">▶</button>
+            <div class="capsule-texts">
+              <div class="capsule-badge">Conseil du jour</div>
+              <div class="capsule-title">Gérer les avances de stock</div>
+              <div class="capsule-lang">🔊 Wolof (38s) · Tape pour écouter</div>
+            </div>
+          </div>
+
+          <!-- Carte Score Passeport Financier -->
+          <div class="passport-card">
+            <div class="passport-header">
+              <span>PASSEPORT FINANCIER</span>
+              <span>Niveau Bronze</span>
+            </div>
+            <div class="passport-score-row">
+              <span class="score-big">82 <span style="font-size: 14px; font-weight: normal; color: var(--tertiary);">/100</span></span>
+              <span class="score-status">● Solvabilité Élevée</span>
+            </div>
+            <div class="passport-detail">
+              <span>🛡️ 21 jours de clôture consécutifs</span>
+            </div>
+          </div>
+
+          <!-- Grille faible densité : Karné Bor & Trésorerie -->
+          <div class="action-tiles-grid">
+            <div class="tile-card">
+              <span class="tile-icon">📖</span>
+              <span class="tile-title">Karné Bor</span>
+              <span class="tile-value">45 000 F</span>
+              <span class="tile-sub">3 clients dehors</span>
+            </div>
+            <div class="tile-card">
+              <span class="tile-icon">💰</span>
+              <span class="tile-title">Caisse estimée</span>
+              <span class="tile-value">128 500 F</span>
+              <span class="tile-sub">Aujourd'hui</span>
+            </div>
+          </div>
+
+          <!-- Bouton Focal Principal Unique (Orange Accent) -->
+          <button class="cta-hero-btn">
+            <span>🔒 Clôturer la caisse du soir</span>
+          </button>
+        </div>
+
+        <!-- Navigation Android -->
+        <nav class="bottom-nav">
+          <a href="#" class="nav-item active">
+            <span class="nav-icon">🏠</span>
+            <span>Accueil</span>
+          </a>
+          <a href="#" class="nav-item">
+            <span class="nav-icon">📖</span>
+            <span>Karné Bor</span>
+          </a>
+          <a href="#" class="nav-item">
+            <span class="nav-icon">🛡️</span>
+            <span>Passeport</span>
+          </a>
+          <a href="#" class="nav-item">
+            <span class="nav-icon">🎧</span>
+            <span>Conseiller</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- DIRECTION B : Cartes Structurées & Focus Action -->
+    <div class="direction-card direction-b">
+      <div class="direction-info">
+        <span class="direction-badge">Direction B · Épurée & Contrastée</span>
+        <h2>Focus Opérationnel & Grands Blocs</h2>
+        <p>Fond blanc net, blocs d'actions larges et texturés en blush, chiffres de caisse agrandis pour une lecture instantanée au comptoir.</p>
+      </div>
+
+      <div class="phone-frame">
+        <div class="status-bar">
+          <span>19:42</span>
+          <span>●●● 4G 🔋 85%</span>
+        </div>
+
+        <div class="screen-content">
+          <div class="header-greeting">
+            <div class="greeting-text">
+              <span>Boutique Moussa</span>
+              <h3 style="color: var(--primary);">Tableau de Caisse</h3>
+            </div>
+            <div class="avatar-btn" style="background: var(--background);">MD</div>
+          </div>
+
+          <!-- Grand Bloc Caisse du Jour -->
+          <div class="hero-card-navy">
+            <div class="sub-label">TOTAL ENCAISSÉ AUJOURD'HUI</div>
+            <div class="amount">128 500 FCFA</div>
+            <div style="font-size: 11px; color: var(--secondary);">18 ventes déclarées · 0 litige</div>
+          </div>
+
+          <!-- Karné Bor Carte Large -->
+          <div style="background: var(--surface); border: 1.5px solid var(--tertiary); border-radius: 14px; padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 11px; font-weight: 700; color: var(--secondary);">CRÉDITS CLIENTS (KARNÉ BOR)</div>
+              <div style="font-size: 16px; font-weight: 800; color: var(--primary);">45 000 FCFA</div>
+              <div style="font-size: 10px; color: var(--accent);">⚠️ 1 créance en retard (M. Sow)</div>
+            </div>
+            <button style="background: var(--secondary); color: #fff; border: none; padding: 8px 12px; border-radius: 8px; font-size: 11px; font-weight: 700;">Voir dettes</button>
+          </div>
+
+          <!-- Capsule Audio compacte -->
+          <div class="audio-capsule-card" style="border-left-color: var(--secondary);">
+            <button class="play-btn" style="background: var(--secondary);">▶</button>
+            <div class="capsule-texts">
+              <div class="capsule-badge" style="color: var(--secondary);">Conseil audio Wolof</div>
+              <div class="capsule-title">Anticiper le réassort de riz</div>
+            </div>
+          </div>
+
+          <!-- Bouton Focal Unique -->
+          <button class="cta-hero-btn" style="margin-top: auto;">
+            <span>⚡ Faire ma Clôture (< 30s)</span>
+          </button>
+        </div>
+
+        <!-- Navigation Android -->
+        <nav class="bottom-nav">
+          <a href="#" class="nav-item active">
+            <span class="nav-icon">🏠</span>
+            <span>Accueil</span>
+          </a>
+          <a href="#" class="nav-item">
+            <span class="nav-icon">📖</span>
+            <span>Karné Bor</span>
+          </a>
+          <a href="#" class="nav-item">
+            <span class="nav-icon">🛡️</span>
+            <span>Passeport</span>
+          </a>
+          <a href="#" class="nav-item">
+            <span class="nav-icon">⚙️</span>
+            <span>Compte</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+
+  </main>
+
+</body>
+</html>
