@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:drift/drift.dart';
 import 'package:tekki/core/database/app_database.dart';
 import 'package:tekki/core/errors/exceptions.dart';
@@ -10,6 +12,7 @@ import 'package:tekki/features/karne_bor/domain/entities/debt_status.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debtor_entity.dart';
 import 'package:tekki/features/karne_bor/domain/entities/recovery_velocity_entity.dart';
 import 'package:tekki/features/karne_bor/domain/usecases/calculate_recovery_velocity_use_case.dart';
+import 'package:uuid/uuid.dart';
 
 abstract class DebtLocalDataSource {
   Future<void> insertDebtor(DebtorEntity debtor);
@@ -49,6 +52,7 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
   DebtLocalDataSourceImpl({required this.database});
 
   final AppDatabase database;
+  static const _uuid = Uuid();
 
   @override
   Future<void> insertDebtor(DebtorEntity debtor) async {
@@ -163,7 +167,23 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
   Future<void> insertDebt(DebtEntity debt) async {
     try {
       final companion = debt.toCompanion();
-      await database.into(database.debts).insert(companion);
+      final nowUtcIso = DateTime.now().toUtc().toIso8601String();
+      final payloadJson = jsonEncode(DebtModel.fromEntity(debt).toJson());
+      await database.transaction(() async {
+        await database.into(database.debts).insert(companion);
+        await database
+            .into(database.syncOutbox)
+            .insert(
+              SyncOutboxCompanion.insert(
+                clientEventId: _uuid.v4(),
+                eventType: 'DEBT_CREATED',
+                targetTable: 'debts',
+                targetId: debt.id,
+                payloadJson: payloadJson,
+                createdAt: nowUtcIso,
+              ),
+            );
+      });
     } catch (e) {
       throw DatabaseException('Failed to insert debt: $e');
     }
@@ -176,13 +196,40 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
     bool isNewDebtor = true,
   }) async {
     try {
+      final nowUtcIso = DateTime.now().toUtc().toIso8601String();
       await database.transaction(() async {
         if (isNewDebtor) {
           final debtorCompanion = debtor.toCompanion();
           await database.into(database.debtors).insert(debtorCompanion);
+          await database
+              .into(database.syncOutbox)
+              .insert(
+                SyncOutboxCompanion.insert(
+                  clientEventId: _uuid.v4(),
+                  eventType: 'DEBTOR_CREATED',
+                  targetTable: 'debtors',
+                  targetId: debtor.id,
+                  payloadJson: jsonEncode(
+                    DebtorModel.fromEntity(debtor).toJson(),
+                  ),
+                  createdAt: nowUtcIso,
+                ),
+              );
         }
         final debtCompanion = debt.toCompanion();
         await database.into(database.debts).insert(debtCompanion);
+        await database
+            .into(database.syncOutbox)
+            .insert(
+              SyncOutboxCompanion.insert(
+                clientEventId: _uuid.v4(),
+                eventType: 'DEBT_CREATED',
+                targetTable: 'debts',
+                targetId: debt.id,
+                payloadJson: jsonEncode(DebtModel.fromEntity(debt).toJson()),
+                createdAt: nowUtcIso,
+              ),
+            );
       });
     } catch (e) {
       throw DatabaseException(
@@ -352,6 +399,7 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
     required DebtEntity updatedDebt,
   }) async {
     try {
+      final nowUtcIso = DateTime.now().toUtc().toIso8601String();
       await database.transaction(() async {
         final paymentCompanion = DebtPaymentModel.fromEntity(
           payment,
@@ -366,6 +414,38 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
             status: Value(updatedDebt.status.toValue()),
           ),
         );
+
+        // Outbox event for debt payment
+        await database
+            .into(database.syncOutbox)
+            .insert(
+              SyncOutboxCompanion.insert(
+                clientEventId: _uuid.v4(),
+                eventType: 'DEBT_PAYMENT_RECORDED',
+                targetTable: 'debt_payments',
+                targetId: payment.id,
+                payloadJson: jsonEncode(
+                  DebtPaymentModel.fromEntity(payment).toJson(),
+                ),
+                createdAt: nowUtcIso,
+              ),
+            );
+
+        // Outbox event for debt updated state
+        await database
+            .into(database.syncOutbox)
+            .insert(
+              SyncOutboxCompanion.insert(
+                clientEventId: _uuid.v4(),
+                eventType: 'DEBT_UPDATED',
+                targetTable: 'debts',
+                targetId: updatedDebt.id,
+                payloadJson: jsonEncode(
+                  DebtModel.fromEntity(updatedDebt).toJson(),
+                ),
+                createdAt: nowUtcIso,
+              ),
+            );
       });
     } catch (e) {
       throw DatabaseException('Failed to record debt payment atomically: $e');

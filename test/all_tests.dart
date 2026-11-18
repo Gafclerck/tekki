@@ -8,6 +8,7 @@ import 'core/crypto/secure_key_storage_test.dart' as secure_key_storage_test;
 import 'core/database/app_database_test.dart' as app_database_test;
 import 'core/database/daily_closures_table_test.dart'
     as daily_closures_table_test;
+import 'core/database/sync_outbox_table_test.dart' as sync_outbox_table_test;
 import 'core/network/network_info_test.dart' as network_info_test;
 import 'core/services/audio_service_test.dart' as audio_service_test;
 import 'core/services/brightness_service_test.dart' as brightness_service_test;
@@ -121,6 +122,22 @@ import 'features/sales_and_cash/presentation/widgets/primary_cta_button_test.dar
 import 'features/sales_and_cash/presentation/widgets/quick_sale_bottom_sheet_test.dart'
     as quick_sale_bottom_sheet_test;
 
+// Features - Sync
+import 'features/sync/data/datasources/outbox_local_data_source_test.dart'
+    as outbox_local_data_source_test;
+import 'features/sync/data/datasources/remote_sync_api_client_test.dart'
+    as remote_sync_api_client_test;
+import 'features/sync/data/repositories/sync_repository_impl_test.dart'
+    as sync_repository_impl_test;
+import 'features/sync/data/services/sync_orchestrator_test.dart'
+    as sync_orchestrator_test;
+import 'features/sync/domain/usecases/process_outbox_queue_use_case_test.dart'
+    as process_outbox_queue_use_case_test;
+import 'features/sync/presentation/cubit/sync_cubit_test.dart'
+    as sync_cubit_test;
+import 'features/sync/presentation/widgets/sync_status_indicator_test.dart'
+    as sync_status_indicator_test;
+
 // General Widget Test
 import 'widget_test.dart' as widget_test;
 
@@ -133,6 +150,7 @@ void main() {
       secure_key_storage_test.main();
       app_database_test.main();
       daily_closures_table_test.main();
+      sync_outbox_table_test.main();
       network_info_test.main();
       audio_service_test.main();
       brightness_service_test.main();
@@ -207,6 +225,17 @@ void main() {
       cash_card_test.main();
       primary_cta_button_test.main();
       quick_sale_bottom_sheet_test.main();
+    });
+
+    // Features - Sync
+    group('Features: Sync Tests', () {
+      outbox_local_data_source_test.main();
+      remote_sync_api_client_test.main();
+      sync_repository_impl_test.main();
+      sync_orchestrator_test.main();
+      process_outbox_queue_use_case_test.main();
+      sync_cubit_test.main();
+      sync_status_indicator_test.main();
     });
 
     // App Widget Test

@@ -18,6 +18,7 @@ import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_s
 import 'package:tekki/features/sales_and_cash/presentation/screens/express_closure_screen.dart';
 import 'package:tekki/features/sales_and_cash/presentation/widgets/cash_card.dart';
 import 'package:tekki/features/sales_and_cash/presentation/widgets/primary_cta_button.dart';
+import 'package:tekki/features/sync/presentation/widgets/sync_status_indicator.dart';
 import 'package:tekki/injection_container.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -246,36 +247,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.tertiary, width: 1),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 8,
-                  height: 8,
-                  decoration: const BoxDecoration(
-                    color: AppColors.success,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-                const SizedBox(width: 6),
-                const Text(
-                  '100% Hors-ligne',
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.secondary,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          const SyncStatusIndicator(),
         ],
       ),
     );

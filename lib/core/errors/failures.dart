@@ -36,3 +36,7 @@ class ServiceFailure extends Failure {
 class AudioFailure extends Failure {
   const AudioFailure({required super.message});
 }
+
+class SyncFailure extends Failure {
+  const SyncFailure({required super.message});
+}

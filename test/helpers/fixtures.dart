@@ -14,6 +14,8 @@ import 'package:tekki/features/sales_and_cash/domain/entities/daily_closure_enti
 import 'package:tekki/features/sales_and_cash/domain/entities/payment_method.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/sale_entity.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/shop_entity.dart';
+import 'package:tekki/features/sync/domain/entities/outbox_event_entity.dart';
+import 'package:tekki/features/sync/domain/entities/sync_status_summary_entity.dart';
 
 ShopEntity createTestShop({
   String id = 'test-shop-1',
@@ -294,5 +296,49 @@ AudioCapsuleEntity createTestAudioCapsule({
     isWolofAsset: isWolofAsset,
     isFrenchAsset: isFrenchAsset,
     summary: summary,
+  );
+}
+
+OutboxEventEntity createTestOutboxEvent({
+  String clientEventId = 'event-1',
+  String eventType = 'SALE_CREATED',
+  String targetTable = 'sales',
+  String targetId = 'sale-1',
+  String payloadJson = '{"id":"sale-1","amount":5000}',
+  int retryCount = 0,
+  String status = 'PENDING',
+  DateTime? createdAt,
+  DateTime? lastAttemptAt,
+  String? errorMessage,
+}) {
+  return OutboxEventEntity(
+    clientEventId: clientEventId,
+    eventType: eventType,
+    targetTable: targetTable,
+    targetId: targetId,
+    payloadJson: payloadJson,
+    retryCount: retryCount,
+    status: status,
+    createdAt: createdAt ?? DateTime.utc(2026, 11, 18, 10, 0),
+    lastAttemptAt: lastAttemptAt,
+    errorMessage: errorMessage,
+  );
+}
+
+SyncStatusSummaryEntity createTestSyncStatusSummary({
+  int pendingCount = 0,
+  int failedCount = 0,
+  int syncedCount = 0,
+  DateTime? lastSyncedAt,
+  bool isSyncing = false,
+  bool isOnline = true,
+}) {
+  return SyncStatusSummaryEntity(
+    pendingCount: pendingCount,
+    failedCount: failedCount,
+    syncedCount: syncedCount,
+    lastSyncedAt: lastSyncedAt,
+    isSyncing: isSyncing,
+    isOnline: isOnline,
   );
 }

@@ -11,6 +11,12 @@ abstract final class AppConstants {
   static const double shopGeofenceRadiusMeters = 200.0;
   static const int locationTimeoutSeconds = 5;
 
-  // Sync intervals
+  // Sync configuration
   static const int defaultSyncIntervalMinutes = 15;
+  static const int defaultSyncBatchSize = 50;
+  static const String defaultSyncEndpoint =
+      'https://api.tekki.app/v1/sync/batch';
+  static const int syncMaxRetryCount = 10;
+  static const int syncInitialBackoffSeconds = 5;
+  static const int syncMaxBackoffMinutes = 15;
 }

@@ -56,6 +56,18 @@ import 'package:tekki/features/sales_and_cash/domain/usecases/watch_today_sales_
 import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_bloc.dart';
 import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_event.dart';
 import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_state.dart';
+import 'package:tekki/features/sync/data/datasources/outbox_local_data_source.dart';
+import 'package:tekki/features/sync/data/datasources/remote_sync_api_client.dart';
+import 'package:tekki/features/sync/data/datasources/workmanager_dispatcher.dart';
+import 'package:tekki/features/sync/domain/entities/outbox_event_entity.dart';
+import 'package:tekki/features/sync/domain/entities/sync_result_entity.dart';
+import 'package:tekki/features/sync/domain/entities/sync_status_summary_entity.dart';
+import 'package:tekki/features/sync/domain/repositories/sync_repository.dart';
+import 'package:tekki/features/sync/domain/usecases/get_sync_status_use_case.dart';
+import 'package:tekki/features/sync/domain/usecases/process_outbox_queue_use_case.dart';
+import 'package:tekki/features/sync/domain/usecases/watch_sync_status_use_case.dart';
+import 'package:tekki/features/sync/presentation/cubit/sync_cubit.dart';
+import 'package:tekki/features/sync/presentation/cubit/sync_state.dart';
 import 'package:uuid/uuid.dart';
 
 // Repositories
@@ -201,3 +213,32 @@ class FakeAdvisorState extends Fake implements AdvisorState {}
 class FakeAudioCapsuleEntity extends Fake implements AudioCapsuleEntity {}
 
 class FakeAudioCapsuleState extends Fake implements AudioCapsuleState {}
+
+// Sync Mocks
+class MockSyncRepository extends Mock implements SyncRepository {}
+
+class MockOutboxLocalDataSource extends Mock implements OutboxLocalDataSource {}
+
+class MockRemoteSyncApiClient extends Mock implements RemoteSyncApiClient {}
+
+class MockSyncDispatcher extends Mock implements SyncDispatcher {}
+
+class MockProcessOutboxQueueUseCase extends Mock
+    implements ProcessOutboxQueueUseCase {}
+
+class MockWatchSyncStatusUseCase extends Mock
+    implements WatchSyncStatusUseCase {}
+
+class MockGetSyncStatusUseCase extends Mock implements GetSyncStatusUseCase {}
+
+class MockSyncCubit extends MockCubit<SyncState> implements SyncCubit {}
+
+// Sync Fakes
+class FakeOutboxEventEntity extends Fake implements OutboxEventEntity {}
+
+class FakeSyncState extends Fake implements SyncState {}
+
+class FakeSyncResultEntity extends Fake implements SyncResultEntity {}
+
+class FakeSyncStatusSummaryEntity extends Fake
+    implements SyncStatusSummaryEntity {}

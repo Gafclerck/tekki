@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:drift/drift.dart';
 import 'package:tekki/core/database/app_database.dart';
 import 'package:tekki/core/errors/exceptions.dart';
@@ -5,6 +7,7 @@ import 'package:tekki/features/sales_and_cash/data/models/sale_model.dart';
 import 'package:tekki/features/sales_and_cash/data/models/shop_model.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/sale_entity.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/shop_entity.dart';
+import 'package:uuid/uuid.dart';
 
 abstract class SalesLocalDataSource {
   Future<void> insertSale(SaleEntity sale);
@@ -24,12 +27,30 @@ class SalesLocalDataSourceImpl implements SalesLocalDataSource {
   SalesLocalDataSourceImpl({required this.database});
 
   final AppDatabase database;
+  static const _uuid = Uuid();
 
   @override
   Future<void> insertSale(SaleEntity sale) async {
     try {
       final companion = sale.toCompanion();
-      await database.into(database.sales).insert(companion);
+      final nowUtcIso = DateTime.now().toUtc().toIso8601String();
+      final payloadJson = jsonEncode(SaleModel.fromEntity(sale).toJson());
+
+      await database.transaction(() async {
+        await database.into(database.sales).insert(companion);
+        await database
+            .into(database.syncOutbox)
+            .insert(
+              SyncOutboxCompanion.insert(
+                clientEventId: _uuid.v4(),
+                eventType: 'SALE_CREATED',
+                targetTable: 'sales',
+                targetId: sale.id,
+                payloadJson: payloadJson,
+                createdAt: nowUtcIso,
+              ),
+            );
+      });
     } catch (e) {
       throw DatabaseException('Failed to insert sale: $e');
     }

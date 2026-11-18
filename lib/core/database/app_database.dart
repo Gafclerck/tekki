@@ -6,11 +6,20 @@ import 'package:tekki/core/database/tables/debtors_table.dart';
 import 'package:tekki/core/database/tables/debts_table.dart';
 import 'package:tekki/core/database/tables/sales_table.dart';
 import 'package:tekki/core/database/tables/shops_table.dart';
+import 'package:tekki/core/database/tables/sync_outbox_table.dart';
 
 part 'app_database.g.dart';
 
 @DriftDatabase(
-  tables: [Shops, Sales, DailyClosures, Debtors, Debts, DebtPayments],
+  tables: [
+    Shops,
+    Sales,
+    DailyClosures,
+    Debtors,
+    Debts,
+    DebtPayments,
+    SyncOutbox,
+  ],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? openConnection());
@@ -18,7 +27,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.executor);
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -32,6 +41,9 @@ class AppDatabase extends _$AppDatabase {
       }
       if (from < 3) {
         await m.createTable(debtPayments);
+      }
+      if (from < 4) {
+        await m.createTable(syncOutbox);
       }
     },
     beforeOpen: (details) async {

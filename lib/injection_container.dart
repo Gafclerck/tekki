@@ -54,6 +54,16 @@ import 'package:tekki/features/sales_and_cash/domain/usecases/watch_today_sales_
 import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_bloc.dart';
 import 'package:tekki/features/sales_and_cash/presentation/cubit/express_closure_cubit.dart';
 import 'package:tekki/features/sales_and_cash/presentation/cubit/quick_sale_cubit.dart';
+import 'package:tekki/features/sync/data/datasources/outbox_local_data_source.dart';
+import 'package:tekki/features/sync/data/datasources/remote_sync_api_client.dart';
+import 'package:tekki/features/sync/data/datasources/workmanager_dispatcher.dart';
+import 'package:tekki/features/sync/data/repositories/sync_repository_impl.dart';
+import 'package:tekki/features/sync/data/services/sync_orchestrator.dart';
+import 'package:tekki/features/sync/domain/repositories/sync_repository.dart';
+import 'package:tekki/features/sync/domain/usecases/get_sync_status_use_case.dart';
+import 'package:tekki/features/sync/domain/usecases/process_outbox_queue_use_case.dart';
+import 'package:tekki/features/sync/domain/usecases/watch_sync_status_use_case.dart';
+import 'package:tekki/features/sync/presentation/cubit/sync_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -257,6 +267,54 @@ Future<void> initDependencyInjection({
     () => AudioCapsuleCubit(
       getActiveAudioCapsuleUseCase: sl<GetActiveAudioCapsuleUseCase>(),
       audioPlayerService: sl<IAudioPlayerService>(),
+    ),
+  );
+
+  // Features: Sync Outbox Local Data Source & Remote Client
+  sl.registerLazySingleton<OutboxLocalDataSource>(
+    () => OutboxLocalDataSourceImpl(database: sl<AppDatabase>()),
+  );
+  sl.registerLazySingleton<RemoteSyncApiClient>(
+    () => HttpRemoteSyncApiClient(),
+  );
+  sl.registerLazySingleton<SyncDispatcher>(() => WorkManagerSyncDispatcher());
+
+  // Features: Sync Repository
+  sl.registerLazySingleton<SyncRepository>(
+    () => SyncRepositoryImpl(
+      outboxLocalDataSource: sl<OutboxLocalDataSource>(),
+      remoteSyncApiClient: sl<RemoteSyncApiClient>(),
+      networkInfo: sl<NetworkInfo>(),
+    ),
+  );
+
+  // Features: Sync Use Cases
+  sl.registerLazySingleton<ProcessOutboxQueueUseCase>(
+    () => ProcessOutboxQueueUseCase(repository: sl<SyncRepository>()),
+  );
+  sl.registerLazySingleton<WatchSyncStatusUseCase>(
+    () => WatchSyncStatusUseCase(repository: sl<SyncRepository>()),
+  );
+  sl.registerLazySingleton<GetSyncStatusUseCase>(
+    () => GetSyncStatusUseCase(repository: sl<SyncRepository>()),
+  );
+
+  // Features: Sync Orchestrator
+  sl.registerLazySingleton<SyncOrchestrator>(
+    () => SyncOrchestrator(
+      syncRepository: sl<SyncRepository>(),
+      networkInfo: sl<NetworkInfo>(),
+      syncDispatcher: sl<SyncDispatcher>(),
+    ),
+  );
+
+  // Features: Sync Cubit
+  sl.registerLazySingleton<SyncCubit>(
+    () => SyncCubit(
+      watchSyncStatusUseCase: sl<WatchSyncStatusUseCase>(),
+      processOutboxQueueUseCase: sl<ProcessOutboxQueueUseCase>(),
+      getSyncStatusUseCase: sl<GetSyncStatusUseCase>(),
+      networkInfo: sl<NetworkInfo>(),
     ),
   );
 }

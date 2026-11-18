@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:drift/drift.dart';
 import 'package:tekki/core/database/app_database.dart';
 import 'package:tekki/core/errors/exceptions.dart';
@@ -5,6 +7,7 @@ import 'package:tekki/features/sales_and_cash/data/models/daily_closure_model.da
 import 'package:tekki/features/sales_and_cash/data/models/shop_model.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/daily_closure_entity.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/shop_entity.dart';
+import 'package:uuid/uuid.dart';
 
 abstract class ClosureLocalDataSource {
   Future<int> getPrefillSalesAmount(DateTime cutoffTimestamp);
@@ -25,6 +28,7 @@ class ClosureLocalDataSourceImpl implements ClosureLocalDataSource {
   ClosureLocalDataSourceImpl({required this.database});
 
   final AppDatabase database;
+  static const _uuid = Uuid();
 
   @override
   Future<int> getPrefillSalesAmount(DateTime cutoffTimestamp) async {
@@ -92,6 +96,23 @@ class ClosureLocalDataSourceImpl implements ClosureLocalDataSource {
                   tbl.paidAt.isSmallerOrEqualValue(cutoffIso),
             ))
             .write(DebtPaymentsCompanion(closureId: Value(closure.id)));
+
+        // 4. Atomically insert outbox event for daily closure
+        final payloadJson = jsonEncode(
+          DailyClosureModel.fromEntity(closure).toJson(),
+        );
+        await database
+            .into(database.syncOutbox)
+            .insert(
+              SyncOutboxCompanion.insert(
+                clientEventId: _uuid.v4(),
+                eventType: 'CLOSURE_SUBMITTED',
+                targetTable: 'daily_closures',
+                targetId: closure.id,
+                payloadJson: payloadJson,
+                createdAt: DateTime.now().toUtc().toIso8601String(),
+              ),
+            );
       });
       return closure;
     } catch (e) {

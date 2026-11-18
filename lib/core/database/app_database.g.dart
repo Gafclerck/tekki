@@ -3380,6 +3380,644 @@ class DebtPaymentsCompanion extends UpdateCompanion<DebtPayment> {
   }
 }
 
+class $SyncOutboxTable extends SyncOutbox
+    with TableInfo<$SyncOutboxTable, SyncOutboxEntry> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SyncOutboxTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _clientEventIdMeta = const VerificationMeta(
+    'clientEventId',
+  );
+  @override
+  late final GeneratedColumn<String> clientEventId = GeneratedColumn<String>(
+    'client_event_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _eventTypeMeta = const VerificationMeta(
+    'eventType',
+  );
+  @override
+  late final GeneratedColumn<String> eventType = GeneratedColumn<String>(
+    'event_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _targetTableMeta = const VerificationMeta(
+    'targetTable',
+  );
+  @override
+  late final GeneratedColumn<String> targetTable = GeneratedColumn<String>(
+    'target_table',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _targetIdMeta = const VerificationMeta(
+    'targetId',
+  );
+  @override
+  late final GeneratedColumn<String> targetId = GeneratedColumn<String>(
+    'target_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _payloadJsonMeta = const VerificationMeta(
+    'payloadJson',
+  );
+  @override
+  late final GeneratedColumn<String> payloadJson = GeneratedColumn<String>(
+    'payload_json',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _retryCountMeta = const VerificationMeta(
+    'retryCount',
+  );
+  @override
+  late final GeneratedColumn<int> retryCount = GeneratedColumn<int>(
+    'retry_count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('PENDING'),
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<String> createdAt = GeneratedColumn<String>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lastAttemptAtMeta = const VerificationMeta(
+    'lastAttemptAt',
+  );
+  @override
+  late final GeneratedColumn<String> lastAttemptAt = GeneratedColumn<String>(
+    'last_attempt_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _errorMessageMeta = const VerificationMeta(
+    'errorMessage',
+  );
+  @override
+  late final GeneratedColumn<String> errorMessage = GeneratedColumn<String>(
+    'error_message',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    clientEventId,
+    eventType,
+    targetTable,
+    targetId,
+    payloadJson,
+    retryCount,
+    status,
+    createdAt,
+    lastAttemptAt,
+    errorMessage,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'sync_outbox';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SyncOutboxEntry> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('client_event_id')) {
+      context.handle(
+        _clientEventIdMeta,
+        clientEventId.isAcceptableOrUnknown(
+          data['client_event_id']!,
+          _clientEventIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_clientEventIdMeta);
+    }
+    if (data.containsKey('event_type')) {
+      context.handle(
+        _eventTypeMeta,
+        eventType.isAcceptableOrUnknown(data['event_type']!, _eventTypeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_eventTypeMeta);
+    }
+    if (data.containsKey('target_table')) {
+      context.handle(
+        _targetTableMeta,
+        targetTable.isAcceptableOrUnknown(
+          data['target_table']!,
+          _targetTableMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_targetTableMeta);
+    }
+    if (data.containsKey('target_id')) {
+      context.handle(
+        _targetIdMeta,
+        targetId.isAcceptableOrUnknown(data['target_id']!, _targetIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_targetIdMeta);
+    }
+    if (data.containsKey('payload_json')) {
+      context.handle(
+        _payloadJsonMeta,
+        payloadJson.isAcceptableOrUnknown(
+          data['payload_json']!,
+          _payloadJsonMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_payloadJsonMeta);
+    }
+    if (data.containsKey('retry_count')) {
+      context.handle(
+        _retryCountMeta,
+        retryCount.isAcceptableOrUnknown(data['retry_count']!, _retryCountMeta),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('last_attempt_at')) {
+      context.handle(
+        _lastAttemptAtMeta,
+        lastAttemptAt.isAcceptableOrUnknown(
+          data['last_attempt_at']!,
+          _lastAttemptAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('error_message')) {
+      context.handle(
+        _errorMessageMeta,
+        errorMessage.isAcceptableOrUnknown(
+          data['error_message']!,
+          _errorMessageMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {clientEventId};
+  @override
+  SyncOutboxEntry map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SyncOutboxEntry(
+      clientEventId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}client_event_id'],
+      )!,
+      eventType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}event_type'],
+      )!,
+      targetTable: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}target_table'],
+      )!,
+      targetId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}target_id'],
+      )!,
+      payloadJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}payload_json'],
+      )!,
+      retryCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}retry_count'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_at'],
+      )!,
+      lastAttemptAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_attempt_at'],
+      ),
+      errorMessage: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}error_message'],
+      ),
+    );
+  }
+
+  @override
+  $SyncOutboxTable createAlias(String alias) {
+    return $SyncOutboxTable(attachedDatabase, alias);
+  }
+}
+
+class SyncOutboxEntry extends DataClass implements Insertable<SyncOutboxEntry> {
+  final String clientEventId;
+  final String eventType;
+  final String targetTable;
+  final String targetId;
+  final String payloadJson;
+  final int retryCount;
+  final String status;
+  final String createdAt;
+  final String? lastAttemptAt;
+  final String? errorMessage;
+  const SyncOutboxEntry({
+    required this.clientEventId,
+    required this.eventType,
+    required this.targetTable,
+    required this.targetId,
+    required this.payloadJson,
+    required this.retryCount,
+    required this.status,
+    required this.createdAt,
+    this.lastAttemptAt,
+    this.errorMessage,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['client_event_id'] = Variable<String>(clientEventId);
+    map['event_type'] = Variable<String>(eventType);
+    map['target_table'] = Variable<String>(targetTable);
+    map['target_id'] = Variable<String>(targetId);
+    map['payload_json'] = Variable<String>(payloadJson);
+    map['retry_count'] = Variable<int>(retryCount);
+    map['status'] = Variable<String>(status);
+    map['created_at'] = Variable<String>(createdAt);
+    if (!nullToAbsent || lastAttemptAt != null) {
+      map['last_attempt_at'] = Variable<String>(lastAttemptAt);
+    }
+    if (!nullToAbsent || errorMessage != null) {
+      map['error_message'] = Variable<String>(errorMessage);
+    }
+    return map;
+  }
+
+  SyncOutboxCompanion toCompanion(bool nullToAbsent) {
+    return SyncOutboxCompanion(
+      clientEventId: Value(clientEventId),
+      eventType: Value(eventType),
+      targetTable: Value(targetTable),
+      targetId: Value(targetId),
+      payloadJson: Value(payloadJson),
+      retryCount: Value(retryCount),
+      status: Value(status),
+      createdAt: Value(createdAt),
+      lastAttemptAt: lastAttemptAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastAttemptAt),
+      errorMessage: errorMessage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(errorMessage),
+    );
+  }
+
+  factory SyncOutboxEntry.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SyncOutboxEntry(
+      clientEventId: serializer.fromJson<String>(json['clientEventId']),
+      eventType: serializer.fromJson<String>(json['eventType']),
+      targetTable: serializer.fromJson<String>(json['targetTable']),
+      targetId: serializer.fromJson<String>(json['targetId']),
+      payloadJson: serializer.fromJson<String>(json['payloadJson']),
+      retryCount: serializer.fromJson<int>(json['retryCount']),
+      status: serializer.fromJson<String>(json['status']),
+      createdAt: serializer.fromJson<String>(json['createdAt']),
+      lastAttemptAt: serializer.fromJson<String?>(json['lastAttemptAt']),
+      errorMessage: serializer.fromJson<String?>(json['errorMessage']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'clientEventId': serializer.toJson<String>(clientEventId),
+      'eventType': serializer.toJson<String>(eventType),
+      'targetTable': serializer.toJson<String>(targetTable),
+      'targetId': serializer.toJson<String>(targetId),
+      'payloadJson': serializer.toJson<String>(payloadJson),
+      'retryCount': serializer.toJson<int>(retryCount),
+      'status': serializer.toJson<String>(status),
+      'createdAt': serializer.toJson<String>(createdAt),
+      'lastAttemptAt': serializer.toJson<String?>(lastAttemptAt),
+      'errorMessage': serializer.toJson<String?>(errorMessage),
+    };
+  }
+
+  SyncOutboxEntry copyWith({
+    String? clientEventId,
+    String? eventType,
+    String? targetTable,
+    String? targetId,
+    String? payloadJson,
+    int? retryCount,
+    String? status,
+    String? createdAt,
+    Value<String?> lastAttemptAt = const Value.absent(),
+    Value<String?> errorMessage = const Value.absent(),
+  }) => SyncOutboxEntry(
+    clientEventId: clientEventId ?? this.clientEventId,
+    eventType: eventType ?? this.eventType,
+    targetTable: targetTable ?? this.targetTable,
+    targetId: targetId ?? this.targetId,
+    payloadJson: payloadJson ?? this.payloadJson,
+    retryCount: retryCount ?? this.retryCount,
+    status: status ?? this.status,
+    createdAt: createdAt ?? this.createdAt,
+    lastAttemptAt: lastAttemptAt.present
+        ? lastAttemptAt.value
+        : this.lastAttemptAt,
+    errorMessage: errorMessage.present ? errorMessage.value : this.errorMessage,
+  );
+  SyncOutboxEntry copyWithCompanion(SyncOutboxCompanion data) {
+    return SyncOutboxEntry(
+      clientEventId: data.clientEventId.present
+          ? data.clientEventId.value
+          : this.clientEventId,
+      eventType: data.eventType.present ? data.eventType.value : this.eventType,
+      targetTable: data.targetTable.present
+          ? data.targetTable.value
+          : this.targetTable,
+      targetId: data.targetId.present ? data.targetId.value : this.targetId,
+      payloadJson: data.payloadJson.present
+          ? data.payloadJson.value
+          : this.payloadJson,
+      retryCount: data.retryCount.present
+          ? data.retryCount.value
+          : this.retryCount,
+      status: data.status.present ? data.status.value : this.status,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      lastAttemptAt: data.lastAttemptAt.present
+          ? data.lastAttemptAt.value
+          : this.lastAttemptAt,
+      errorMessage: data.errorMessage.present
+          ? data.errorMessage.value
+          : this.errorMessage,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncOutboxEntry(')
+          ..write('clientEventId: $clientEventId, ')
+          ..write('eventType: $eventType, ')
+          ..write('targetTable: $targetTable, ')
+          ..write('targetId: $targetId, ')
+          ..write('payloadJson: $payloadJson, ')
+          ..write('retryCount: $retryCount, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('lastAttemptAt: $lastAttemptAt, ')
+          ..write('errorMessage: $errorMessage')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    clientEventId,
+    eventType,
+    targetTable,
+    targetId,
+    payloadJson,
+    retryCount,
+    status,
+    createdAt,
+    lastAttemptAt,
+    errorMessage,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SyncOutboxEntry &&
+          other.clientEventId == this.clientEventId &&
+          other.eventType == this.eventType &&
+          other.targetTable == this.targetTable &&
+          other.targetId == this.targetId &&
+          other.payloadJson == this.payloadJson &&
+          other.retryCount == this.retryCount &&
+          other.status == this.status &&
+          other.createdAt == this.createdAt &&
+          other.lastAttemptAt == this.lastAttemptAt &&
+          other.errorMessage == this.errorMessage);
+}
+
+class SyncOutboxCompanion extends UpdateCompanion<SyncOutboxEntry> {
+  final Value<String> clientEventId;
+  final Value<String> eventType;
+  final Value<String> targetTable;
+  final Value<String> targetId;
+  final Value<String> payloadJson;
+  final Value<int> retryCount;
+  final Value<String> status;
+  final Value<String> createdAt;
+  final Value<String?> lastAttemptAt;
+  final Value<String?> errorMessage;
+  final Value<int> rowid;
+  const SyncOutboxCompanion({
+    this.clientEventId = const Value.absent(),
+    this.eventType = const Value.absent(),
+    this.targetTable = const Value.absent(),
+    this.targetId = const Value.absent(),
+    this.payloadJson = const Value.absent(),
+    this.retryCount = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.lastAttemptAt = const Value.absent(),
+    this.errorMessage = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SyncOutboxCompanion.insert({
+    required String clientEventId,
+    required String eventType,
+    required String targetTable,
+    required String targetId,
+    required String payloadJson,
+    this.retryCount = const Value.absent(),
+    this.status = const Value.absent(),
+    required String createdAt,
+    this.lastAttemptAt = const Value.absent(),
+    this.errorMessage = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : clientEventId = Value(clientEventId),
+       eventType = Value(eventType),
+       targetTable = Value(targetTable),
+       targetId = Value(targetId),
+       payloadJson = Value(payloadJson),
+       createdAt = Value(createdAt);
+  static Insertable<SyncOutboxEntry> custom({
+    Expression<String>? clientEventId,
+    Expression<String>? eventType,
+    Expression<String>? targetTable,
+    Expression<String>? targetId,
+    Expression<String>? payloadJson,
+    Expression<int>? retryCount,
+    Expression<String>? status,
+    Expression<String>? createdAt,
+    Expression<String>? lastAttemptAt,
+    Expression<String>? errorMessage,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (clientEventId != null) 'client_event_id': clientEventId,
+      if (eventType != null) 'event_type': eventType,
+      if (targetTable != null) 'target_table': targetTable,
+      if (targetId != null) 'target_id': targetId,
+      if (payloadJson != null) 'payload_json': payloadJson,
+      if (retryCount != null) 'retry_count': retryCount,
+      if (status != null) 'status': status,
+      if (createdAt != null) 'created_at': createdAt,
+      if (lastAttemptAt != null) 'last_attempt_at': lastAttemptAt,
+      if (errorMessage != null) 'error_message': errorMessage,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SyncOutboxCompanion copyWith({
+    Value<String>? clientEventId,
+    Value<String>? eventType,
+    Value<String>? targetTable,
+    Value<String>? targetId,
+    Value<String>? payloadJson,
+    Value<int>? retryCount,
+    Value<String>? status,
+    Value<String>? createdAt,
+    Value<String?>? lastAttemptAt,
+    Value<String?>? errorMessage,
+    Value<int>? rowid,
+  }) {
+    return SyncOutboxCompanion(
+      clientEventId: clientEventId ?? this.clientEventId,
+      eventType: eventType ?? this.eventType,
+      targetTable: targetTable ?? this.targetTable,
+      targetId: targetId ?? this.targetId,
+      payloadJson: payloadJson ?? this.payloadJson,
+      retryCount: retryCount ?? this.retryCount,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      lastAttemptAt: lastAttemptAt ?? this.lastAttemptAt,
+      errorMessage: errorMessage ?? this.errorMessage,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (clientEventId.present) {
+      map['client_event_id'] = Variable<String>(clientEventId.value);
+    }
+    if (eventType.present) {
+      map['event_type'] = Variable<String>(eventType.value);
+    }
+    if (targetTable.present) {
+      map['target_table'] = Variable<String>(targetTable.value);
+    }
+    if (targetId.present) {
+      map['target_id'] = Variable<String>(targetId.value);
+    }
+    if (payloadJson.present) {
+      map['payload_json'] = Variable<String>(payloadJson.value);
+    }
+    if (retryCount.present) {
+      map['retry_count'] = Variable<int>(retryCount.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<String>(createdAt.value);
+    }
+    if (lastAttemptAt.present) {
+      map['last_attempt_at'] = Variable<String>(lastAttemptAt.value);
+    }
+    if (errorMessage.present) {
+      map['error_message'] = Variable<String>(errorMessage.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncOutboxCompanion(')
+          ..write('clientEventId: $clientEventId, ')
+          ..write('eventType: $eventType, ')
+          ..write('targetTable: $targetTable, ')
+          ..write('targetId: $targetId, ')
+          ..write('payloadJson: $payloadJson, ')
+          ..write('retryCount: $retryCount, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('lastAttemptAt: $lastAttemptAt, ')
+          ..write('errorMessage: $errorMessage, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -3389,6 +4027,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $DebtorsTable debtors = $DebtorsTable(this);
   late final $DebtsTable debts = $DebtsTable(this);
   late final $DebtPaymentsTable debtPayments = $DebtPaymentsTable(this);
+  late final $SyncOutboxTable syncOutbox = $SyncOutboxTable(this);
   late final Index salesClosureIdIdx = Index(
     'sales_closure_id_idx',
     'CREATE INDEX sales_closure_id_idx ON sales (closure_id)',
@@ -3437,6 +4076,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'debt_payments_closure_id_idx',
     'CREATE INDEX debt_payments_closure_id_idx ON debt_payments (closure_id)',
   );
+  late final Index syncOutboxStatusIdx = Index(
+    'sync_outbox_status_idx',
+    'CREATE INDEX sync_outbox_status_idx ON sync_outbox (status)',
+  );
+  late final Index syncOutboxCreatedAtIdx = Index(
+    'sync_outbox_created_at_idx',
+    'CREATE INDEX sync_outbox_created_at_idx ON sync_outbox (created_at)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -3448,6 +4095,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     debtors,
     debts,
     debtPayments,
+    syncOutbox,
     salesClosureIdIdx,
     salesSyncStatusIdx,
     dailyClosuresDateIdx,
@@ -3460,6 +4108,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     debtPaymentsPaymentMethodIdx,
     debtPaymentsSyncStatusIdx,
     debtPaymentsClosureIdIdx,
+    syncOutboxStatusIdx,
+    syncOutboxCreatedAtIdx,
   ];
 }
 
@@ -5738,6 +6388,313 @@ typedef $$DebtPaymentsTableProcessedTableManager =
       DebtPayment,
       PrefetchHooks Function({bool debtId, bool closureId})
     >;
+typedef $$SyncOutboxTableCreateCompanionBuilder =
+    SyncOutboxCompanion Function({
+      required String clientEventId,
+      required String eventType,
+      required String targetTable,
+      required String targetId,
+      required String payloadJson,
+      Value<int> retryCount,
+      Value<String> status,
+      required String createdAt,
+      Value<String?> lastAttemptAt,
+      Value<String?> errorMessage,
+      Value<int> rowid,
+    });
+typedef $$SyncOutboxTableUpdateCompanionBuilder =
+    SyncOutboxCompanion Function({
+      Value<String> clientEventId,
+      Value<String> eventType,
+      Value<String> targetTable,
+      Value<String> targetId,
+      Value<String> payloadJson,
+      Value<int> retryCount,
+      Value<String> status,
+      Value<String> createdAt,
+      Value<String?> lastAttemptAt,
+      Value<String?> errorMessage,
+      Value<int> rowid,
+    });
+
+class $$SyncOutboxTableFilterComposer
+    extends Composer<_$AppDatabase, $SyncOutboxTable> {
+  $$SyncOutboxTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get clientEventId => $composableBuilder(
+    column: $table.clientEventId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get eventType => $composableBuilder(
+    column: $table.eventType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get targetTable => $composableBuilder(
+    column: $table.targetTable,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get targetId => $composableBuilder(
+    column: $table.targetId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get payloadJson => $composableBuilder(
+    column: $table.payloadJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get retryCount => $composableBuilder(
+    column: $table.retryCount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastAttemptAt => $composableBuilder(
+    column: $table.lastAttemptAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get errorMessage => $composableBuilder(
+    column: $table.errorMessage,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SyncOutboxTableOrderingComposer
+    extends Composer<_$AppDatabase, $SyncOutboxTable> {
+  $$SyncOutboxTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get clientEventId => $composableBuilder(
+    column: $table.clientEventId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get eventType => $composableBuilder(
+    column: $table.eventType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get targetTable => $composableBuilder(
+    column: $table.targetTable,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get targetId => $composableBuilder(
+    column: $table.targetId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get payloadJson => $composableBuilder(
+    column: $table.payloadJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get retryCount => $composableBuilder(
+    column: $table.retryCount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastAttemptAt => $composableBuilder(
+    column: $table.lastAttemptAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get errorMessage => $composableBuilder(
+    column: $table.errorMessage,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SyncOutboxTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SyncOutboxTable> {
+  $$SyncOutboxTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get clientEventId => $composableBuilder(
+    column: $table.clientEventId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get eventType =>
+      $composableBuilder(column: $table.eventType, builder: (column) => column);
+
+  GeneratedColumn<String> get targetTable => $composableBuilder(
+    column: $table.targetTable,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get targetId =>
+      $composableBuilder(column: $table.targetId, builder: (column) => column);
+
+  GeneratedColumn<String> get payloadJson => $composableBuilder(
+    column: $table.payloadJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get retryCount => $composableBuilder(
+    column: $table.retryCount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<String> get lastAttemptAt => $composableBuilder(
+    column: $table.lastAttemptAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get errorMessage => $composableBuilder(
+    column: $table.errorMessage,
+    builder: (column) => column,
+  );
+}
+
+class $$SyncOutboxTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SyncOutboxTable,
+          SyncOutboxEntry,
+          $$SyncOutboxTableFilterComposer,
+          $$SyncOutboxTableOrderingComposer,
+          $$SyncOutboxTableAnnotationComposer,
+          $$SyncOutboxTableCreateCompanionBuilder,
+          $$SyncOutboxTableUpdateCompanionBuilder,
+          (
+            SyncOutboxEntry,
+            BaseReferences<_$AppDatabase, $SyncOutboxTable, SyncOutboxEntry>,
+          ),
+          SyncOutboxEntry,
+          PrefetchHooks Function()
+        > {
+  $$SyncOutboxTableTableManager(_$AppDatabase db, $SyncOutboxTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SyncOutboxTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SyncOutboxTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SyncOutboxTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> clientEventId = const Value.absent(),
+                Value<String> eventType = const Value.absent(),
+                Value<String> targetTable = const Value.absent(),
+                Value<String> targetId = const Value.absent(),
+                Value<String> payloadJson = const Value.absent(),
+                Value<int> retryCount = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String> createdAt = const Value.absent(),
+                Value<String?> lastAttemptAt = const Value.absent(),
+                Value<String?> errorMessage = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SyncOutboxCompanion(
+                clientEventId: clientEventId,
+                eventType: eventType,
+                targetTable: targetTable,
+                targetId: targetId,
+                payloadJson: payloadJson,
+                retryCount: retryCount,
+                status: status,
+                createdAt: createdAt,
+                lastAttemptAt: lastAttemptAt,
+                errorMessage: errorMessage,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String clientEventId,
+                required String eventType,
+                required String targetTable,
+                required String targetId,
+                required String payloadJson,
+                Value<int> retryCount = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                required String createdAt,
+                Value<String?> lastAttemptAt = const Value.absent(),
+                Value<String?> errorMessage = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SyncOutboxCompanion.insert(
+                clientEventId: clientEventId,
+                eventType: eventType,
+                targetTable: targetTable,
+                targetId: targetId,
+                payloadJson: payloadJson,
+                retryCount: retryCount,
+                status: status,
+                createdAt: createdAt,
+                lastAttemptAt: lastAttemptAt,
+                errorMessage: errorMessage,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SyncOutboxTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SyncOutboxTable,
+      SyncOutboxEntry,
+      $$SyncOutboxTableFilterComposer,
+      $$SyncOutboxTableOrderingComposer,
+      $$SyncOutboxTableAnnotationComposer,
+      $$SyncOutboxTableCreateCompanionBuilder,
+      $$SyncOutboxTableUpdateCompanionBuilder,
+      (
+        SyncOutboxEntry,
+        BaseReferences<_$AppDatabase, $SyncOutboxTable, SyncOutboxEntry>,
+      ),
+      SyncOutboxEntry,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -5754,4 +6711,6 @@ class $AppDatabaseManager {
       $$DebtsTableTableManager(_db, _db.debts);
   $$DebtPaymentsTableTableManager get debtPayments =>
       $$DebtPaymentsTableTableManager(_db, _db.debtPayments);
+  $$SyncOutboxTableTableManager get syncOutbox =>
+      $$SyncOutboxTableTableManager(_db, _db.syncOutbox);
 }
