@@ -85,197 +85,191 @@ class _AudioCapsuleCardView extends StatelessWidget {
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.tertiary.withValues(alpha: 0.3),
+          color: AppColors.tertiary.withValues(alpha: 0.35),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
+            color: AppColors.primary.withValues(alpha: 0.04),
             blurRadius: 10,
             offset: const Offset(0, 3),
           ),
         ],
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: Container(
-          key: const ValueKey('audio_capsule_card_inner'),
-          decoration: const BoxDecoration(
-            border: Border(left: BorderSide(color: AppColors.accent, width: 5)),
-          ),
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // En-tête : Badge / Titre et Sélecteur bilingue Wolof <-> Français
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: AppColors.accent.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Icon(
-                      Icons.record_voice_over_rounded,
-                      color: AppColors.accent,
-                      size: 20,
-                    ),
+      child: Container(
+        key: const ValueKey('audio_capsule_card_inner'),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // En-tête : Badge / Titre et Sélecteur bilingue Wolof <-> Français
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: AppColors.accent.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'CAPSULE CONSEIL',
-                          style: TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 0.5,
-                            color: AppColors.accent,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          title,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.primary,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  // Sélecteur bilingue compact 1-tap
-                  _buildLanguageToggle(),
-                ],
-              ),
-
-              const SizedBox(height: 14),
-
-              // Ligne de lecture : Bouton Play/Pause (>=48dp) + Jauge temporelle
-              Row(
-                children: [
-                  // Bouton Play/Pause circulaire (pas d'ElevatedButton !)
-                  Material(
-                    key: const ValueKey('audio_capsule_play_pause_button'),
+                  child: const Icon(
+                    Icons.record_voice_over_rounded,
                     color: AppColors.accent,
-                    shape: const CircleBorder(),
-                    elevation: 2,
-                    child: InkWell(
-                      customBorder: const CircleBorder(),
-                      onTap: () => cubit.togglePlayPause(),
-                      child: SizedBox(
-                        width: 48,
-                        height: 48,
-                        child: Center(
-                          child: Icon(
-                            state.isPlaying
-                                ? Icons.pause_rounded
-                                : Icons.play_arrow_rounded,
-                            color: Colors.white,
-                            size: 28,
-                          ),
-                        ),
-                      ),
-                    ),
+                    size: 20,
                   ),
-                  const SizedBox(width: 14),
-
-                  // Barre de progression + décompte temporel
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(4),
-                          child: LinearProgressIndicator(
-                            key: const ValueKey('audio_capsule_progress_bar'),
-                            value: state.progress,
-                            backgroundColor: AppColors.background,
-                            valueColor: const AlwaysStoppedAnimation<Color>(
-                              AppColors.accent,
-                            ),
-                            minHeight: 6,
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              _formatDuration(state.currentPosition),
-                              style: const TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                            Text(
-                              _formatDuration(state.totalDuration),
-                              style: const TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.secondary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 10),
-
-              // Résumé de la capsule
-              Text(
-                summary,
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.secondary,
-                  height: 1.3,
                 ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-
-              // Message d'erreur discret si présent
-              if (state.errorMessage != null &&
-                  state.errorMessage!.isNotEmpty) ...[
-                const SizedBox(height: 8),
-                Row(
-                  key: const ValueKey('audio_capsule_error_message'),
-                  children: [
-                    const Icon(
-                      Icons.info_outline,
-                      size: 14,
-                      color: AppColors.warning,
-                    ),
-                    const SizedBox(width: 6),
-                    Expanded(
-                      child: Text(
-                        state.errorMessage!,
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'CAPSULE CONSEIL',
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.5,
+                          color: AppColors.accent,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        title,
                         style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.warning,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primary,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                // Sélecteur bilingue compact 1-tap
+                _buildLanguageToggle(),
+              ],
+            ),
+
+            const SizedBox(height: 14),
+
+            // Ligne de lecture : Bouton Play/Pause (>=48dp) + Jauge temporelle
+            Row(
+              children: [
+                // Bouton Play/Pause circulaire (pas d'ElevatedButton !)
+                Material(
+                  key: const ValueKey('audio_capsule_play_pause_button'),
+                  color: AppColors.accent,
+                  shape: const CircleBorder(),
+                  elevation: 2,
+                  child: InkWell(
+                    customBorder: const CircleBorder(),
+                    onTap: () => cubit.togglePlayPause(),
+                    child: SizedBox(
+                      width: 48,
+                      height: 48,
+                      child: Center(
+                        child: Icon(
+                          state.isPlaying
+                              ? Icons.pause_rounded
+                              : Icons.play_arrow_rounded,
+                          color: Colors.white,
+                          size: 28,
                         ),
                       ),
                     ),
-                  ],
+                  ),
+                ),
+                const SizedBox(width: 14),
+
+                // Barre de progression + décompte temporel
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: LinearProgressIndicator(
+                          key: const ValueKey('audio_capsule_progress_bar'),
+                          value: state.progress,
+                          backgroundColor: AppColors.background,
+                          valueColor: const AlwaysStoppedAnimation<Color>(
+                            AppColors.accent,
+                          ),
+                          minHeight: 6,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            _formatDuration(state.currentPosition),
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                          Text(
+                            _formatDuration(state.totalDuration),
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.secondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
+            ),
+
+            const SizedBox(height: 10),
+
+            // Résumé de la capsule
+            Text(
+              summary,
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: AppColors.secondary,
+                height: 1.3,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+
+            // Message d'erreur discret si présent
+            if (state.errorMessage != null &&
+                state.errorMessage!.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Row(
+                key: const ValueKey('audio_capsule_error_message'),
+                children: [
+                  const Icon(
+                    Icons.info_outline,
+                    size: 14,
+                    color: AppColors.warning,
+                  ),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      state.errorMessage!,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.warning,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
-          ),
+          ],
         ),
       ),
     );

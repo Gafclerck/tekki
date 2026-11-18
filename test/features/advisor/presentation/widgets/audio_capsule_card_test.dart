@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:tekki/core/theme/app_colors.dart';
 import 'package:tekki/core/theme/app_theme.dart';
 import 'package:tekki/features/advisor/domain/entities/audio_language.dart';
 import 'package:tekki/features/advisor/domain/entities/capsule_playback_state.dart';
@@ -67,20 +66,18 @@ void main() {
 
       await tester.pumpWidget(buildSubject(customCubit: mockCubit));
 
-      // Card exists
+      // Card exists and has a clean, professional perimeter border
       final cardFinder = find.byKey(const ValueKey('audio_capsule_card'));
       expect(cardFinder, findsOneWidget);
+      final cardContainer = tester.widget<Container>(cardFinder);
+      final cardDecoration = cardContainer.decoration as BoxDecoration;
+      final cardBorder = cardDecoration.border as Border;
+      expect(cardBorder.isUniform, isTrue);
 
-      // Verify left orange border 5px
       final innerFinder = find.byKey(
         const ValueKey('audio_capsule_card_inner'),
       );
       expect(innerFinder, findsOneWidget);
-      final innerContainer = tester.widget<Container>(innerFinder);
-      final innerDecoration = innerContainer.decoration as BoxDecoration;
-      final border = innerDecoration.border as Border;
-      expect(border.left.color, equals(AppColors.accent));
-      expect(border.left.width, equals(5.0));
 
       // Titles and summaries
       expect(find.text('CAPSULE CONSEIL'), findsOneWidget);

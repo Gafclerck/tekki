@@ -120,49 +120,24 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
                   onPressed: () => Navigator.of(context).pop(),
                 )
               : null,
-          title: Row(
-            mainAxisSize: MainAxisSize.min,
+          title: const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 32,
-                height: 32,
-                margin: const EdgeInsets.only(right: 10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: AppColors.tertiary.withValues(alpha: 0.3),
-                  ),
-                ),
-                clipBehavior: Clip.antiAlias,
-                child: Padding(
-                  padding: const EdgeInsets.all(4),
-                  child: Image.asset(
-                    'assets/branding/logo_symbol.png',
-                    fit: BoxFit.contain,
-                  ),
+              Text(
+                'Carnet Numérique',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.secondary,
                 ),
               ),
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Carnet Numérique',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.secondary,
-                    ),
-                  ),
-                  Text(
-                    'Karné Bor',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.primary,
-                    ),
-                  ),
-                ],
+              Text(
+                'Karné Bor',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.primary,
+                ),
               ),
             ],
           ),

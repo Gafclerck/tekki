@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <span class="app-date-mini">Total : 48 000 F</span>
       </div>
       <div style="display: flex; flex-direction: column; gap: 8px;">
-        <div style="background: var(--surface); border: 1px solid var(--tertiary); border-left: 4px solid #DC2626; border-radius: 10px; padding: 10px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="background: var(--surface); border: 1px solid var(--tertiary); border-radius: 10px; padding: 10px; display: flex; justify-content: space-between; align-items: center;">
           <div>
             <div style="font-size: 12px; font-weight: 800; color: var(--primary);">Modou Fall</div>
             <div style="font-size: 10px; color: #DC2626; font-weight: 600;">Retard 4 jours (Échéance 13 Nov)</div>
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <span style="font-size: 9px; background: #DCFCE7; color: #15803D; padding: 2px 6px; border-radius: 4px; font-weight: 700;">Relancer</span>
           </div>
         </div>
-        <div style="background: var(--surface); border: 1px solid var(--tertiary); border-left: 4px solid #EAB308; border-radius: 10px; padding: 10px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="background: var(--surface); border: 1px solid var(--tertiary); border-radius: 10px; padding: 10px; display: flex; justify-content: space-between; align-items: center;">
           <div>
             <div style="font-size: 12px; font-weight: 800; color: var(--primary);">Fatou Diop</div>
             <div style="font-size: 10px; color: #CA8A04; font-weight: 600;">Échéance aujourd'hui</div>
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <span style="font-size: 9px; background: #DCFCE7; color: #15803D; padding: 2px 6px; border-radius: 4px; font-weight: 700;">Relancer</span>
           </div>
         </div>
-        <div style="background: var(--surface); border: 1px solid var(--tertiary); border-left: 4px solid #16A34A; border-radius: 10px; padding: 10px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="background: var(--surface); border: 1px solid var(--tertiary); border-radius: 10px; padding: 10px; display: flex; justify-content: space-between; align-items: center;">
           <div>
             <div style="font-size: 12px; font-weight: 800; color: var(--primary);">Moussa Sow</div>
             <div style="font-size: 10px; color: var(--secondary);">Échéance dans 3 jours</div>
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <span class="app-date-mini">Passeport Connecté</span>
       </div>
       <div style="display: flex; flex-direction: column; gap: 8px;">
-        <div style="background: var(--surface); border: 1px solid var(--tertiary); border-left: 4px solid #16A34A; border-radius: 10px; padding: 10px;">
+        <div style="background: var(--surface); border: 1px solid var(--tertiary); border-radius: 10px; padding: 10px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
             <span style="font-size: 11px; font-weight: 800; color: var(--primary);">Avance Grossiste Huile & Riz</span>
             <span style="font-size: 9px; background: #DEF7EC; color: #03543F; padding: 2px 6px; border-radius: 4px; font-weight: 700;">Pré-approuvé</span>
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div style="font-size: 14px; font-weight: 900; color: var(--primary);">500 000 FCFA</div>
           <div style="font-size: 10px; color: var(--secondary); margin-top: 2px;">Remboursement sur 30 jours à 0%</div>
         </div>
-        <div style="background: var(--surface); border: 1px solid var(--tertiary); border-left: 4px solid var(--secondary); border-radius: 10px; padding: 10px;">
+        <div style="background: var(--surface); border: 1px solid var(--tertiary); border-radius: 10px; padding: 10px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
             <span style="font-size: 11px; font-weight: 800; color: var(--primary);">Ligne Microfinance (IMF)</span>
             <span style="font-size: 9px; background: #E0F2FE; color: #0369A1; padding: 2px 6px; border-radius: 4px; font-weight: 700;">Actif</span>

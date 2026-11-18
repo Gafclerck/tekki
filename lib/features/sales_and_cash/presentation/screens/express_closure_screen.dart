@@ -221,49 +221,24 @@ class _ExpressClosureViewState extends State<_ExpressClosureView> {
             ),
           ),
         ),
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 28,
-              height: 28,
-              margin: const EdgeInsets.only(right: 8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(7),
-                border: Border.all(
-                  color: AppColors.tertiary.withValues(alpha: 0.3),
-                ),
-              ),
-              clipBehavior: Clip.antiAlias,
-              child: Padding(
-                padding: const EdgeInsets.all(3),
-                child: Image.asset(
-                  'assets/branding/logo_symbol.png',
-                  fit: BoxFit.contain,
-                ),
+            const Text(
+              'Clôture de Caisse',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                color: AppColors.primary,
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Clôture de Caisse',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.primary,
-                  ),
-                ),
-                Text(
-                  '$capitalizedDate · Fin de service',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.secondary,
-                  ),
-                ),
-              ],
+            Text(
+              '$capitalizedDate · Fin de service',
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: AppColors.secondary,
+              ),
             ),
           ],
         ),
