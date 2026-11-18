@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tekki — Gestion Commerciale & Passeport Financier pour les Commerçants</title>
-  <meta name="description" content="L'application mobile conçue pour les commerçants du Sénégal : caisse en 30s, carnet de dettes (Karné Bor), 100% hors-ligne et Passeport Financier certifié.">
+  <title>Tekki - Passeport Financier & Accès au Crédit pour les Commerçants</title>
+  <meta name="description" content="L'application mobile conçue pour les commerçants d'Afrique de l'Ouest : Passeport Financier infalsifiable pour débloquer crédits et avances de stocks, caisse en 30s et gestion 100% hors-ligne.">
   
   <!-- Favicon officiel Tekki -->
   <link rel="icon" type="image/svg+xml" href="assets/icons/logo-symbol.svg">
   
-  <!-- Stylesheet gouvernée par les tokens DESIGN.md -->
+  <!-- Stylesheet gouvernee par les tokens DESIGN.md -->
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
 
   <!-- ========================================================================
-       1. EN-TÊTE & NAVIGATION
+       1. EN-TETE & NAVIGATION
        ======================================================================== -->
   <header class="site-header">
     <div class="container nav-container">
@@ -25,10 +25,11 @@
       
       <nav>
         <ul class="nav-links">
-          <li><a href="#defis" class="nav-link">Les Défis</a></li>
-          <li><a href="#solution" class="nav-link">Gestion Commerciale</a></li>
+          <li><a href="#defis" class="nav-link">Le Défi Crédit</a></li>
           <li><a href="#passeport" class="nav-link">Passeport Financier</a></li>
-          <li><a href="#conseiller" class="nav-link">Le Conseiller</a></li>
+          <li><a href="#financement" class="nav-link">Partenaires Prêteurs</a></li>
+          <li><a href="#gestion" class="nav-link">Gestion de Caisse</a></li>
+          <li><a href="#perspectives" class="nav-link">Perspectives & IA</a></li>
           <li><a href="#faq" class="nav-link">FAQ</a></li>
         </ul>
       </nav>
@@ -53,18 +54,18 @@
         <div class="hero-content">
           <div class="hero-badge-wolof">
             <img src="assets/branding/avatar_social.svg" alt="Tekki" width="20" height="20" style="border-radius: 50%;">
-            <span>Jëf ci sa loxo • Pensé pour le commerce sénégalais</span>
+            <span>Jëf ci sa loxo - Pensé pour le commerce d'Afrique de l'Ouest</span>
           </div>
 
           <h1 class="hero-title">
-            Faites grandir votre commerce. <br>
-            <span class="hero-title-highlight">Bâtissez votre réputation financière.</span>
+            Votre boutique brasse des millions. <br>
+            <span class="hero-title-highlight">Le Passeport Financier qui débloque vos crédits.</span>
           </h1>
 
           <p class="hero-desc">
-            L'application mobile tout-en-un pensée pour les boutiquiers et commerçants du Sénégal : 
-            tenez votre caisse en 30 secondes, ne perdez plus aucun franc sur vos dettes clients (<strong>Karné Bor</strong>) 
-            et transformez votre sérieux quotidien en un <strong>Passeport Financier</strong> infalsifiable.
+            Les commerçants indépendants font tourner l'économie mais restent invisibles pour les banques. 
+            Tekki transforme votre rigueur quotidienne en un <strong>Passeport Financier infalsifiable</strong> pour débloquer 
+            des avances de stocks chez vos grossistes et des lignes de crédit auprès de nos <strong>institutions financières partenaires</strong>.
           </p>
 
           <div class="hero-ctas">
@@ -77,33 +78,43 @@
               </div>
             </a>
 
-            <a href="#solution" class="btn btn-secondary">
-              <span>Voir le fonctionnement</span>
-              <span>↓</span>
+            <a href="#passeport" class="btn btn-secondary">
+              <span>Découvrir le Passeport</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
             </a>
           </div>
 
-          <!-- Badges de réassurance -->
+          <!-- Badges de reassurance monochrome conformes a la palette -->
           <div class="hero-badges-row">
             <div class="hero-badge-item">
-              <svg class="hero-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                <path d="M1 1l22 22M16.72 11.06A10.94 10.94 0 0119 12.55M5 12.55a10.94 10.94 0 015.17-2.39M10.71 5.05A16 16 0 0122.58 9M1.42 9a15.91 15.91 0 014.7-2.88M8.53 16.11a6 6 0 016.95 0M12 20h.01"/>
+              <svg class="hero-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="22" x2="21" y2="22"></line>
+                <line x1="6" y1="18" x2="6" y2="11"></line>
+                <line x1="10" y1="18" x2="10" y2="11"></line>
+                <line x1="14" y1="18" x2="14" y2="11"></line>
+                <line x1="18" y1="18" x2="18" y2="11"></line>
+                <polygon points="12 2 20 7 4 7"></polygon>
               </svg>
-              <span>100 % Hors-Ligne</span>
+              <span>Partenaires IMF & Grossistes</span>
             </div>
 
             <div class="hero-badge-item">
-              <svg class="hero-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <svg class="hero-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <path d="m9 12 2 2 4-4"></path>
               </svg>
-              <span>Données Privées & Sécurisées</span>
+              <span>Score de Solvabilité Certifié</span>
             </div>
 
             <div class="hero-badge-item">
-              <svg class="hero-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+              <svg class="hero-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
               </svg>
-              <span>Français & Wolof</span>
+              <span>100% Hors-Ligne & Sécurisé</span>
             </div>
           </div>
         </div>
@@ -112,74 +123,72 @@
         <div class="mockup-wrapper">
           <div>
             <div class="phone-container">
-              <!-- Barre d'état Android -->
+              <!-- Barre d'etat Android -->
               <div class="status-bar">
                 <span>08:30</span>
                 <span>LTE 84%</span>
               </div>
 
-              <!-- Écran actif (dynamique via JS) -->
+              <!-- Ecran actif (dynamique via JS, affiche le Passeport par defaut) -->
               <div class="phone-screen" id="phone-screen-target">
-                <!-- Vue Accueil par défaut -->
                 <div class="app-header-mini">
-                  <img src="assets/branding/logo_horizontal.svg" alt="Tekki" height="20" style="height: 20px; width: auto;">
-                  <span class="app-date-mini">Mardi 17 Nov.</span>
+                  <span class="app-brand-mini">Passeport Tekki</span>
+                  <span class="app-date-mini">Certifié 100% In-App</span>
                 </div>
-                <div class="cash-card-mini">
-                  <div class="cash-label-mini">Caisse du jour (Ventes)</div>
-                  <div class="cash-amount-mini">145 500 FCFA</div>
-                  <div class="cash-stats-mini">
-                    <div class="cash-stat-col">
-                      <div class="cash-stat-title">Transactions</div>
-                      <div class="cash-stat-value">28 ventes</div>
-                    </div>
-                    <div class="cash-stat-col">
-                      <div class="cash-stat-title">Dépenses</div>
-                      <div class="cash-stat-value">12 000 FCFA</div>
-                    </div>
+                <div style="background: var(--surface); border: 1px solid var(--tertiary); border-radius: 14px; padding: 14px; text-align: center; box-shadow: var(--shadow-sm);">
+                  <div style="font-size: 10px; text-transform: uppercase; font-weight: 700; color: var(--secondary);">Score de Fiabilité</div>
+                  <div style="font-size: 28px; font-weight: 900; color: var(--primary); margin: 2px 0;">88 <span style="font-size: 13px; color: var(--secondary);">/100</span></div>
+                  <div style="display: inline-block; font-size: 10px; background: #DEF7EC; color: #03543F; padding: 3px 10px; border-radius: 999px; font-weight: 700; margin-bottom: 10px;">Éligible Facilité Réassort</div>
+                  <div style="width: 120px; height: 120px; background: #F8FAFC; border: 1.5px dashed var(--secondary); border-radius: 8px; margin: 0 auto 8px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <img src="assets/branding/qr_code.png" alt="QR Code" width="86" height="86" style="border-radius: 4px; display: block;">
+                    <span style="font-size: 8px; font-weight: 700; color: var(--secondary); margin-top: 4px;">SCANNER POUR AUDIT</span>
                   </div>
-                </div>
-                <div class="btn-cta-mini">+ Vente Rapide (2 clics)</div>
-                <div class="debt-banner-mini">
-                  <div>
-                    <div class="debt-label-mini">Karné Bor (Argent dehors)</div>
-                    <div style="font-size: 11px; color: var(--secondary);">3 clients en retard</div>
-                  </div>
-                  <div class="debt-val-mini">48 000 F</div>
-                </div>
-                <div style="background: var(--surface); border: 1px solid var(--tertiary); border-radius: 12px; padding: 12px; font-size: 11px;">
-                  <div style="font-weight: 700; color: var(--primary); margin-bottom: 4px;">Conseiller Tekki (Conseil du jour)</div>
-                  <div style="color: var(--secondary);">"Amadou, vos rentrées de caisse du mardi sont stables. Pensez à relancer Modou pour ses 15 000 F."</div>
+                  <div style="font-size: 10px; color: var(--secondary); font-weight: 600;">Code PIN Temporaire : <strong style="color: var(--accent);">5821</strong></div>
                 </div>
               </div>
 
-              <!-- Navigation basse du téléphone -->
+              <!-- Navigation basse du telephone avec icones vectorielles monochromes -->
               <div class="phone-bottom-nav">
-                <div class="nav-tab-mini active">
-                  <span>🏪</span>
+                <div class="nav-tab-mini">
+                  <svg class="mini-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"></path>
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                    <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"></path>
+                    <path d="M2 7h20"></path>
+                  </svg>
                   <span>Accueil</span>
                 </div>
                 <div class="nav-tab-mini">
-                  <span>📒</span>
+                  <svg class="mini-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                    <path d="M6 6h10"></path>
+                    <path d="M6 10h10"></path>
+                  </svg>
                   <span>Karné</span>
                 </div>
-                <div class="nav-tab-mini">
-                  <span>🛡️</span>
+                <div class="nav-tab-mini active">
+                  <svg class="mini-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    <path d="m9 12 2 2 4-4"></path>
+                  </svg>
                   <span>Passeport</span>
                 </div>
                 <div class="nav-tab-mini">
-                  <span>💡</span>
+                  <svg class="mini-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"></path>
+                  </svg>
                   <span>Conseiller</span>
                 </div>
               </div>
             </div>
 
-            <!-- Contrôles du simulateur -->
+            <!-- Controles du simulateur -->
             <div class="mockup-controls">
-              <button class="mockup-pill-btn active" data-screen="accueil">1. Accueil & Caisse</button>
-              <button class="mockup-pill-btn" data-screen="cloture">2. Clôture 30s</button>
-              <button class="mockup-pill-btn" data-screen="karnebor">3. Karné Bor</button>
-              <button class="mockup-pill-btn" data-screen="passeport">4. Passeport QR</button>
+              <button class="mockup-pill-btn active" data-screen="passeport">1. Passeport QR</button>
+              <button class="mockup-pill-btn" data-screen="credit">2. Lignes Partenaires</button>
+              <button class="mockup-pill-btn" data-screen="accueil">3. Accueil & Caisse</button>
+              <button class="mockup-pill-btn" data-screen="cloture">4. Clôture 30s</button>
+              <button class="mockup-pill-btn" data-screen="karnebor">5. Karné Bor</button>
             </div>
           </div>
         </div>
@@ -189,65 +198,68 @@
   </section>
 
   <!-- ========================================================================
-       3. SECTION DÉFIS DU QUOTIDIEN (LE PROBLÈME)
+       3. SECTION DEFIS : L'INVISIBILITE FINANCIERE (LE VRAI PROBLEME)
        ======================================================================== -->
   <section class="section section-alt" id="defis">
     <div class="container">
       <div class="text-center">
-        <span class="section-tag">Les Réalités du Terrain</span>
-        <h2 class="section-title">Les méthodes d'hier freinent votre réussite</h2>
+        <span class="section-tag">Le Vrai Défi du Terrain</span>
+        <h2 class="section-title">Des millions de chiffre d'affaires, mais zéro accès au crédit bancaire</h2>
         <p class="section-subtitle">
-          90 % du commerce au Sénégal s'appuie encore sur des cahiers volants et des calculs manuels. 
-          Cette gestion informelle entraîne des pertes directes et vous bloque l'accès aux facilités financières.
+          Au Sénégal et en Afrique de l'Ouest, les commerçants indépendants génèrent des flux réguliers et substantiels. 
+          Pourtant, en l'absence de traçabilité certifiée, le système financier traditionnel leur ferme systématiquement la porte.
         </p>
       </div>
 
       <div class="problem-grid">
-        <!-- Problème 1 -->
+        <!-- Probleme 1 : Invisibilite Financiere -->
         <div class="problem-card">
-          <div class="problem-icon-wrap">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-              <line x1="9" y1="7" x2="15" y2="7"/>
-              <line x1="9" y1="11" x2="13" y2="11"/>
+          <div class="problem-icon-wrap problem-icon-accent">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
+              <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
+              <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
+              <line x1="2" x2="22" y1="2" y2="22"></line>
             </svg>
           </div>
-          <h3 class="problem-card-title">Le carnet papier (Karné Bor) vulnérable</h3>
+          <h3 class="problem-card-title">L'invisibilité bancaire et les bilans introuvables</h3>
           <p class="problem-card-desc">
-            Pages arrachées, dégâts d'eau, contestations de montants avec les clients... 
-            L'argent dehors est oublié, et ces dettes non recouvrées asphyxient la trésorerie de votre commerce.
+            Sans bilan comptable officiel ni relevés bancaires classiques, les banques et institutions de microfinance (IMF) 
+            vous qualifient de client à risque, vous privant de prêts pour moderniser votre boutique.
           </p>
         </div>
 
-        <!-- Problème 2 -->
+        <!-- Probleme 2 : Stocks bloques -->
         <div class="problem-card">
-          <div class="problem-icon-wrap">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="12" y1="8" x2="12" y2="12"/>
-              <line x1="12" y1="16" x2="12.01" y2="16"/>
+          <div class="problem-icon-wrap problem-icon-secondary">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m21 10-9-5-9 5 9 5 9-5Z"></path>
+              <path d="m3.3 10 8.7 5 8.7-5"></path>
+              <path d="M12 22V15"></path>
+              <path d="m17 17 5 5"></path>
+              <path d="m22 17-5 5"></path>
             </svg>
           </div>
-          <h3 class="problem-card-title">La caisse floue à la tombée de la nuit</h3>
+          <h3 class="problem-card-title">Stocks bloqués et refus d'avances grossistes</h3>
           <p class="problem-card-desc">
-            Après 14 heures de travail intense, impossible de calculer avec précision le bénéfice net réel 
-            après déduction des dépenses de réassort et des retraits familiaux d'urgence.
+            Quand les grossistes exigent du paiement comptant immédiat, votre stock s'épuise vite. 
+            Sans garantie prouvée, vous manquez les meilleures opportunités d'achat en gros et perdez des ventes chaque semaine.
           </p>
         </div>
 
-        <!-- Problème 3 -->
+        <!-- Probleme 3 : Taux usuriers -->
         <div class="problem-card">
-          <div class="problem-icon-wrap">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          <div class="problem-icon-wrap problem-icon-primary">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
             </svg>
           </div>
-          <h3 class="problem-card-title">L'invisibilité bancaire et le blocage crédit</h3>
+          <h3 class="problem-card-title">Le piège des crédits informels et taux usuriers</h3>
           <p class="problem-card-desc">
-            Vous brassez des millions chaque mois, mais sans bilans comptables certifiés, 
-            les institutions de microfinance (IMF) et les banques vous ferment la porte quand vous avez besoin d'avance de stock.
+            Faute d'alternative officielle, beaucoup de boutiquiers s'endettent auprès de prêteurs informels avec des taux d'intérêt 
+            asphyxiants qui absorbent l'intégralité des marges et menacent la pérennité de l'activité.
           </p>
         </div>
       </div>
@@ -255,93 +267,7 @@
   </section>
 
   <!-- ========================================================================
-       4. SECTION SOLUTION — GESTION COMMERCIALE SANS EFFORT
-       ======================================================================== -->
-  <section class="section" id="solution">
-    <div class="container">
-      <div class="text-center">
-        <span class="section-tag">Gestion Simplifiée</span>
-        <h2 class="section-title">Tout ce qu'il faut pour gérer votre boutique</h2>
-        <p class="section-subtitle">
-          Aucun logiciel compliqué, aucun catalogue d'articles pesant à saisir. 
-          Tekki a été pensé sur le terrain, pour le rythme frénétique du comptoir sénégalais.
-        </p>
-      </div>
-
-      <div class="features-grid">
-        <!-- Feature 1 -->
-        <div class="feature-card">
-          <div class="feature-icon-row">
-            <div class="feature-icon-box">⚡</div>
-            <h3 class="feature-card-title">Vente Rapide en 2 Clics</h3>
-          </div>
-          <p class="feature-card-desc">
-            Enregistrez instantanément un montant au fil de l'eau avec notre pavé numérique géant en FCFA. 
-            Aucun nom d'article obligatoire : tapez le montant, validez en 2 secondes sans faire attendre votre client.
-          </p>
-          <ul class="feature-list">
-            <li class="feature-list-item"><span class="feature-list-check">✓</span> Pavé tactile sans virgule, optimisé FCFA</li>
-            <li class="feature-list-item"><span class="feature-list-check">✓</span> Ajout au total de la caisse instantané</li>
-            <li class="feature-list-item"><span class="feature-list-check">✓</span> Zéro blocage, rapidité absolue au comptoir</li>
-          </ul>
-        </div>
-
-        <!-- Feature 2 -->
-        <div class="feature-card">
-          <div class="feature-icon-row">
-            <div class="feature-icon-box">🌙</div>
-            <h3 class="feature-card-title">Clôture Express en 30 Secondes</h3>
-          </div>
-          <p class="feature-card-desc">
-            Le soir avant de fermer le rideau de fer, bouclez votre journée en 3 chiffres : total des ventes, 
-            dépenses d'achats du jour, espèces déclarées dans le tiroir. L'application calcule immédiatement votre bénéfice net.
-          </p>
-          <ul class="feature-list">
-            <li class="feature-list-item"><span class="feature-list-check">✓</span> Déclaration consolidée ultra-rapide</li>
-            <li class="feature-list-item"><span class="feature-list-check">✓</span> Calcul immédiat de l'écart de caisse</li>
-            <li class="feature-list-item"><span class="feature-list-check">✓</span> Suivi de votre série de rigueur (streak)</li>
-          </ul>
-        </div>
-
-        <!-- Feature 3 -->
-        <div class="feature-card">
-          <div class="feature-icon-row">
-            <div class="feature-icon-box">📒</div>
-            <h3 class="feature-card-title">Karné Bor & Relances WhatsApp</h3>
-          </div>
-          <p class="feature-card-desc">
-            Finies les contestations de dettes de quartier. Ajoutez un client, son numéro et le montant. 
-            Tekki vous alerte des retards et vous permet d'envoyer une relance polie et personnalisée en un clic sur WhatsApp.
-          </p>
-          <ul class="feature-list">
-            <li class="feature-list-item"><span class="feature-list-check">✓</span> Tri automatique par urgence de remboursement</li>
-            <li class="feature-list-item"><span class="feature-list-check">✓</span> Message WhatsApp pré-rempli respectueux</li>
-            <li class="feature-list-item"><span class="feature-list-check">✓</span> Encaissement partiel ou total en un tap</li>
-          </ul>
-        </div>
-
-        <!-- Feature 4 -->
-        <div class="feature-card">
-          <div class="feature-icon-row">
-            <div class="feature-icon-box">📶</div>
-            <h3 class="feature-card-title">100 % Autonome et Hors-Ligne</h3>
-          </div>
-          <p class="feature-card-desc">
-            Pas de connexion Internet à la boutique ? Réseau mobile 4G instable au marché ? Aucun problème. 
-            Toutes vos ventes, vos dettes et vos calculs fonctionnent en local sur votre téléphone sans jamais se bloquer.
-          </p>
-          <ul class="feature-list">
-            <li class="feature-list-item"><span class="feature-list-check">✓</span> Base de données sécurisée sur votre appareil</li>
-            <li class="feature-list-item"><span class="feature-list-check">✓</span> Application légère (< 15 Mo au téléchargement)</li>
-            <li class="feature-list-item"><span class="feature-list-check">✓</span> Synchronisation discrète en tâche de fond</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================================================================
-       5. SECTION INNOVATION — LE PASSEPORT FINANCIER PORTABLE
+       4. SECTION PASSEPORT FINANCIER & SCORING DE SOLVABILITE
        ======================================================================== -->
   <section class="section" id="passeport">
     <div class="container">
@@ -350,52 +276,52 @@
           
           <!-- Explication de la passerelle Fintech -->
           <div>
-            <span class="passport-tag">L'Innovation Tekki • Fintech</span>
+            <span class="passport-tag">L'Innovation Clé Tekki - Fintech</span>
             <h2 class="passport-title">
-              Chaque vente enregistrée construit votre Passeport Financier
+              Le Passeport Financier : vos données réelles deviennent votre garantie
             </h2>
             <p class="passport-desc">
-              Contrairement à un carnet papier qui reste muet, Tekki transforme votre assiduité quotidienne 
-              en un <strong>actif financier tangible</strong>. Vos données réelles deviennent votre meilleure caution.
+              Tekki résout le problème de l'asymétrie d'information. En consignant vos encaissements et vos clôtures quotidiennes, 
+              vous générez automatiquement un <strong>actif financier vérifiable</strong> qui atteste de votre solvabilité auprès de nos partenaires.
             </p>
 
             <div class="steps-list">
               <div class="step-item">
                 <div class="step-number">1</div>
                 <div>
-                  <div class="step-content-title">Vous faites vos clôtures chaque soir</div>
-                  <div class="step-content-text">Votre régularité prouve la constance et la réalité de votre chiffre d'affaires.</div>
+                  <div class="step-content-title">Vous clôturez chaque soir en 30 secondes</div>
+                  <div class="step-content-text">Votre régularité prouve la constance, la solidité et le volume effectif de votre activité commerciale.</div>
                 </div>
               </div>
 
               <div class="step-item">
                 <div class="step-number">2</div>
                 <div>
-                  <div class="step-content-title">Tekki calcule votre Score de Fiabilité</div>
-                  <div class="step-content-text">Un score sur 100 basé sur 4 piliers : régularité de caisse, maîtrise des dettes, trésorerie et antériorité.</div>
+                  <div class="step-content-title">Tekki calcule votre Score de Fiabilité (0 à 100)</div>
+                  <div class="step-content-text">Un algorithme transparent évalue 4 piliers fondamentaux : assiduité de clôture, rigueur de caisse, recouvrement Karné Bor et antériorité.</div>
                 </div>
               </div>
 
               <div class="step-item">
                 <div class="step-number">3</div>
                 <div>
-                  <div class="step-content-title">Un QR Code sécurisé est généré in-app</div>
-                  <div class="step-content-text">Infalsifiable et protégé par votre code PIN temporaire.</div>
+                  <div class="step-content-title">Un QR Code cryptographique est généré in-app</div>
+                  <div class="step-content-text">Signé localement sur votre téléphone, infalsifiable et sécurisé par un code PIN temporaire sous votre contrôle.</div>
                 </div>
               </div>
 
               <div class="step-item">
                 <div class="step-number">4</div>
                 <div>
-                  <div class="step-content-title">Vous présentez votre Passeport aux institutions financières</div>
-                  <div class="step-content-text">Les agents de crédit de nos institutions partenaires (IMF, banques, grossistes) scannent votre preuve en 15 secondes pour étudier vos facilités de réassort.</div>
+                  <div class="step-content-title">Vous débloquez des facilités auprès de nos partenaires</div>
+                  <div class="step-content-text">Institutions de microfinance (IMF) et grossistes scannent votre Passeport en quelques secondes pour valider votre éligibilité.</div>
                 </div>
               </div>
             </div>
 
             <div class="passport-disclaimer">
               <strong>Engagement de transparence :</strong> Tekki n'est pas un organisme prêteur et ne distribue pas de crédits en direct. 
-              Les décisions de financement appartiennent exclusivement aux institutions financières agréées partenaires. Vos données vous appartiennent et ne sont jamais partagées sans votre accord.
+              Les décisions de financement appartiennent exclusivement aux institutions financières et grossistes partenaires agréés. Vos données vous appartiennent et ne sont jamais partagées sans votre autorisation explicite.
             </div>
           </div>
 
@@ -410,7 +336,7 @@
               </div>
 
               <div style="font-size: 13px; font-weight: 700; color: #047857; margin-bottom: 14px;">
-                ● Profil Solvable & Régulier
+                Profil Solvable & Éligible
               </div>
 
               <div class="qr-box-mock" style="height: auto; padding: 12px; border: 1.5px solid var(--tertiary);">
@@ -422,7 +348,7 @@
                 Code de vérification : <strong>5821</strong>
               </div>
               <div style="font-size: 11px; color: var(--secondary); margin-top: 6px;">
-                Vérifiable d'appareil à appareil (D2D) sans connexion
+                Vérifiable d'appareil à appareil (D2D) sans connexion Internet
               </div>
             </div>
           </div>
@@ -433,47 +359,396 @@
   </section>
 
   <!-- ========================================================================
-       6. SECTION LE CONSEILLER TEKKI (ÉDUCATION FINANCIÈRE & VOIX)
+       5. SECTION PARTENAIRES PRETEURS & FACILITES DE FINANCEMENT
        ======================================================================== -->
-  <section class="section section-alt" id="conseiller">
+  <section class="section section-alt" id="financement">
+    <div class="container">
+      <div class="text-center">
+        <span class="section-tag">Facilitation d'Accès au Crédit</span>
+        <h2 class="section-title">Ce que votre Passeport Financier vous permet d'obtenir</h2>
+        <p class="section-subtitle">
+          En partenariat avec des institutions financières agréées et des réseaux de grossistes distributeurs, 
+          Tekki vous ouvre les portes de financements sur mesure adaptés au rythme de votre commerce.
+        </p>
+      </div>
+
+      <div class="financing-perks-grid">
+        <!-- Avantage 1 : Avances Grossistes -->
+        <div class="financing-perk-card">
+          <div class="financing-perk-header">
+            <div class="financing-perk-icon problem-icon-accent">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+              </svg>
+            </div>
+            <h3 class="financing-perk-title">Avances de stocks chez les Grossistes</h3>
+          </div>
+          <p class="financing-perk-desc">
+            Obtenez vos livraisons de denrées (huile, riz, sucre, détergents) avec paiement différé à 15 ou 30 jours, garanti par votre score de solvabilité Tekki.
+          </p>
+        </div>
+
+        <!-- Avantage 2 : Lignes Microfinance -->
+        <div class="financing-perk-card">
+          <div class="financing-perk-header">
+            <div class="financing-perk-icon problem-icon-secondary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="22" x2="21" y2="22"></line>
+                <line x1="6" y1="18" x2="6" y2="11"></line>
+                <line x1="10" y1="18" x2="10" y2="11"></line>
+                <line x1="14" y1="18" x2="14" y2="11"></line>
+                <line x1="18" y1="18" x2="18" y2="11"></line>
+                <polygon points="12 2 20 7 4 7"></polygon>
+              </svg>
+            </div>
+            <h3 class="financing-perk-title">Lignes de crédit Microfinance (IMF)</h3>
+          </div>
+          <p class="financing-perk-desc">
+            Accédez à des lignes de crédit de trésorerie auprès d'IMF agréées de la place avec instruction simplifiée et déblocage accéléré en 48 heures.
+          </p>
+        </div>
+
+        <!-- Avantage 3 : Campagnes Saisonnières -->
+        <div class="financing-perk-card">
+          <div class="financing-perk-header">
+            <div class="financing-perk-icon problem-icon-primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                <polyline points="16 7 22 7 22 13"></polyline>
+              </svg>
+            </div>
+            <h3 class="financing-perk-title">Pré-financement des campagnes saisonnières</h3>
+          </div>
+          <p class="financing-perk-desc">
+            Anticipez sereinement les pics de forte consommation (Tabaski, Korité, rentrée scolaire) grâce à des financements calés sur vos cycles réels.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       6. SECTION GESTION COMMERCIALE (LA FONDATION AU SERVICE DU PASSEPORT)
+       ======================================================================== -->
+  <section class="section" id="gestion">
+    <div class="container">
+      <div class="text-center">
+        <span class="section-tag">La Fondation Quotidienne</span>
+        <h2 class="section-title">Une gestion de caisse ultra-rapide qui nourrit votre score</h2>
+        <p class="section-subtitle">
+          Tenir sa boutique ne doit jamais être une corvée administrative. 
+          Tekki est pensé pour le rythme intense du comptoir : des actions en 2 clics qui enregistrent vos flux sans vous ralentir.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Feature 1 : Vente Rapide -->
+        <div class="feature-card">
+          <div class="feature-icon-row">
+            <div class="feature-icon-box feature-icon-accent">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+            </div>
+            <h3 class="feature-card-title">Vente Rapide en 2 Clics</h3>
+          </div>
+          <p class="feature-card-desc">
+            Enregistrez un montant au fil de l'eau avec notre pavé numérique géant en FCFA. 
+            Aucun nom d'article obligatoire : tapez le montant, validez en 2 secondes sans jamais faire attendre vos clients.
+          </p>
+          <ul class="feature-list">
+            <li class="feature-list-item">
+              <svg class="feature-list-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Pavé tactile sans virgule, optimisé FCFA</span>
+            </li>
+            <li class="feature-list-item">
+              <svg class="feature-list-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Ajout au total de la caisse instantané</span>
+            </li>
+            <li class="feature-list-item">
+              <svg class="feature-list-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Zéro blocage, fluidité absolue au comptoir</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Feature 2 : Cloture Express -->
+        <div class="feature-card">
+          <div class="feature-icon-row">
+            <div class="feature-icon-box feature-icon-secondary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <h3 class="feature-card-title">Clôture Express en 30 Secondes</h3>
+          </div>
+          <p class="feature-card-desc">
+            Le soir avant de tirer le rideau de fer, bouclez votre journée en 3 chiffres : ventes totales, 
+            dépenses d'achats, espèces dans le tiroir. L'application calcule immédiatement votre bénéfice net réel.
+          </p>
+          <ul class="feature-list">
+            <li class="feature-list-item">
+              <svg class="feature-list-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Déclaration consolidée ultra-rapide</span>
+            </li>
+            <li class="feature-list-item">
+              <svg class="feature-list-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Calcul immédiat de l'écart de caisse</span>
+            </li>
+            <li class="feature-list-item">
+              <svg class="feature-list-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Alimente automatiquement votre score de solvabilité</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Feature 3 : Karne Bor -->
+        <div class="feature-card">
+          <div class="feature-icon-row">
+            <div class="feature-icon-box feature-icon-primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+              </svg>
+            </div>
+            <h3 class="feature-card-title">Karné Bor & Relances WhatsApp</h3>
+          </div>
+          <p class="feature-card-desc">
+            Finies les contestations de dettes de quartier. Notez un client, son numéro et le montant dû. 
+            Tekki vous alerte des retards et prépare des rappels polis et courtois à envoyer en un tap sur WhatsApp.
+          </p>
+          <ul class="feature-list">
+            <li class="feature-list-item">
+              <svg class="feature-list-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Tri automatique par urgence de remboursement</span>
+            </li>
+            <li class="feature-list-item">
+              <svg class="feature-list-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Message WhatsApp pré-rempli respectueux</span>
+            </li>
+            <li class="feature-list-item">
+              <svg class="feature-list-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Encaissement partiel ou total en un tap</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Feature 4 : 100% Hors-Ligne -->
+        <div class="feature-card">
+          <div class="feature-icon-row">
+            <div class="feature-icon-box feature-icon-tertiary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+              </svg>
+            </div>
+            <h3 class="feature-card-title">100% Autonome et Hors-Ligne</h3>
+          </div>
+          <p class="feature-card-desc">
+            Pas de connexion Internet à la boutique ? Réseau 4G instable au marché ? Aucun souci. 
+            Toutes vos ventes, vos dettes et vos calculs fonctionnent en local sur votre smartphone sans jamais se figer.
+          </p>
+          <ul class="feature-list">
+            <li class="feature-list-item">
+              <svg class="feature-list-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Base SQLite locale sécurisée sur votre appareil</span>
+            </li>
+            <li class="feature-list-item">
+              <svg class="feature-list-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Application ultra-légère (moins de 15 Mo)</span>
+            </li>
+            <li class="feature-list-item">
+              <svg class="feature-list-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Synchronisation discrète dès le retour du réseau</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       7. SECTION PERSPECTIVES D'AVENIR & INNOVATIONS FUTURES
+       ======================================================================== -->
+  <section class="section section-alt" id="perspectives">
+    <div class="container">
+      <div class="text-center">
+        <span class="section-tag">Vision & Perspectives</span>
+        <h2 class="section-title">L'avenir du commerce ouest-africain se construit ici</h2>
+        <p class="section-subtitle">
+          Le Passeport Financier n'est que la première étape. Découvrez les prochaines avancées technologiques 
+          développées par Tekki pour démultiplier la rentabilité et l'autonomie financière de votre boutique.
+        </p>
+      </div>
+
+      <div class="perspectives-grid">
+        <!-- Perspective 1 : Conseiller Financier IA Vocale -->
+        <div class="perspective-card">
+          <div class="perspective-header">
+            <div class="perspective-icon-wrap problem-icon-accent">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"></path>
+              </svg>
+            </div>
+            <span class="perspective-tag perspective-tag-accent">Prochainement</span>
+          </div>
+          <h3 class="perspective-title">Conseiller Financier IA Vocale</h3>
+          <p class="perspective-desc">
+            Un assistant financier intelligent intégré capable de dialoguer directement en Wolof et Français. 
+            Il analyse vos ventes en temps réel, anticipe vos besoins de réassort et vous alerte oralement avant toute baisse de marge.
+          </p>
+          <ul class="perspective-features">
+            <li class="perspective-feature-item">
+              <svg class="perspective-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Briefings vocaux matinaux personnalisés en Wolof</span>
+            </li>
+            <li class="perspective-feature-item">
+              <svg class="perspective-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Recommandations dynamiques de prix et marges</span>
+            </li>
+            <li class="perspective-feature-item">
+              <svg class="perspective-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Aide proactive à la négociation avec les grossistes</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Perspective 2 : Mobile Money Centralise -->
+        <div class="perspective-card">
+          <div class="perspective-header">
+            <div class="perspective-icon-wrap problem-icon-secondary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect>
+                <path d="M12 18h.01"></path>
+              </svg>
+            </div>
+            <span class="perspective-tag perspective-tag-secondary">En Développement</span>
+          </div>
+          <h3 class="perspective-title">Paiements Mobile Money Centralisés</h3>
+          <p class="perspective-desc">
+            Centralisation native des paiements Wave et Orange Money au sein de votre caisse. 
+            Encaissez vos clients par QR Code unique et réconciliez vos flux numériques et vos espèces sans aucune double saisie.
+          </p>
+          <ul class="perspective-features">
+            <li class="perspective-feature-item">
+              <svg class="perspective-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>QR Code unique de paiement Wave et Orange Money</span>
+            </li>
+            <li class="perspective-feature-item">
+              <svg class="perspective-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Réconciliation automatique caisse physique et comptes digitaux</span>
+            </li>
+            <li class="perspective-feature-item">
+              <svg class="perspective-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Historique unifié de toutes vos transactions journalières</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Perspective 3 : Investissement & Achats Groupes -->
+        <div class="perspective-card">
+          <div class="perspective-header">
+            <div class="perspective-icon-wrap problem-icon-primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="14" x="2" y="7" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              </svg>
+            </div>
+            <span class="perspective-tag perspective-tag-primary">Vision Réseau</span>
+          </div>
+          <h3 class="perspective-title">Investissement & Achats Groupés</h3>
+          <p class="perspective-desc">
+            Accompagnement financier pour transformer votre boutique en commerce de demi-gros. 
+            Regroupement des commandes d'achat avec d'autres commerçants du réseau pour négocier des tarifs préférentiels d'usine.
+          </p>
+          <ul class="perspective-features">
+            <li class="perspective-feature-item">
+              <svg class="perspective-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Centrale d'achats groupés pour commerçants membres</span>
+            </li>
+            <li class="perspective-feature-item">
+              <svg class="perspective-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Pré-financement de conteneurs et gros volumes</span>
+            </li>
+            <li class="perspective-feature-item">
+              <svg class="perspective-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Accompagnement à l'investissement et à la modernisation</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       8. SECTION LE CONSEILLER TEKKI (ACCOMPAGNEMENT & EDUCATION)
+       ======================================================================== -->
+  <section class="section" id="conseiller">
     <div class="container">
       <div class="advisor-card">
         <div>
-          <span class="advisor-badge-pill">Accompagnement Bienveillant</span>
-          <h2 class="advisor-title">Le Conseiller Tekki : l'expert financier dans votre poche</h2>
+          <span class="advisor-badge-pill">Accompagnement Terrain</span>
+          <h2 class="advisor-title">Le Conseiller Tekki : l'expertise d'un associé dans votre poche</h2>
           <p class="advisor-desc">
-            Gérer un commerce, c'est aussi apprendre à anticiper les baisses de régime et à protéger son fonds de roulement. 
-            Le Conseiller Tekki analyse vos tendances réelles et vous guide avec des conseils simples, respectueux et pratiques.
+            Gérer un commerce exige de la vigilance sur les marges et la trésorerie. 
+            Le Conseiller Tekki analyse vos tendances réelles et vous guide avec des repères simples, respectueux et applicables au quotidien.
           </p>
 
           <div class="advisor-pills-list">
             <div class="advisor-pill-item">
-              <span>🎙️</span>
-              <span><strong>Conseils audio en Wolof & Français :</strong> Courts et directs, comme une note vocale d'un collègue bienveillant.</span>
+              <div class="advisor-pill-icon advisor-pill-icon-accent">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                  <line x1="12" y1="19" x2="12" y2="23"></line>
+                  <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+              </div>
+              <span><strong>Conseils audio en Wolof & Français :</strong> Courts et percutants, comme une note vocale d'un collègue avisé.</span>
             </div>
+
             <div class="advisor-pill-item">
-              <span>🚦</span>
-              <span><strong>Feux tricolores visuels :</strong> Repérez en un coup d'œil si vos dépenses dépassent un seuil raisonnable.</span>
+              <div class="advisor-pill-icon advisor-pill-icon-secondary">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+              </div>
+              <span><strong>Indicateurs visuels de santé financière :</strong> Surveillez en un coup d'œil si vos dépenses respectent vos ratios de vente.</span>
             </div>
+
             <div class="advisor-pill-item">
-              <span>📈</span>
-              <span><strong>Éducation concrète :</strong> Conseils d'épargne pour le réassort, vigilance avant les périodes de fêtes (Tabaski, Korité).</span>
+              <div class="advisor-pill-icon advisor-pill-icon-primary">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                  <polyline points="16 7 22 7 22 13"></polyline>
+                </svg>
+              </div>
+              <span><strong>Éducation concrète :</strong> Stratégies d'épargne de réassort et anticipation des grandes périodes de fêtes.</span>
             </div>
           </div>
         </div>
 
         <div>
           <div class="advisor-preview-box">
-            <div class="advisor-quote-label">Exemple de Capsule Conseiller</div>
+            <div class="advisor-quote-label">Exemple de Capsule Audio</div>
             <h4 class="advisor-quote-title">"Anticiper la fin de semaine"</h4>
             <p class="advisor-quote-body">
-              « Dalal ak jàmm Amadou. Vos ventes sont en hausse de 12 % cette semaine. 
-              Attention cependant : 45 000 FCFA de dettes dépassent 7 jours sur le Karné Bor. 
-              Avant de commander du nouveau stock d'huile, pensez à envoyer un rappel amical à vos clients. »
+              « Dalal ak jàmm Amadou. Vos ventes sont en progression de 12 % cette semaine. 
+              Attention toutefois : 45 000 FCFA de dettes dépassent 7 jours sur le Karné Bor. 
+              Avant de passer commande pour l'huile et le riz, envoyez un rappel amical à vos clients pour sécuriser votre trésorerie. »
             </p>
             <div class="advisor-lang-badge">
-              <span>🇸🇳 Wolof & 🇫🇷 Français</span>
-              <span>• Capsule 40 secondes</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+              <span>Wolof & Français</span>
+              <span>- Capsule 40 secondes</span>
             </div>
           </div>
         </div>
@@ -482,15 +757,15 @@
   </section>
 
   <!-- ========================================================================
-       7. SECTION FOIRE AUX QUESTIONS (FAQ)
+       9. SECTION FOIRE AUX QUESTIONS (FAQ)
        ======================================================================== -->
-  <section class="section" id="faq">
+  <section class="section section-alt" id="faq">
     <div class="container">
       <div class="text-center">
         <span class="section-tag">Des Réponses Claires</span>
         <h2 class="section-title">Questions fréquentes</h2>
         <p class="section-subtitle">
-          Tout ce que vous devez savoir sur Tekki, son fonctionnement et la sécurité de votre commerce.
+          Tout ce que vous devez savoir sur le Passeport Financier, nos partenaires et le fonctionnement de Tekki.
         </p>
       </div>
 
@@ -498,14 +773,14 @@
         
         <div class="faq-item open">
           <button class="faq-question">
-            <span>L'application fonctionne-t-elle sans connexion Internet ?</span>
-            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <span>Comment le Passeport Financier m'aide-t-il à obtenir un crédit ?</span>
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
           </button>
           <div class="faq-answer">
             <p>
-              <strong>Oui, à 100 %.</strong> Tekki a été spécialement architecturé pour fonctionner hors-ligne. Vous pouvez enregistrer vos ventes au fil de l'eau, noter vos dettes clients et faire votre clôture du soir sans aucun accès Internet ni crédit data. Vos données sont enregistrées en toute sécurité sur votre propre téléphone.
+              Le Passeport Financier synthétise votre régularité de caisse et votre maîtrise des dettes en un <strong>Score de Fiabilité sur 100</strong> et un QR Code sécurisé. Lorsque vous sollicitez une avance de stock auprès d'un grossiste ou un microcrédit auprès d'une IMF partenaire, l'agent de crédit scanne votre Passeport pour auditer instantanément votre solidité financière, accélérant l'approbation du dossier sans exiger de bilans comptables complexes.
             </p>
           </div>
         </div>
@@ -513,41 +788,55 @@
         <div class="faq-item">
           <button class="faq-question">
             <span>Est-ce que Tekki prête directement de l'argent ?</span>
-            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
           </button>
           <div class="faq-answer">
             <p>
-              <strong>Non.</strong> Tekki n'est pas une banque ni une institution de microfinance. Tekki est un outil de gestion et de certification. C'est votre régularité sur l'application qui génère un <strong>Passeport Financier infalsifiable</strong>. Vous présentez ensuite ce Passeport auprès de nos institutions financières partenaires agréées (IMF, banques, grands grossistes) qui décident de l'octroi des crédits de réassort.
+              <strong>Non.</strong> Tekki n'est pas un établissement bancaire ni un prêteur d'argent. Tekki est une plateforme technologique de gestion commerciale et de certification de solvabilité. Les décisions d'octroi de crédit, les montants accordés et les conditions de remboursement relèvent exclusivement de nos institutions financières et réseaux de grossistes partenaires agréés.
             </p>
           </div>
         </div>
 
         <div class="faq-item">
           <button class="faq-question">
-            <span>Mes données de vente et de caisse sont-elles confidentielles ?</span>
-            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <span>Mes données de vente et de caisse restent-elles confidentielles ?</span>
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
           </button>
           <div class="faq-answer">
             <p>
-              <strong>Absolument.</strong> Vos données commerciales vous appartiennent exclusivement. Aucun concurrent, voisin ou tiers ne peut y accéder. Lorsque vous souhaitez présenter votre Passeport Financier à un agent de crédit, vous devez valider l'accès à l'aide d'un code PIN temporaire unique généré sur votre écran.
+              <strong>Absolument.</strong> Vos données commerciales vous appartiennent exclusivement. Aucun concurrent ni tiers ne peut y avoir accès. Lors de la présentation de votre Passeport Financier à un partenaire prêteur, la lecture du QR Code exige la saisie d'un code PIN temporaire unique généré sur votre propre écran, vous assurant un contrôle total du partage.
             </p>
           </div>
         </div>
 
         <div class="faq-item">
           <button class="faq-question">
-            <span>L'application est-elle facile à utiliser si je ne sais pas bien lire ?</span>
-            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <span>L'application fonctionne-t-elle sans connexion Internet ?</span>
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
           </button>
           <div class="faq-answer">
             <p>
-              <strong>Oui, c'est notre priorité.</strong> L'interface est épurée, dotée de repères visuels intuitifs (couleurs, icônes parlantes) et disponible en Wolof. De plus, notre Conseiller Tekki vous explique les conseils et les alertes oralement grâce à de courtes capsules vocales en Wolof.
+              <strong>Oui, à 100 %.</strong> Tekki repose sur une architecture Offline-First. Vous pouvez enregistrer chaque vente au comptoir, gérer le Karné Bor et effectuer votre clôture du soir sans aucun accès Internet ni crédit data. Les calculs et la génération du QR Code s'opèrent directement sur votre téléphone.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>L'application est-elle adaptée aux personnes peu à l'aise avec l'écrit ?</span>
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p>
+              <strong>Oui, c'est au cœur de notre démarche.</strong> L'interface est épurée, guidée par des repères visuels intuitifs et disponible en Wolof. De plus, notre Conseiller Tekki communique sous forme de capsules audio parlées en Wolof pour vous restituer vos analyses et alertes sans exiger de lecture prolongée.
             </p>
           </div>
         </div>
@@ -555,13 +844,13 @@
         <div class="faq-item">
           <button class="faq-question">
             <span>Combien coûte l'application Tekki ?</span>
-            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
           </button>
           <div class="faq-answer">
             <p>
-              Le téléchargement de l'application mobile et l'ensemble des fonctionnalités de gestion quotidienne (saisie des ventes, carnet Karné Bor, clôtures express et conseils) sont <strong>gratuits</strong> pour les commerçants indépendants.
+              Le téléchargement de l'application et l'ensemble des fonctionnalités de gestion de caisse quotidienne (saisie rapide des ventes, suivi des créances Karné Bor, clôtures express et génération de base du Passeport) sont <strong>gratuits</strong> pour tous les commerçants indépendants.
             </p>
           </div>
         </div>
@@ -571,15 +860,15 @@
   </section>
 
   <!-- ========================================================================
-       8. SECTION CALL-TO-ACTION FINAL & GOOGLE PLAY
+       10. SECTION CALL-TO-ACTION FINAL & GOOGLE PLAY
        ======================================================================== -->
   <section class="section" id="telecharger" style="padding-bottom: 100px;">
     <div class="container">
       <div class="cta-banner">
         <span class="section-tag" style="background-color: rgba(255, 122, 65, 0.15);">Téléchargement Gratuit</span>
-        <h2 class="cta-title">Prenez le contrôle de votre commerce dès aujourd'hui</h2>
+        <h2 class="cta-title">Bâtissez votre réputation financière dès aujourd'hui</h2>
         <p class="cta-desc">
-          Rejoignez les commerçants du Sénégal qui simplifient leur quotidien, sécurisent leur caisse 
+          Rejoignez les commerçants d'Afrique de l'Ouest qui sécurisent leur caisse quotidienne 
           et ouvrent la voie à leur inclusion financière grâce à Tekki.
         </p>
 
@@ -602,7 +891,7 @@
   </section>
 
   <!-- ========================================================================
-       9. PIED DE PAGE (FOOTER)
+       11. PIED DE PAGE (FOOTER)
        ======================================================================== -->
   <footer class="site-footer">
     <div class="container">
@@ -611,26 +900,31 @@
         <div>
           <img src="assets/branding/logo_horizontal.svg" alt="Tekki" height="32" style="height: 32px; width: auto; filter: brightness(0) invert(1); margin-bottom: 16px;">
           <p class="footer-brand-desc">
-            La solution de gestion commerciale et de notation de solvabilité pensée pour et avec les commerçants d'Afrique de l'Ouest.
+            La passerelle de gestion commerciale et de certification de solvabilité pensée pour et avec les commerçants d'Afrique de l'Ouest.
           </p>
-          <div style="margin-top: 16px; font-size: 13px; color: #8CB8C3;">
-            Dakar, Sénégal 🇸🇳
+          <div style="margin-top: 16px; font-size: 13px; color: #8CB8C3; display: flex; align-items: center; gap: 6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <span>Dakar, Sénégal</span>
           </div>
         </div>
 
         <div>
           <h4 class="footer-col-title">Navigation</h4>
           <ul class="footer-links">
-            <li><a href="#defis" class="footer-link">Les Défis du Terrain</a></li>
-            <li><a href="#solution" class="footer-link">Gestion & Caisse Express</a></li>
+            <li><a href="#defis" class="footer-link">Le Défi du Crédit</a></li>
             <li><a href="#passeport" class="footer-link">Passeport Financier</a></li>
-            <li><a href="#conseiller" class="footer-link">Conseiller Tekki</a></li>
+            <li><a href="#financement" class="footer-link">Partenaires Prêteurs</a></li>
+            <li><a href="#gestion" class="footer-link">Gestion de Caisse Express</a></li>
+            <li><a href="#perspectives" class="footer-link">Perspectives & IA</a></li>
             <li><a href="#faq" class="footer-link">Foire Aux Questions</a></li>
           </ul>
         </div>
 
         <div>
-          <h4 class="footer-col-title">Informations & Partenaires</h4>
+          <h4 class="footer-col-title">Écosystème & Partenaires</h4>
           <ul class="footer-links">
             <li><a href="#" class="footer-link">Pour les Institutions de Microfinance (IMF)</a></li>
             <li><a href="#" class="footer-link">Pour les Grossistes Distributeurs</a></li>
@@ -653,9 +947,14 @@
     </div>
   </footer>
 
-  <!-- Toast de notification Google Play Store -->
+  <!-- Toast de notification Google Play Store avec icone vectorielle monochrome -->
   <div class="toast-notice" id="playstore-toast">
-    <span>📲</span>
+    <div class="toast-icon-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+      </svg>
+    </div>
     <span class="toast-msg">L'application arrive très bientôt sur Google Play Store !</span>
   </div>
 

@@ -1,5 +1,5 @@
 /**
- * Tekki Landing Page — JavaScript Interactif
+ * Tekki Landing Page - JavaScript Interactif
  * - Sélecteur d'écrans pour le simulateur de smartphone
  * - Accordéon interactif pour la FAQ
  * - Gestionnaire de clic Google Play Store (avec toast d'information sur le placeholder)
@@ -115,6 +115,33 @@ document.addEventListener('DOMContentLoaded', () => {
           <span style="font-size: 8px; font-weight: 700; color: var(--secondary); margin-top: 4px;">SCANNER POUR AUDIT</span>
         </div>
         <div style="font-size: 10px; color: var(--secondary); font-weight: 600;">Code PIN Temporaire : <strong style="color: var(--accent);">5821</strong></div>
+      </div>
+    `,
+    credit: `
+      <div class="app-header-mini">
+        <span class="app-brand-mini">Lignes Partenaires</span>
+        <span class="app-date-mini">Passeport Connecté</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="background: var(--surface); border: 1px solid var(--tertiary); border-left: 4px solid #16A34A; border-radius: 10px; padding: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <span style="font-size: 11px; font-weight: 800; color: var(--primary);">Avance Grossiste Huile & Riz</span>
+            <span style="font-size: 9px; background: #DEF7EC; color: #03543F; padding: 2px 6px; border-radius: 4px; font-weight: 700;">Pré-approuvé</span>
+          </div>
+          <div style="font-size: 14px; font-weight: 900; color: var(--primary);">500 000 FCFA</div>
+          <div style="font-size: 10px; color: var(--secondary); margin-top: 2px;">Remboursement sur 30 jours à 0%</div>
+        </div>
+        <div style="background: var(--surface); border: 1px solid var(--tertiary); border-left: 4px solid var(--secondary); border-radius: 10px; padding: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <span style="font-size: 11px; font-weight: 800; color: var(--primary);">Ligne Microfinance (IMF)</span>
+            <span style="font-size: 9px; background: #E0F2FE; color: #0369A1; padding: 2px 6px; border-radius: 4px; font-weight: 700;">Actif</span>
+          </div>
+          <div style="font-size: 14px; font-weight: 900; color: var(--primary);">1 200 000 FCFA</div>
+          <div style="font-size: 10px; color: var(--secondary); margin-top: 2px;">Dossier certifié par Score Tekki (88/100)</div>
+        </div>
+        <div style="background: var(--surface); border: 1px solid var(--tertiary); border-radius: 10px; padding: 10px; text-align: center;">
+          <div style="font-size: 10px; color: var(--secondary);">Partenaires réseau : IMF & Grossistes locaux</div>
+        </div>
       </div>
     `
   };

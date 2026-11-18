@@ -1,4 +1,4 @@
-# Tekki — Landing Page Vitrine
+# Tekki - Landing Page Vitrine
 
 Site vitrine officiel de présentation de l'application mobile **Tekki** (gestion commerciale, *karné bor* et passeport financier pour les commerçants du Sénégal).
 
