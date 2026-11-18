@@ -107,5 +107,70 @@ void main() {
         findsOneWidget,
       );
     });
+
+    testWidgets(
+      'tapping "Demander un prêt" opens LoanRequestSheet successfully without ProviderNotFoundException',
+      (tester) async {
+        when(() => mockCubit.state).thenReturn(
+          FinancingState(
+            status: FinancingStatus.loaded,
+            eligibility: eligibility,
+            partners: partners,
+            applications: [testApp],
+          ),
+        );
+
+        await tester.pumpWidget(buildSubject());
+
+        final requestButton = find.byKey(
+          const ValueKey('hero_request_loan_button'),
+        );
+        expect(requestButton, findsOneWidget);
+
+        await tester.tap(requestButton);
+        await tester.pumpAndSettle();
+
+        expect(
+          find.byKey(const ValueKey('loan_request_sheet')),
+          findsOneWidget,
+        );
+        expect(find.text('Demande de Financement'), findsOneWidget);
+        expect(
+          find.byKey(const ValueKey('submit_loan_request_button')),
+          findsOneWidget,
+        );
+      },
+    );
+
+    testWidgets(
+      'tapping "Postuler" on partner card opens LoanRequestSheet successfully',
+      (tester) async {
+        when(() => mockCubit.state).thenReturn(
+          FinancingState(
+            status: FinancingStatus.loaded,
+            eligibility: eligibility,
+            partners: partners,
+            applications: [testApp],
+          ),
+        );
+
+        await tester.pumpWidget(buildSubject());
+
+        final applyButton = find.byKey(
+          const ValueKey('partner_apply_button_baobab_sn'),
+        );
+        expect(applyButton, findsOneWidget);
+
+        await tester.ensureVisible(applyButton);
+        await tester.tap(applyButton);
+        await tester.pumpAndSettle();
+
+        expect(
+          find.byKey(const ValueKey('loan_request_sheet')),
+          findsOneWidget,
+        );
+        expect(find.text('Demande de Financement'), findsOneWidget);
+      },
+    );
   });
 }

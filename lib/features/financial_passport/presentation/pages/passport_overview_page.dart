@@ -94,13 +94,38 @@ class _PassportOverviewPageState extends State<PassportOverviewPage> {
       key: const ValueKey('passport_overview_page'),
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text(
-          'Mon Passeport',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w800,
-            color: AppColors.primary,
-          ),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 26,
+              height: 26,
+              margin: const EdgeInsets.only(right: 8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(7),
+                border: Border.all(
+                  color: AppColors.tertiary.withValues(alpha: 0.3),
+                ),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: Padding(
+                padding: const EdgeInsets.all(3),
+                child: Image.asset(
+                  'assets/branding/logo_symbol.png',
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+            const Text(
+              'Mon Passeport',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                color: AppColors.primary,
+              ),
+            ),
+          ],
         ),
         centerTitle: false,
         backgroundColor: AppColors.background,

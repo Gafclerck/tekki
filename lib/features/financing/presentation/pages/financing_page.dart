@@ -12,9 +12,11 @@ import 'package:tekki/features/financing/domain/entities/loan_application_entity
 import 'package:tekki/features/financing/domain/repositories/loan_application_repository.dart';
 import 'package:tekki/features/financing/domain/usecases/evaluate_loan_eligibility_use_case.dart';
 import 'package:tekki/features/financing/domain/usecases/get_financial_partners_use_case.dart';
+import 'package:tekki/features/financing/domain/usecases/submit_loan_application_use_case.dart';
 import 'package:tekki/features/financing/domain/usecases/watch_loan_applications_use_case.dart';
 import 'package:tekki/features/financing/presentation/cubit/financing_cubit.dart';
 import 'package:tekki/features/financing/presentation/cubit/financing_state.dart';
+import 'package:tekki/features/financing/presentation/cubit/loan_application_form_cubit.dart';
 import 'package:tekki/features/financing/presentation/widgets/borrowing_capacity_hero_card.dart';
 import 'package:tekki/features/financing/presentation/widgets/loan_application_card.dart';
 import 'package:tekki/features/financing/presentation/widgets/loan_request_sheet.dart';
@@ -27,11 +29,15 @@ class FinancingPage extends StatefulWidget {
     this.cubit,
     this.shopId = 'default-shop',
     this.onNavigateToPassport,
+    this.loanApplicationFormCubit,
+    this.submitLoanApplicationUseCase,
   });
 
   final FinancingCubit? cubit;
   final String shopId;
   final VoidCallback? onNavigateToPassport;
+  final LoanApplicationFormCubit? loanApplicationFormCubit;
+  final SubmitLoanApplicationUseCase? submitLoanApplicationUseCase;
 
   @override
   State<FinancingPage> createState() => _FinancingPageState();
@@ -97,6 +103,8 @@ class _FinancingPageState extends State<FinancingPage> {
       onSubmitted: (_) {
         _cubit.refresh(shopId: widget.shopId);
       },
+      cubit: widget.loanApplicationFormCubit,
+      submitLoanApplicationUseCase: widget.submitLoanApplicationUseCase,
     );
   }
 
@@ -173,24 +181,62 @@ class _FinancingPageState extends State<FinancingPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                          Expanded(
+                            child: Row(
                               children: [
-                                Text(
-                                  'Financement Commercial',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.secondary,
+                                Container(
+                                  width: 40,
+                                  height: 40,
+                                  margin: const EdgeInsets.only(right: 12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: AppColors.tertiary.withValues(
+                                        alpha: 0.35,
+                                      ),
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: AppColors.primary.withValues(
+                                          alpha: 0.05,
+                                        ),
+                                        blurRadius: 6,
+                                        offset: const Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  clipBehavior: Clip.antiAlias,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: Image.asset(
+                                      'assets/branding/logo_symbol.png',
+                                      fit: BoxFit.contain,
+                                    ),
                                   ),
                                 ),
-                                Text(
-                                  'Prêts Partenaires',
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w900,
-                                    color: AppColors.primary,
+                                const Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Financement Commercial',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.secondary,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Prêts Partenaires',
+                                        style: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w900,
+                                          color: AppColors.primary,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],

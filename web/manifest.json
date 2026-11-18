@@ -1,11 +1,11 @@
 {
-    "name": "tekki",
-    "short_name": "tekki",
+    "name": "Tekki - Gestion Commerciale & Passeport Financier",
+    "short_name": "Tekki",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#133E59",
+    "theme_color": "#133E59",
+    "description": "Application mobile de gestion commerciale et passeport financier pour commerçants.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

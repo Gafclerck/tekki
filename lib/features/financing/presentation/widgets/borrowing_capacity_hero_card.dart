@@ -51,18 +51,20 @@ class BorrowingCapacityHeroCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(7),
+                      width: 28,
+                      height: 28,
+                      padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Icon(
-                        Icons.account_balance_rounded,
                         color: Colors.white,
-                        size: 18,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: Image.asset(
+                        'assets/branding/logo_symbol.png',
+                        fit: BoxFit.contain,
                       ),
                     ),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: 8),
                     const Flexible(
                       child: Text(
                         'FACILITATION AU CRÉDIT',

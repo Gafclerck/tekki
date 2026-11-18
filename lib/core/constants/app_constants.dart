@@ -6,6 +6,18 @@ abstract final class AppConstants {
   static const String currencyCode = 'XOF';
   static const String currencySymbol = 'FCFA';
 
+  // Branding Assets
+  static const String logoHorizontalPng = 'assets/branding/logo_horizontal.png';
+  static const String logoHorizontalSvg = 'assets/branding/logo_horizontal.svg';
+  static const String logoSymbolPng = 'assets/branding/logo_symbol.png';
+  static const String logoSymbolSvg = 'assets/branding/logo_symbol.svg';
+  static const String appIconAndroidSquare =
+      'assets/branding/app_icon_android_square.png';
+  static const String appIconAndroidCircle =
+      'assets/branding/app_icon_android_circle.png';
+  static const String avatarSocialPng = 'assets/branding/avatar_social.png';
+  static const String qrCodeAsset = 'assets/branding/qr_code.png';
+
   // Limits and thresholds
   static const int defaultPaginationLimit = 50;
   static const double shopGeofenceRadiusMeters = 200.0;

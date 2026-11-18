@@ -119,11 +119,29 @@ class _DemoDataDialogState extends State<DemoDataDialog> {
             ),
           ),
           const SizedBox(height: 16),
-          const Row(
+          Row(
             children: [
-              Icon(Icons.science_outlined, color: AppColors.accent, size: 24),
-              SizedBox(width: 10),
-              Expanded(
+              Container(
+                width: 28,
+                height: 28,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: AppColors.tertiary.withValues(alpha: 0.3),
+                  ),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: Image.asset(
+                    'assets/branding/logo_symbol.png',
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              const Expanded(
                 child: Text(
                   'Données de Test & Démo',
                   style: TextStyle(

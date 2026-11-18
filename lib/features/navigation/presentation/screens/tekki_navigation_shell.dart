@@ -143,23 +143,59 @@ class _TekkiNavigationShellState extends State<TekkiNavigationShell> {
           key: const ValueKey('tekki_shell_app_bar'),
           backgroundColor: AppColors.background,
           elevation: 0,
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                AppConstants.appName,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w900,
-                  color: AppColors.primary,
+              Container(
+                width: 32,
+                height: 32,
+                margin: const EdgeInsets.only(right: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: AppColors.tertiary.withValues(alpha: 0.3),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withValues(alpha: 0.05),
+                      blurRadius: 4,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: Image.asset(
+                    'assets/branding/logo_symbol.png',
+                    key: const ValueKey('tekki_shell_logo'),
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
-              Text(
-                _getTabSubtitle(_currentIndex),
-                style: const TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.secondary,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      AppConstants.appName,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w900,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                    Text(
+                      _getTabSubtitle(_currentIndex),
+                      style: const TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.secondary,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -202,6 +238,36 @@ class _TekkiNavigationShellState extends State<TekkiNavigationShell> {
                   selectedIndex: _currentIndex,
                   onDestinationSelected: _onDestinationSelected,
                   backgroundColor: AppColors.surface,
+                  leading: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: AppColors.tertiary.withValues(alpha: 0.3),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.primary.withValues(alpha: 0.06),
+                            blurRadius: 6,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: Padding(
+                        padding: const EdgeInsets.all(6),
+                        child: Image.asset(
+                          'assets/branding/logo_symbol.png',
+                          key: const ValueKey('tekki_rail_logo'),
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                  ),
                   selectedIconTheme: const IconThemeData(
                     color: AppColors.accent,
                   ),

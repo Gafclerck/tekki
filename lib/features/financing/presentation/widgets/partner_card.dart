@@ -15,6 +15,48 @@ class PartnerCard extends StatelessWidget {
   final bool isEligible;
   final VoidCallback onApply;
 
+  Widget _buildPartnerAvatar(FinancialPartnerEntity partner) {
+    final (Color bg, Color fg, String initials) = switch (partner.id) {
+      'baobab_sn' => (const Color(0xFFFFF0EB), const Color(0xFFE84E1B), 'BB'),
+      'cofina_sn' => (const Color(0xFFFEECEB), const Color(0xFFA31920), 'CF'),
+      'pamecas_sn' => (const Color(0xFFEBF3FB), const Color(0xFF004B87), 'PM'),
+      'ecobank_sn' => (const Color(0xFFE6F5F8), const Color(0xFF005A70), 'ECO'),
+      _ => (
+        AppColors.background,
+        AppColors.primary,
+        partner.name.substring(0, 2).toUpperCase(),
+      ),
+    };
+
+    return Container(
+      width: 44,
+      height: 44,
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: fg.withValues(alpha: 0.25), width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: fg.withValues(alpha: 0.08),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Center(
+        child: Text(
+          initials,
+          style: TextStyle(
+            fontSize: initials.length > 2 ? 11 : 14,
+            fontWeight: FontWeight.w900,
+            color: fg,
+            letterSpacing: 0.5,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -44,24 +86,7 @@ class PartnerCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: AppColors.background,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: AppColors.tertiary.withValues(alpha: 0.4),
-                  ),
-                ),
-                child: const Center(
-                  child: Icon(
-                    Icons.account_balance_outlined,
-                    color: AppColors.primary,
-                    size: 24,
-                  ),
-                ),
-              ),
+              _buildPartnerAvatar(partner),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(

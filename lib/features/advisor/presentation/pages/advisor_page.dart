@@ -35,13 +35,38 @@ class _AdvisorPageState extends State<AdvisorPage> {
       key: const ValueKey('advisor_page'),
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text(
-          'Conseiller Tekki',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            color: AppColors.primary,
-          ),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 28,
+              height: 28,
+              margin: const EdgeInsets.only(right: 8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: AppColors.tertiary.withValues(alpha: 0.3),
+                ),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: Padding(
+                padding: const EdgeInsets.all(3),
+                child: Image.asset(
+                  'assets/branding/logo_symbol.png',
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+            const Text(
+              'Conseiller Tekki',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                color: AppColors.primary,
+              ),
+            ),
+          ],
         ),
         backgroundColor: AppColors.background,
         elevation: 0,
