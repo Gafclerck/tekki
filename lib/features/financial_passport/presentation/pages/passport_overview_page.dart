@@ -19,12 +19,14 @@ class PassportOverviewPage extends StatefulWidget {
     this.bloc,
     this.shopId = 'default-shop',
     this.enablePeriodicTicker = true,
+    this.showBackButton = true,
   });
 
   final IBrightnessService? brightnessService;
   final PassportBloc? bloc;
   final String shopId;
   final bool enablePeriodicTicker;
+  final bool showBackButton;
 
   @override
   State<PassportOverviewPage> createState() => _PassportOverviewPageState();
@@ -103,11 +105,14 @@ class _PassportOverviewPageState extends State<PassportOverviewPage> {
         centerTitle: false,
         backgroundColor: AppColors.background,
         elevation: 0,
-        leading: IconButton(
-          key: const ValueKey('passport_back_button'),
-          icon: const Icon(Icons.arrow_back, color: AppColors.primary),
-          onPressed: () => Navigator.of(context).maybePop(),
-        ),
+        automaticallyImplyLeading: widget.showBackButton,
+        leading: widget.showBackButton
+            ? IconButton(
+                key: const ValueKey('passport_back_button'),
+                icon: const Icon(Icons.arrow_back, color: AppColors.primary),
+                onPressed: () => Navigator.of(context).maybePop(),
+              )
+            : null,
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 16),

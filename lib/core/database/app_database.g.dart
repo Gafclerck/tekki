@@ -4018,6 +4018,853 @@ class SyncOutboxCompanion extends UpdateCompanion<SyncOutboxEntry> {
   }
 }
 
+class $LoanApplicationsTable extends LoanApplications
+    with TableInfo<$LoanApplicationsTable, LoanApplication> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LoanApplicationsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _shopIdMeta = const VerificationMeta('shopId');
+  @override
+  late final GeneratedColumn<String> shopId = GeneratedColumn<String>(
+    'shop_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _partnerIdMeta = const VerificationMeta(
+    'partnerId',
+  );
+  @override
+  late final GeneratedColumn<String> partnerId = GeneratedColumn<String>(
+    'partner_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _partnerNameMeta = const VerificationMeta(
+    'partnerName',
+  );
+  @override
+  late final GeneratedColumn<String> partnerName = GeneratedColumn<String>(
+    'partner_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _requestedAmountMeta = const VerificationMeta(
+    'requestedAmount',
+  );
+  @override
+  late final GeneratedColumn<int> requestedAmount = GeneratedColumn<int>(
+    'requested_amount',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _durationMonthsMeta = const VerificationMeta(
+    'durationMonths',
+  );
+  @override
+  late final GeneratedColumn<int> durationMonths = GeneratedColumn<int>(
+    'duration_months',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _monthlyPaymentEstimateMeta =
+      const VerificationMeta('monthlyPaymentEstimate');
+  @override
+  late final GeneratedColumn<int> monthlyPaymentEstimate = GeneratedColumn<int>(
+    'monthly_payment_estimate',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _purposeMeta = const VerificationMeta(
+    'purpose',
+  );
+  @override
+  late final GeneratedColumn<String> purpose = GeneratedColumn<String>(
+    'purpose',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('PENDING'),
+  );
+  static const VerificationMeta _passportScoreAtSubmissionMeta =
+      const VerificationMeta('passportScoreAtSubmission');
+  @override
+  late final GeneratedColumn<int> passportScoreAtSubmission =
+      GeneratedColumn<int>(
+        'passport_score_at_submission',
+        aliasedName,
+        false,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+        defaultValue: const Constant(0),
+      );
+  static const VerificationMeta _submissionDateMeta = const VerificationMeta(
+    'submissionDate',
+  );
+  @override
+  late final GeneratedColumn<String> submissionDate = GeneratedColumn<String>(
+    'submission_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _decisionNotesMeta = const VerificationMeta(
+    'decisionNotes',
+  );
+  @override
+  late final GeneratedColumn<String> decisionNotes = GeneratedColumn<String>(
+    'decision_notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('pending'),
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<String> createdAt = GeneratedColumn<String>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    shopId,
+    partnerId,
+    partnerName,
+    requestedAmount,
+    durationMonths,
+    monthlyPaymentEstimate,
+    purpose,
+    status,
+    passportScoreAtSubmission,
+    submissionDate,
+    decisionNotes,
+    syncStatus,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'loan_applications';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<LoanApplication> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('shop_id')) {
+      context.handle(
+        _shopIdMeta,
+        shopId.isAcceptableOrUnknown(data['shop_id']!, _shopIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shopIdMeta);
+    }
+    if (data.containsKey('partner_id')) {
+      context.handle(
+        _partnerIdMeta,
+        partnerId.isAcceptableOrUnknown(data['partner_id']!, _partnerIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_partnerIdMeta);
+    }
+    if (data.containsKey('partner_name')) {
+      context.handle(
+        _partnerNameMeta,
+        partnerName.isAcceptableOrUnknown(
+          data['partner_name']!,
+          _partnerNameMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_partnerNameMeta);
+    }
+    if (data.containsKey('requested_amount')) {
+      context.handle(
+        _requestedAmountMeta,
+        requestedAmount.isAcceptableOrUnknown(
+          data['requested_amount']!,
+          _requestedAmountMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_requestedAmountMeta);
+    }
+    if (data.containsKey('duration_months')) {
+      context.handle(
+        _durationMonthsMeta,
+        durationMonths.isAcceptableOrUnknown(
+          data['duration_months']!,
+          _durationMonthsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_durationMonthsMeta);
+    }
+    if (data.containsKey('monthly_payment_estimate')) {
+      context.handle(
+        _monthlyPaymentEstimateMeta,
+        monthlyPaymentEstimate.isAcceptableOrUnknown(
+          data['monthly_payment_estimate']!,
+          _monthlyPaymentEstimateMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_monthlyPaymentEstimateMeta);
+    }
+    if (data.containsKey('purpose')) {
+      context.handle(
+        _purposeMeta,
+        purpose.isAcceptableOrUnknown(data['purpose']!, _purposeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_purposeMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('passport_score_at_submission')) {
+      context.handle(
+        _passportScoreAtSubmissionMeta,
+        passportScoreAtSubmission.isAcceptableOrUnknown(
+          data['passport_score_at_submission']!,
+          _passportScoreAtSubmissionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('submission_date')) {
+      context.handle(
+        _submissionDateMeta,
+        submissionDate.isAcceptableOrUnknown(
+          data['submission_date']!,
+          _submissionDateMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_submissionDateMeta);
+    }
+    if (data.containsKey('decision_notes')) {
+      context.handle(
+        _decisionNotesMeta,
+        decisionNotes.isAcceptableOrUnknown(
+          data['decision_notes']!,
+          _decisionNotesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LoanApplication map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LoanApplication(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      shopId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shop_id'],
+      )!,
+      partnerId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}partner_id'],
+      )!,
+      partnerName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}partner_name'],
+      )!,
+      requestedAmount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}requested_amount'],
+      )!,
+      durationMonths: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}duration_months'],
+      )!,
+      monthlyPaymentEstimate: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}monthly_payment_estimate'],
+      )!,
+      purpose: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}purpose'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      passportScoreAtSubmission: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}passport_score_at_submission'],
+      )!,
+      submissionDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}submission_date'],
+      )!,
+      decisionNotes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}decision_notes'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $LoanApplicationsTable createAlias(String alias) {
+    return $LoanApplicationsTable(attachedDatabase, alias);
+  }
+}
+
+class LoanApplication extends DataClass implements Insertable<LoanApplication> {
+  final String id;
+  final String shopId;
+  final String partnerId;
+  final String partnerName;
+  final int requestedAmount;
+  final int durationMonths;
+  final int monthlyPaymentEstimate;
+  final String purpose;
+  final String status;
+  final int passportScoreAtSubmission;
+  final String submissionDate;
+  final String? decisionNotes;
+  final String syncStatus;
+  final String createdAt;
+  const LoanApplication({
+    required this.id,
+    required this.shopId,
+    required this.partnerId,
+    required this.partnerName,
+    required this.requestedAmount,
+    required this.durationMonths,
+    required this.monthlyPaymentEstimate,
+    required this.purpose,
+    required this.status,
+    required this.passportScoreAtSubmission,
+    required this.submissionDate,
+    this.decisionNotes,
+    required this.syncStatus,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['shop_id'] = Variable<String>(shopId);
+    map['partner_id'] = Variable<String>(partnerId);
+    map['partner_name'] = Variable<String>(partnerName);
+    map['requested_amount'] = Variable<int>(requestedAmount);
+    map['duration_months'] = Variable<int>(durationMonths);
+    map['monthly_payment_estimate'] = Variable<int>(monthlyPaymentEstimate);
+    map['purpose'] = Variable<String>(purpose);
+    map['status'] = Variable<String>(status);
+    map['passport_score_at_submission'] = Variable<int>(
+      passportScoreAtSubmission,
+    );
+    map['submission_date'] = Variable<String>(submissionDate);
+    if (!nullToAbsent || decisionNotes != null) {
+      map['decision_notes'] = Variable<String>(decisionNotes);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    map['created_at'] = Variable<String>(createdAt);
+    return map;
+  }
+
+  LoanApplicationsCompanion toCompanion(bool nullToAbsent) {
+    return LoanApplicationsCompanion(
+      id: Value(id),
+      shopId: Value(shopId),
+      partnerId: Value(partnerId),
+      partnerName: Value(partnerName),
+      requestedAmount: Value(requestedAmount),
+      durationMonths: Value(durationMonths),
+      monthlyPaymentEstimate: Value(monthlyPaymentEstimate),
+      purpose: Value(purpose),
+      status: Value(status),
+      passportScoreAtSubmission: Value(passportScoreAtSubmission),
+      submissionDate: Value(submissionDate),
+      decisionNotes: decisionNotes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(decisionNotes),
+      syncStatus: Value(syncStatus),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory LoanApplication.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LoanApplication(
+      id: serializer.fromJson<String>(json['id']),
+      shopId: serializer.fromJson<String>(json['shopId']),
+      partnerId: serializer.fromJson<String>(json['partnerId']),
+      partnerName: serializer.fromJson<String>(json['partnerName']),
+      requestedAmount: serializer.fromJson<int>(json['requestedAmount']),
+      durationMonths: serializer.fromJson<int>(json['durationMonths']),
+      monthlyPaymentEstimate: serializer.fromJson<int>(
+        json['monthlyPaymentEstimate'],
+      ),
+      purpose: serializer.fromJson<String>(json['purpose']),
+      status: serializer.fromJson<String>(json['status']),
+      passportScoreAtSubmission: serializer.fromJson<int>(
+        json['passportScoreAtSubmission'],
+      ),
+      submissionDate: serializer.fromJson<String>(json['submissionDate']),
+      decisionNotes: serializer.fromJson<String?>(json['decisionNotes']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      createdAt: serializer.fromJson<String>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'shopId': serializer.toJson<String>(shopId),
+      'partnerId': serializer.toJson<String>(partnerId),
+      'partnerName': serializer.toJson<String>(partnerName),
+      'requestedAmount': serializer.toJson<int>(requestedAmount),
+      'durationMonths': serializer.toJson<int>(durationMonths),
+      'monthlyPaymentEstimate': serializer.toJson<int>(monthlyPaymentEstimate),
+      'purpose': serializer.toJson<String>(purpose),
+      'status': serializer.toJson<String>(status),
+      'passportScoreAtSubmission': serializer.toJson<int>(
+        passportScoreAtSubmission,
+      ),
+      'submissionDate': serializer.toJson<String>(submissionDate),
+      'decisionNotes': serializer.toJson<String?>(decisionNotes),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'createdAt': serializer.toJson<String>(createdAt),
+    };
+  }
+
+  LoanApplication copyWith({
+    String? id,
+    String? shopId,
+    String? partnerId,
+    String? partnerName,
+    int? requestedAmount,
+    int? durationMonths,
+    int? monthlyPaymentEstimate,
+    String? purpose,
+    String? status,
+    int? passportScoreAtSubmission,
+    String? submissionDate,
+    Value<String?> decisionNotes = const Value.absent(),
+    String? syncStatus,
+    String? createdAt,
+  }) => LoanApplication(
+    id: id ?? this.id,
+    shopId: shopId ?? this.shopId,
+    partnerId: partnerId ?? this.partnerId,
+    partnerName: partnerName ?? this.partnerName,
+    requestedAmount: requestedAmount ?? this.requestedAmount,
+    durationMonths: durationMonths ?? this.durationMonths,
+    monthlyPaymentEstimate:
+        monthlyPaymentEstimate ?? this.monthlyPaymentEstimate,
+    purpose: purpose ?? this.purpose,
+    status: status ?? this.status,
+    passportScoreAtSubmission:
+        passportScoreAtSubmission ?? this.passportScoreAtSubmission,
+    submissionDate: submissionDate ?? this.submissionDate,
+    decisionNotes: decisionNotes.present
+        ? decisionNotes.value
+        : this.decisionNotes,
+    syncStatus: syncStatus ?? this.syncStatus,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  LoanApplication copyWithCompanion(LoanApplicationsCompanion data) {
+    return LoanApplication(
+      id: data.id.present ? data.id.value : this.id,
+      shopId: data.shopId.present ? data.shopId.value : this.shopId,
+      partnerId: data.partnerId.present ? data.partnerId.value : this.partnerId,
+      partnerName: data.partnerName.present
+          ? data.partnerName.value
+          : this.partnerName,
+      requestedAmount: data.requestedAmount.present
+          ? data.requestedAmount.value
+          : this.requestedAmount,
+      durationMonths: data.durationMonths.present
+          ? data.durationMonths.value
+          : this.durationMonths,
+      monthlyPaymentEstimate: data.monthlyPaymentEstimate.present
+          ? data.monthlyPaymentEstimate.value
+          : this.monthlyPaymentEstimate,
+      purpose: data.purpose.present ? data.purpose.value : this.purpose,
+      status: data.status.present ? data.status.value : this.status,
+      passportScoreAtSubmission: data.passportScoreAtSubmission.present
+          ? data.passportScoreAtSubmission.value
+          : this.passportScoreAtSubmission,
+      submissionDate: data.submissionDate.present
+          ? data.submissionDate.value
+          : this.submissionDate,
+      decisionNotes: data.decisionNotes.present
+          ? data.decisionNotes.value
+          : this.decisionNotes,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LoanApplication(')
+          ..write('id: $id, ')
+          ..write('shopId: $shopId, ')
+          ..write('partnerId: $partnerId, ')
+          ..write('partnerName: $partnerName, ')
+          ..write('requestedAmount: $requestedAmount, ')
+          ..write('durationMonths: $durationMonths, ')
+          ..write('monthlyPaymentEstimate: $monthlyPaymentEstimate, ')
+          ..write('purpose: $purpose, ')
+          ..write('status: $status, ')
+          ..write('passportScoreAtSubmission: $passportScoreAtSubmission, ')
+          ..write('submissionDate: $submissionDate, ')
+          ..write('decisionNotes: $decisionNotes, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    shopId,
+    partnerId,
+    partnerName,
+    requestedAmount,
+    durationMonths,
+    monthlyPaymentEstimate,
+    purpose,
+    status,
+    passportScoreAtSubmission,
+    submissionDate,
+    decisionNotes,
+    syncStatus,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LoanApplication &&
+          other.id == this.id &&
+          other.shopId == this.shopId &&
+          other.partnerId == this.partnerId &&
+          other.partnerName == this.partnerName &&
+          other.requestedAmount == this.requestedAmount &&
+          other.durationMonths == this.durationMonths &&
+          other.monthlyPaymentEstimate == this.monthlyPaymentEstimate &&
+          other.purpose == this.purpose &&
+          other.status == this.status &&
+          other.passportScoreAtSubmission == this.passportScoreAtSubmission &&
+          other.submissionDate == this.submissionDate &&
+          other.decisionNotes == this.decisionNotes &&
+          other.syncStatus == this.syncStatus &&
+          other.createdAt == this.createdAt);
+}
+
+class LoanApplicationsCompanion extends UpdateCompanion<LoanApplication> {
+  final Value<String> id;
+  final Value<String> shopId;
+  final Value<String> partnerId;
+  final Value<String> partnerName;
+  final Value<int> requestedAmount;
+  final Value<int> durationMonths;
+  final Value<int> monthlyPaymentEstimate;
+  final Value<String> purpose;
+  final Value<String> status;
+  final Value<int> passportScoreAtSubmission;
+  final Value<String> submissionDate;
+  final Value<String?> decisionNotes;
+  final Value<String> syncStatus;
+  final Value<String> createdAt;
+  final Value<int> rowid;
+  const LoanApplicationsCompanion({
+    this.id = const Value.absent(),
+    this.shopId = const Value.absent(),
+    this.partnerId = const Value.absent(),
+    this.partnerName = const Value.absent(),
+    this.requestedAmount = const Value.absent(),
+    this.durationMonths = const Value.absent(),
+    this.monthlyPaymentEstimate = const Value.absent(),
+    this.purpose = const Value.absent(),
+    this.status = const Value.absent(),
+    this.passportScoreAtSubmission = const Value.absent(),
+    this.submissionDate = const Value.absent(),
+    this.decisionNotes = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  LoanApplicationsCompanion.insert({
+    required String id,
+    required String shopId,
+    required String partnerId,
+    required String partnerName,
+    required int requestedAmount,
+    required int durationMonths,
+    required int monthlyPaymentEstimate,
+    required String purpose,
+    this.status = const Value.absent(),
+    this.passportScoreAtSubmission = const Value.absent(),
+    required String submissionDate,
+    this.decisionNotes = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    required String createdAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       shopId = Value(shopId),
+       partnerId = Value(partnerId),
+       partnerName = Value(partnerName),
+       requestedAmount = Value(requestedAmount),
+       durationMonths = Value(durationMonths),
+       monthlyPaymentEstimate = Value(monthlyPaymentEstimate),
+       purpose = Value(purpose),
+       submissionDate = Value(submissionDate),
+       createdAt = Value(createdAt);
+  static Insertable<LoanApplication> custom({
+    Expression<String>? id,
+    Expression<String>? shopId,
+    Expression<String>? partnerId,
+    Expression<String>? partnerName,
+    Expression<int>? requestedAmount,
+    Expression<int>? durationMonths,
+    Expression<int>? monthlyPaymentEstimate,
+    Expression<String>? purpose,
+    Expression<String>? status,
+    Expression<int>? passportScoreAtSubmission,
+    Expression<String>? submissionDate,
+    Expression<String>? decisionNotes,
+    Expression<String>? syncStatus,
+    Expression<String>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (shopId != null) 'shop_id': shopId,
+      if (partnerId != null) 'partner_id': partnerId,
+      if (partnerName != null) 'partner_name': partnerName,
+      if (requestedAmount != null) 'requested_amount': requestedAmount,
+      if (durationMonths != null) 'duration_months': durationMonths,
+      if (monthlyPaymentEstimate != null)
+        'monthly_payment_estimate': monthlyPaymentEstimate,
+      if (purpose != null) 'purpose': purpose,
+      if (status != null) 'status': status,
+      if (passportScoreAtSubmission != null)
+        'passport_score_at_submission': passportScoreAtSubmission,
+      if (submissionDate != null) 'submission_date': submissionDate,
+      if (decisionNotes != null) 'decision_notes': decisionNotes,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  LoanApplicationsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? shopId,
+    Value<String>? partnerId,
+    Value<String>? partnerName,
+    Value<int>? requestedAmount,
+    Value<int>? durationMonths,
+    Value<int>? monthlyPaymentEstimate,
+    Value<String>? purpose,
+    Value<String>? status,
+    Value<int>? passportScoreAtSubmission,
+    Value<String>? submissionDate,
+    Value<String?>? decisionNotes,
+    Value<String>? syncStatus,
+    Value<String>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return LoanApplicationsCompanion(
+      id: id ?? this.id,
+      shopId: shopId ?? this.shopId,
+      partnerId: partnerId ?? this.partnerId,
+      partnerName: partnerName ?? this.partnerName,
+      requestedAmount: requestedAmount ?? this.requestedAmount,
+      durationMonths: durationMonths ?? this.durationMonths,
+      monthlyPaymentEstimate:
+          monthlyPaymentEstimate ?? this.monthlyPaymentEstimate,
+      purpose: purpose ?? this.purpose,
+      status: status ?? this.status,
+      passportScoreAtSubmission:
+          passportScoreAtSubmission ?? this.passportScoreAtSubmission,
+      submissionDate: submissionDate ?? this.submissionDate,
+      decisionNotes: decisionNotes ?? this.decisionNotes,
+      syncStatus: syncStatus ?? this.syncStatus,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (shopId.present) {
+      map['shop_id'] = Variable<String>(shopId.value);
+    }
+    if (partnerId.present) {
+      map['partner_id'] = Variable<String>(partnerId.value);
+    }
+    if (partnerName.present) {
+      map['partner_name'] = Variable<String>(partnerName.value);
+    }
+    if (requestedAmount.present) {
+      map['requested_amount'] = Variable<int>(requestedAmount.value);
+    }
+    if (durationMonths.present) {
+      map['duration_months'] = Variable<int>(durationMonths.value);
+    }
+    if (monthlyPaymentEstimate.present) {
+      map['monthly_payment_estimate'] = Variable<int>(
+        monthlyPaymentEstimate.value,
+      );
+    }
+    if (purpose.present) {
+      map['purpose'] = Variable<String>(purpose.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (passportScoreAtSubmission.present) {
+      map['passport_score_at_submission'] = Variable<int>(
+        passportScoreAtSubmission.value,
+      );
+    }
+    if (submissionDate.present) {
+      map['submission_date'] = Variable<String>(submissionDate.value);
+    }
+    if (decisionNotes.present) {
+      map['decision_notes'] = Variable<String>(decisionNotes.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<String>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LoanApplicationsCompanion(')
+          ..write('id: $id, ')
+          ..write('shopId: $shopId, ')
+          ..write('partnerId: $partnerId, ')
+          ..write('partnerName: $partnerName, ')
+          ..write('requestedAmount: $requestedAmount, ')
+          ..write('durationMonths: $durationMonths, ')
+          ..write('monthlyPaymentEstimate: $monthlyPaymentEstimate, ')
+          ..write('purpose: $purpose, ')
+          ..write('status: $status, ')
+          ..write('passportScoreAtSubmission: $passportScoreAtSubmission, ')
+          ..write('submissionDate: $submissionDate, ')
+          ..write('decisionNotes: $decisionNotes, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -4028,6 +4875,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $DebtsTable debts = $DebtsTable(this);
   late final $DebtPaymentsTable debtPayments = $DebtPaymentsTable(this);
   late final $SyncOutboxTable syncOutbox = $SyncOutboxTable(this);
+  late final $LoanApplicationsTable loanApplications = $LoanApplicationsTable(
+    this,
+  );
   late final Index salesClosureIdIdx = Index(
     'sales_closure_id_idx',
     'CREATE INDEX sales_closure_id_idx ON sales (closure_id)',
@@ -4084,6 +4934,18 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'sync_outbox_created_at_idx',
     'CREATE INDEX sync_outbox_created_at_idx ON sync_outbox (created_at)',
   );
+  late final Index loanApplicationsShopIdx = Index(
+    'loan_applications_shop_idx',
+    'CREATE INDEX loan_applications_shop_idx ON loan_applications (shop_id)',
+  );
+  late final Index loanApplicationsStatusIdx = Index(
+    'loan_applications_status_idx',
+    'CREATE INDEX loan_applications_status_idx ON loan_applications (status)',
+  );
+  late final Index loanApplicationsSyncIdx = Index(
+    'loan_applications_sync_idx',
+    'CREATE INDEX loan_applications_sync_idx ON loan_applications (sync_status)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -4096,6 +4958,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     debts,
     debtPayments,
     syncOutbox,
+    loanApplications,
     salesClosureIdIdx,
     salesSyncStatusIdx,
     dailyClosuresDateIdx,
@@ -4110,6 +4973,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     debtPaymentsClosureIdIdx,
     syncOutboxStatusIdx,
     syncOutboxCreatedAtIdx,
+    loanApplicationsShopIdx,
+    loanApplicationsStatusIdx,
+    loanApplicationsSyncIdx,
   ];
 }
 
@@ -6695,6 +7561,399 @@ typedef $$SyncOutboxTableProcessedTableManager =
       SyncOutboxEntry,
       PrefetchHooks Function()
     >;
+typedef $$LoanApplicationsTableCreateCompanionBuilder =
+    LoanApplicationsCompanion Function({
+      required String id,
+      required String shopId,
+      required String partnerId,
+      required String partnerName,
+      required int requestedAmount,
+      required int durationMonths,
+      required int monthlyPaymentEstimate,
+      required String purpose,
+      Value<String> status,
+      Value<int> passportScoreAtSubmission,
+      required String submissionDate,
+      Value<String?> decisionNotes,
+      Value<String> syncStatus,
+      required String createdAt,
+      Value<int> rowid,
+    });
+typedef $$LoanApplicationsTableUpdateCompanionBuilder =
+    LoanApplicationsCompanion Function({
+      Value<String> id,
+      Value<String> shopId,
+      Value<String> partnerId,
+      Value<String> partnerName,
+      Value<int> requestedAmount,
+      Value<int> durationMonths,
+      Value<int> monthlyPaymentEstimate,
+      Value<String> purpose,
+      Value<String> status,
+      Value<int> passportScoreAtSubmission,
+      Value<String> submissionDate,
+      Value<String?> decisionNotes,
+      Value<String> syncStatus,
+      Value<String> createdAt,
+      Value<int> rowid,
+    });
+
+class $$LoanApplicationsTableFilterComposer
+    extends Composer<_$AppDatabase, $LoanApplicationsTable> {
+  $$LoanApplicationsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get shopId => $composableBuilder(
+    column: $table.shopId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get partnerId => $composableBuilder(
+    column: $table.partnerId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get partnerName => $composableBuilder(
+    column: $table.partnerName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get requestedAmount => $composableBuilder(
+    column: $table.requestedAmount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get durationMonths => $composableBuilder(
+    column: $table.durationMonths,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get monthlyPaymentEstimate => $composableBuilder(
+    column: $table.monthlyPaymentEstimate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get purpose => $composableBuilder(
+    column: $table.purpose,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get passportScoreAtSubmission => $composableBuilder(
+    column: $table.passportScoreAtSubmission,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get submissionDate => $composableBuilder(
+    column: $table.submissionDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get decisionNotes => $composableBuilder(
+    column: $table.decisionNotes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$LoanApplicationsTableOrderingComposer
+    extends Composer<_$AppDatabase, $LoanApplicationsTable> {
+  $$LoanApplicationsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get shopId => $composableBuilder(
+    column: $table.shopId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get partnerId => $composableBuilder(
+    column: $table.partnerId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get partnerName => $composableBuilder(
+    column: $table.partnerName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get requestedAmount => $composableBuilder(
+    column: $table.requestedAmount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get durationMonths => $composableBuilder(
+    column: $table.durationMonths,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get monthlyPaymentEstimate => $composableBuilder(
+    column: $table.monthlyPaymentEstimate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get purpose => $composableBuilder(
+    column: $table.purpose,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get passportScoreAtSubmission => $composableBuilder(
+    column: $table.passportScoreAtSubmission,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get submissionDate => $composableBuilder(
+    column: $table.submissionDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get decisionNotes => $composableBuilder(
+    column: $table.decisionNotes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$LoanApplicationsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $LoanApplicationsTable> {
+  $$LoanApplicationsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get shopId =>
+      $composableBuilder(column: $table.shopId, builder: (column) => column);
+
+  GeneratedColumn<String> get partnerId =>
+      $composableBuilder(column: $table.partnerId, builder: (column) => column);
+
+  GeneratedColumn<String> get partnerName => $composableBuilder(
+    column: $table.partnerName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get requestedAmount => $composableBuilder(
+    column: $table.requestedAmount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get durationMonths => $composableBuilder(
+    column: $table.durationMonths,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get monthlyPaymentEstimate => $composableBuilder(
+    column: $table.monthlyPaymentEstimate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get purpose =>
+      $composableBuilder(column: $table.purpose, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<int> get passportScoreAtSubmission => $composableBuilder(
+    column: $table.passportScoreAtSubmission,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get submissionDate => $composableBuilder(
+    column: $table.submissionDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get decisionNotes => $composableBuilder(
+    column: $table.decisionNotes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+}
+
+class $$LoanApplicationsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $LoanApplicationsTable,
+          LoanApplication,
+          $$LoanApplicationsTableFilterComposer,
+          $$LoanApplicationsTableOrderingComposer,
+          $$LoanApplicationsTableAnnotationComposer,
+          $$LoanApplicationsTableCreateCompanionBuilder,
+          $$LoanApplicationsTableUpdateCompanionBuilder,
+          (
+            LoanApplication,
+            BaseReferences<
+              _$AppDatabase,
+              $LoanApplicationsTable,
+              LoanApplication
+            >,
+          ),
+          LoanApplication,
+          PrefetchHooks Function()
+        > {
+  $$LoanApplicationsTableTableManager(
+    _$AppDatabase db,
+    $LoanApplicationsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LoanApplicationsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$LoanApplicationsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$LoanApplicationsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> shopId = const Value.absent(),
+                Value<String> partnerId = const Value.absent(),
+                Value<String> partnerName = const Value.absent(),
+                Value<int> requestedAmount = const Value.absent(),
+                Value<int> durationMonths = const Value.absent(),
+                Value<int> monthlyPaymentEstimate = const Value.absent(),
+                Value<String> purpose = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<int> passportScoreAtSubmission = const Value.absent(),
+                Value<String> submissionDate = const Value.absent(),
+                Value<String?> decisionNotes = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LoanApplicationsCompanion(
+                id: id,
+                shopId: shopId,
+                partnerId: partnerId,
+                partnerName: partnerName,
+                requestedAmount: requestedAmount,
+                durationMonths: durationMonths,
+                monthlyPaymentEstimate: monthlyPaymentEstimate,
+                purpose: purpose,
+                status: status,
+                passportScoreAtSubmission: passportScoreAtSubmission,
+                submissionDate: submissionDate,
+                decisionNotes: decisionNotes,
+                syncStatus: syncStatus,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String shopId,
+                required String partnerId,
+                required String partnerName,
+                required int requestedAmount,
+                required int durationMonths,
+                required int monthlyPaymentEstimate,
+                required String purpose,
+                Value<String> status = const Value.absent(),
+                Value<int> passportScoreAtSubmission = const Value.absent(),
+                required String submissionDate,
+                Value<String?> decisionNotes = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                required String createdAt,
+                Value<int> rowid = const Value.absent(),
+              }) => LoanApplicationsCompanion.insert(
+                id: id,
+                shopId: shopId,
+                partnerId: partnerId,
+                partnerName: partnerName,
+                requestedAmount: requestedAmount,
+                durationMonths: durationMonths,
+                monthlyPaymentEstimate: monthlyPaymentEstimate,
+                purpose: purpose,
+                status: status,
+                passportScoreAtSubmission: passportScoreAtSubmission,
+                submissionDate: submissionDate,
+                decisionNotes: decisionNotes,
+                syncStatus: syncStatus,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$LoanApplicationsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $LoanApplicationsTable,
+      LoanApplication,
+      $$LoanApplicationsTableFilterComposer,
+      $$LoanApplicationsTableOrderingComposer,
+      $$LoanApplicationsTableAnnotationComposer,
+      $$LoanApplicationsTableCreateCompanionBuilder,
+      $$LoanApplicationsTableUpdateCompanionBuilder,
+      (
+        LoanApplication,
+        BaseReferences<_$AppDatabase, $LoanApplicationsTable, LoanApplication>,
+      ),
+      LoanApplication,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -6713,4 +7972,6 @@ class $AppDatabaseManager {
       $$DebtPaymentsTableTableManager(_db, _db.debtPayments);
   $$SyncOutboxTableTableManager get syncOutbox =>
       $$SyncOutboxTableTableManager(_db, _db.syncOutbox);
+  $$LoanApplicationsTableTableManager get loanApplications =>
+      $$LoanApplicationsTableTableManager(_db, _db.loanApplications);
 }

@@ -12,6 +12,7 @@ import 'core/database/sync_outbox_table_test.dart' as sync_outbox_table_test;
 import 'core/network/network_info_test.dart' as network_info_test;
 import 'core/services/audio_service_test.dart' as audio_service_test;
 import 'core/services/brightness_service_test.dart' as brightness_service_test;
+import 'core/services/demo_data_seeder_test.dart' as demo_data_seeder_test;
 import 'core/services/location_service_test.dart' as location_service_test;
 import 'core/services/share_service_test.dart' as share_service_test;
 import 'core/services/whatsapp_service_test.dart' as whatsapp_service_test;
@@ -66,6 +67,22 @@ import 'features/financial_passport/presentation/widgets/passport_fullscreen_qr_
 import 'features/financial_passport/presentation/widgets/passport_qr_card_test.dart'
     as passport_qr_card_test;
 
+// Features - Financing
+import 'features/financing/data/repositories/loan_application_repository_impl_test.dart'
+    as loan_application_repository_impl_test;
+import 'features/financing/domain/usecases/evaluate_loan_eligibility_use_case_test.dart'
+    as evaluate_loan_eligibility_use_case_test;
+import 'features/financing/domain/usecases/get_financial_partners_use_case_test.dart'
+    as get_financial_partners_use_case_test;
+import 'features/financing/domain/usecases/submit_loan_application_use_case_test.dart'
+    as submit_loan_application_use_case_test;
+import 'features/financing/presentation/cubit/financing_cubit_test.dart'
+    as financing_cubit_test;
+import 'features/financing/presentation/cubit/loan_application_form_cubit_test.dart'
+    as loan_application_form_cubit_test;
+import 'features/financing/presentation/pages/financing_page_test.dart'
+    as financing_page_test;
+
 // Features - Karne Bor
 import 'features/karne_bor/data/datasources/debt_local_data_source_test.dart'
     as debt_local_data_source_test;
@@ -91,6 +108,10 @@ import 'features/karne_bor/presentation/widgets/debt_card_test.dart'
     as debt_card_test;
 import 'features/karne_bor/presentation/widgets/whatsapp_reminder_bottom_sheet_test.dart'
     as whatsapp_reminder_bottom_sheet_test;
+
+// Features - Navigation
+import 'features/navigation/presentation/screens/tekki_navigation_shell_test.dart'
+    as tekki_navigation_shell_test;
 
 // Features - Sales and Cash
 import 'features/sales_and_cash/closure_cash_reconciliation_test.dart'
@@ -159,6 +180,7 @@ void main() {
       whatsapp_service_test.main();
       app_theme_test.main();
       currency_formatter_test.main();
+      demo_data_seeder_test.main();
       haversine_calculator_test.main();
       result_test.main();
     });
@@ -236,6 +258,22 @@ void main() {
       process_outbox_queue_use_case_test.main();
       sync_cubit_test.main();
       sync_status_indicator_test.main();
+    });
+
+    // Features - Financing
+    group('Features: Financing Tests', () {
+      evaluate_loan_eligibility_use_case_test.main();
+      submit_loan_application_use_case_test.main();
+      get_financial_partners_use_case_test.main();
+      loan_application_repository_impl_test.main();
+      financing_cubit_test.main();
+      loan_application_form_cubit_test.main();
+      financing_page_test.main();
+    });
+
+    // Features - Navigation Shell
+    group('Features: Navigation Shell Tests', () {
+      tekki_navigation_shell_test.main();
     });
 
     // App Widget Test

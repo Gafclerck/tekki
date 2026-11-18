@@ -7,6 +7,7 @@ import 'package:tekki/core/database/connection/open_connection.dart';
 import 'package:tekki/core/network/network_info.dart';
 import 'package:tekki/core/services/audio_service.dart';
 import 'package:tekki/core/services/brightness_service.dart';
+import 'package:tekki/core/services/demo_data_seeder.dart';
 import 'package:tekki/core/services/geolocator_location_service.dart';
 import 'package:tekki/core/services/location_service.dart';
 import 'package:tekki/core/services/share_service.dart';
@@ -29,6 +30,17 @@ import 'package:tekki/features/financial_passport/domain/usecases/generate_signe
 import 'package:tekki/features/financial_passport/domain/usecases/share_passport_pdf_use_case.dart';
 import 'package:tekki/features/financial_passport/domain/usecases/verify_passport_payload_use_case.dart';
 import 'package:tekki/features/financial_passport/presentation/bloc/passport_bloc.dart';
+import 'package:tekki/features/financing/data/datasources/loan_application_local_data_source.dart';
+import 'package:tekki/features/financing/data/repositories/financial_partner_repository_impl.dart';
+import 'package:tekki/features/financing/data/repositories/loan_application_repository_impl.dart';
+import 'package:tekki/features/financing/domain/repositories/financial_partner_repository.dart';
+import 'package:tekki/features/financing/domain/repositories/loan_application_repository.dart';
+import 'package:tekki/features/financing/domain/usecases/evaluate_loan_eligibility_use_case.dart';
+import 'package:tekki/features/financing/domain/usecases/get_financial_partners_use_case.dart';
+import 'package:tekki/features/financing/domain/usecases/submit_loan_application_use_case.dart';
+import 'package:tekki/features/financing/domain/usecases/watch_loan_applications_use_case.dart';
+import 'package:tekki/features/financing/presentation/cubit/financing_cubit.dart';
+import 'package:tekki/features/financing/presentation/cubit/loan_application_form_cubit.dart';
 import 'package:tekki/features/karne_bor/data/datasources/debt_local_data_source.dart';
 import 'package:tekki/features/karne_bor/data/repositories/debt_repository_impl.dart';
 import 'package:tekki/features/karne_bor/domain/entities/debt_entity.dart';
@@ -315,6 +327,58 @@ Future<void> initDependencyInjection({
       processOutboxQueueUseCase: sl<ProcessOutboxQueueUseCase>(),
       getSyncStatusUseCase: sl<GetSyncStatusUseCase>(),
       networkInfo: sl<NetworkInfo>(),
+    ),
+  );
+
+  // Features: Financing
+  sl.registerLazySingleton<LoanApplicationLocalDataSource>(
+    () => LoanApplicationLocalDataSourceImpl(database: sl<AppDatabase>()),
+  );
+  sl.registerLazySingleton<FinancialPartnerRepository>(
+    () => const FinancialPartnerRepositoryImpl(),
+  );
+  sl.registerLazySingleton<LoanApplicationRepository>(
+    () => LoanApplicationRepositoryImpl(
+      dataSource: sl<LoanApplicationLocalDataSource>(),
+    ),
+  );
+  sl.registerLazySingleton<GetFinancialPartnersUseCase>(
+    () => GetFinancialPartnersUseCase(
+      repository: sl<FinancialPartnerRepository>(),
+    ),
+  );
+  sl.registerLazySingleton<EvaluateLoanEligibilityUseCase>(
+    () => const EvaluateLoanEligibilityUseCase(),
+  );
+  sl.registerLazySingleton<SubmitLoanApplicationUseCase>(
+    () => SubmitLoanApplicationUseCase(
+      repository: sl<LoanApplicationRepository>(),
+    ),
+  );
+  sl.registerLazySingleton<WatchLoanApplicationsUseCase>(
+    () => WatchLoanApplicationsUseCase(
+      repository: sl<LoanApplicationRepository>(),
+    ),
+  );
+  sl.registerFactory<FinancingCubit>(
+    () => FinancingCubit(
+      getFinancialPartnersUseCase: sl<GetFinancialPartnersUseCase>(),
+      evaluateLoanEligibilityUseCase: sl<EvaluateLoanEligibilityUseCase>(),
+      watchLoanApplicationsUseCase: sl<WatchLoanApplicationsUseCase>(),
+      passportRepository: sl<PassportRepository>(),
+    ),
+  );
+  sl.registerFactory<LoanApplicationFormCubit>(
+    () => LoanApplicationFormCubit(
+      submitLoanApplicationUseCase: sl<SubmitLoanApplicationUseCase>(),
+    ),
+  );
+
+  // Core: Demo & Test Data Seeder
+  sl.registerLazySingleton<DemoDataSeederService>(
+    () => DemoDataSeederService(
+      database: sl<AppDatabase>(),
+      cryptoSignatureService: sl<ICryptoSignatureService>(),
     ),
   );
 }

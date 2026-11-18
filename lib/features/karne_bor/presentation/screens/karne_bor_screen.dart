@@ -15,10 +15,16 @@ import 'package:tekki/features/karne_bor/presentation/widgets/whatsapp_reminder_
 import 'package:tekki/injection_container.dart';
 
 class KarneBorScreen extends StatefulWidget {
-  const KarneBorScreen({super.key, this.karneBorCubit, this.recordDebtCubit});
+  const KarneBorScreen({
+    super.key,
+    this.karneBorCubit,
+    this.recordDebtCubit,
+    this.showBackButton = true,
+  });
 
   final KarneBorCubit? karneBorCubit;
   final RecordDebtCubit? recordDebtCubit;
+  final bool showBackButton;
 
   @override
   State<KarneBorScreen> createState() => _KarneBorScreenState();
@@ -106,11 +112,14 @@ class _KarneBorScreenState extends State<KarneBorScreen> {
         appBar: AppBar(
           backgroundColor: AppColors.background,
           elevation: 0,
-          leading: IconButton(
-            key: const ValueKey('karne_bor_back_button'),
-            icon: const Icon(Icons.arrow_back, color: AppColors.primary),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
+          automaticallyImplyLeading: widget.showBackButton,
+          leading: widget.showBackButton
+              ? IconButton(
+                  key: const ValueKey('karne_bor_back_button'),
+                  icon: const Icon(Icons.arrow_back, color: AppColors.primary),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
+              : null,
           title: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

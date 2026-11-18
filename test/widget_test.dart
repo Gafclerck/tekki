@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:tekki/app.dart';
 import 'package:tekki/core/constants/app_constants.dart';
+import 'package:tekki/features/navigation/presentation/screens/tekki_navigation_shell.dart';
 import 'package:tekki/features/sales_and_cash/domain/entities/cash_summary_entity.dart';
 import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_bloc.dart';
 import 'package:tekki/features/sales_and_cash/presentation/bloc/cash_dashboard_event.dart';
@@ -36,7 +37,7 @@ void main() {
   });
 
   testWidgets(
-    'TekkiApp renders HomeScreen with initDependencyInjection inMemoryDatabase',
+    'TekkiApp renders navigation shell and can navigate to Caisse with initDependencyInjection inMemoryDatabase',
     (tester) async {
       await di.sl.reset();
       await di.initDependencyInjection(inMemoryDatabase: true);
@@ -44,8 +45,17 @@ void main() {
       await tester.pumpWidget(const TekkiApp());
       await tester.pumpAndSettle();
 
-      expect(find.byType(HomeScreen), findsOneWidget);
+      expect(find.byType(TekkiNavigationShell), findsOneWidget);
       expect(find.text(AppConstants.appName), findsWidgets);
+      // Hero Tab 0: Financement is active by default
+      expect(find.text('Facilitation au Crédit & Prêts'), findsOneWidget);
+      expect(find.text('Capacité d\'emprunt certifiée Tekki'), findsOneWidget);
+
+      // Navigate to Caisse tab (Tab 2)
+      await tester.tap(find.text('Caisse').first);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(HomeScreen), findsOneWidget);
       expect(find.text('Point de vente au comptoir'), findsOneWidget);
 
       await tester.pumpWidget(const SizedBox.shrink());
